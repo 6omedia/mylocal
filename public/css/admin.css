@@ -1,0 +1,196 @@
+:root {
+
+	/* Colors */
+
+	--the-purple: #56306e;
+	--the-blue: #8fedff;
+	--off-black: #606060;
+
+	/* Widths */
+
+	--side-width: 220px;
+
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+    /*background: linear-gradient(#f1f1f0, #ffdcf2);*/
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Roboto Slab', serif;
+}
+
+p, a, span, div, input {
+	font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+	font-size: 34px;
+    color: var(--off-black);
+}
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+p {
+
+}
+
+a {
+
+}
+
+a:hover,
+a:visited,
+a:active {
+	text-decoration: none;
+}
+
+a:hover {
+
+}
+
+/* form elements */
+
+input {
+
+}
+
+input:focus {
+	
+}
+
+input[type="number"] {
+	
+}
+
+button {
+
+}
+
+button:hover {
+	
+}
+
+/* other elements */
+
+section {
+
+}
+
+/* DRY Classes */
+
+.list {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* HEADER
+************************************/
+
+header {
+    background: linear-gradient(#171717, #344154);
+    color: #c5c5c5;
+}
+
+header h1 {
+    margin: 0px;
+    display: inline-block;
+    width: 220px;
+    background: #232931;
+    padding: 5px 10px;
+}
+
+header nav {
+    display: inline-block;
+    float: right;
+    padding: 5px 15px;
+    width: 100%;
+    background: #7d8ea61f;
+    border-bottom: solid 2px #ceddf2;
+}
+
+header nav a {
+	font-size: 16px;
+    color: var(--off-black);
+    font-weight: bold;
+}
+
+header nav a:hover {
+	text-decoration: underline;
+	color: #c5c5c5;
+}
+
+header nav ul.list {
+	text-align: right;
+    width: auto;
+    display: inline-block;
+    float: right;
+}
+
+/* SIDE BAR
+************************************/
+
+.side {
+    width: var(--side-width);
+    float: left;
+    background: #7d8ea6;
+    min-height: 100%;
+    padding: 10px 0px;
+}
+
+.side ul a,
+.side ul span {
+    color: #FFF;
+    padding: 5px 15px;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.side ul li:hover {
+    background: #6d83a4;
+}
+
+.side ul li.active {
+    background: #627693 url(../img/admin/active.png) no-repeat 100% 50%;
+    background-size: 20px;
+}
+
+.side ul li > ul {
+    background: #6c7c91;
+    box-shadow: inset 0px 0px 20px -5px #0000009e;
+    display: none;
+}
+
+/* MAIN
+************************************/
+
+.main {
+	float: left;
+	padding: 20px 35px;
+	width: calc(100% - var(--side-width));
+}
+
+/* FOOTER
+************************************/
+
+footer {
+	
+}
+
+/* HOME PAGE
+************************************/
+
+/* SINGLE
+************************************/

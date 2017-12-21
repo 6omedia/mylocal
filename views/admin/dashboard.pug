@@ -1,0 +1,25 @@
+extends layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		.side
+			ul.list
+				li.active
+					a(href="") Dashboard
+				li
+					span Users
+					ul.list
+						li
+							a(href="") Add
+				li
+					a(href="") Settings
+
+		.main
+			h1 Dashboard

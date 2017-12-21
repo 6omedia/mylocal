@@ -1,0 +1,105 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: lightsteelblue;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Muli', sans-serif;
+	font-family: 'Arvo', serif;
+}
+
+p, a, span, div, input {
+	font-family: 'Muli', sans-serif;
+}
+
+h1 {
+
+}
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+p {
+
+}
+
+a {
+
+}
+
+a:hover,
+a:visited,
+a:active {
+	text-decoration: none;
+}
+
+a:hover {
+
+}
+
+/* form elements */
+
+input {
+
+}
+
+input:focus {
+	
+}
+
+input[type="number"] {
+	
+}
+
+button {
+
+}
+
+button:hover {
+	
+}
+
+/* other elements */
+
+section {
+
+}
+
+/* DRY Classes */
+
+.list {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* HEADER
+************************************/
+
+header {
+
+}
+
+/* SIDE BAR
+************************************/
+
+/* FOOTER
+************************************/
+
+footer {
+
+}
+
+/* HOME PAGE
+************************************/
+
+/* SINGLE
+************************************/
