@@ -1,0 +1,20 @@
+.side
+	ul.list#side_menu
+		li(class=section === "dashboard" ? "active" : "")
+			a(href="/admin") Dashboard
+		li(class=section === "users" ? "active" : "")
+			span(class=section === "users" ? "open noclickaway" : "") Users
+			ul.list.sub
+				li
+					a(href="/admin/users") All
+				li
+					a(href="/admin/users/add") Add	
+		li(class=section === "settings" ? "active" : "")
+			span(class=section === "settings" ? "open noclickaway" : "") Settings
+			ul.list.sub
+				li
+					a(href="") Settings
+				li
+					a(href="") Settings
+				li
+					a(href="") Settings

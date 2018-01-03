@@ -7,27 +7,27 @@ Subscriber
 - Should be able to login and view a profile page but not admin
 
 		Users:
-		- can update and delete own user
+		- can view, update and delete own user
 
 Editor
 
 - can access backend but has limited permissions
 
 		Users:
-		- can update and delete own user
+		- can view, update and delete own user
 
 Admin
 
 - Should be able to login and view admin area
 
 		Users:
-		- can update and delete own user
-		- can update and delete all users
+		- can view, update and delete own user
+		- can view, update and delete all (except supadmins) users
 
 Superadmin
 
 - has ultamate powers
 
 		Users:
-		- can update and delete own user
-		- can update and delete all users
+		- can view, update and delete own user
+		- can view, update and delete all users

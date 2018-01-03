@@ -122,7 +122,7 @@ User.find({}).exec(function(err, users){
             email: 'bob@bob.com',
             password: '123',
             confirm_password: '123',
-            user_role: 'Admin'
+            user_role: 'Super Admin'
         }, function(){
             
         });

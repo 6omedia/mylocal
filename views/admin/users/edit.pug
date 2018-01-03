@@ -1,0 +1,56 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Users
+			ul.bread-crumb
+				li
+					a(href="/admin/users") Users
+				li
+					span &#x2192;
+				li
+					span.current Edit User
+
+			.form
+				ul
+					li
+						label User Name
+						input(type="text", value=theUser.name != undefined ? theUser.name : '')#q_name
+					li
+						label Email
+						input(type="email", value=theUser.email != undefined ? theUser.email : '')#q_email
+					li
+						label Change Password
+						input(type="checkbox").changePassword
+					li#pwli_1.hide
+						label New Password
+						input(type="password")#q_password
+					li#pwli_2.hide
+						label Confirm New Password
+						input(type="password")#q_password_confirm
+					li
+						label User Role
+						select#q_user_role
+							option(value="Subscriber" selected=theUser.user_role === 'Subscriber' ? true : false) Subscriber
+							option(value="Admin" selected=theUser.user_role === 'Admin' ? true : false) Admin
+							if theUser.user_role == 'Super Admin'
+								option(value="Super Admin" selected=theUser.user_role === 'Super Admin' ? true : false) Super Admin
+					li
+						.btn#update(data-userid=`${theUser._id}`) Update User
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/users-edit.js")

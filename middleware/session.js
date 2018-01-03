@@ -35,7 +35,8 @@ function onlyAdmin(req, res, next) {
             if(err){
                 return next(err);
             }
-            if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
+            if(user.user_role == 'Editor' || user.user_role == 'Admin' || user.user_role == 'Super Admin'){
+                req.session.user = user;
                 return next();
             }
             return res.redirect('/profile');
@@ -61,17 +62,23 @@ function jsonOnlyAdmin(req, res, next){
         });
 
         return next();
+    }else{
+        res.status(401);
+        return res.json({error: 'unauthenticated'});
     }
-    res.status(401);
-    return res.json({error: 'unauthenticated'});
 }
 
 function jsonLoginRequired(req, res, next){
     if(req.session && req.session.userId) {
-        return next();
+        User.findById(req.session.userId, function(err, user){
+            if(err) return next(err);
+            req.session.user = user;
+            return next();
+        });
+    }else{
+        res.status(401);
+        return res.json({error: 'unauthenticated'});
     }
-    res.status(401);
-    return res.json({error: 'unauthenticated'});
 }
 
 module.exports.loggedIn = loggedIn;
