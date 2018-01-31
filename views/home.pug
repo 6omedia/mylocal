@@ -37,7 +37,7 @@ block content
 										img(src=`${listing.branding.logo}`).logo
 				div !{pagination}
 
-			if posts
+			if posts.length > 4
 				.imgGrid
 					h2 News &amp; Stuff
 					.row
