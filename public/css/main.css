@@ -1408,6 +1408,37 @@ table td:nth-child(1) p {
 
 /* LISTING REVIEW */
 
+.theReviews {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    transition: 0.3s;
+}
+
+.theReviews.shorter {
+    height: 360px;
+    overflow: hidden;
+}
+
+.theReviews a {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    padding: 135px 0px 0px 0px;
+    font-size: 19px;
+    color: #33336e;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.theReviews.shorter a {
+    margin-top: 20px;
+    background: linear-gradient(#fff0, #fff);
+}
+
 .review {
     margin-bottom: 15px;
     border-bottom: solid 1px #f0f0f0;

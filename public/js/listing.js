@@ -101,4 +101,20 @@
 
 	});
 
+	/// LOADING REVIEWS ///
+
+	var reviewBox = $('.theReviews');
+
+	$('.theReviews a').on('click', function(){
+
+		if(reviewBox.hasClass('shorter')){
+			reviewBox.removeClass('shorter');
+			$(this).text('less reviews');
+		}else{
+			reviewBox.addClass('shorter');
+			$(this).text('more reviews');
+		}
+		
+	});
+
 })(LightBox, PopUp, form.form);

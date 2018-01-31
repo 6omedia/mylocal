@@ -22,7 +22,8 @@ let PostSchema = new Schema({
         ref: 'User'
     },
     body: String,
-    tags: Array,
+    blog_name: String, // when post will belong to only one blog eg, news, blog, howtos etc
+    tags: Array, // for categorization
     feat_img: String,
     view_count: {
         type: Number,

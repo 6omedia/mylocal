@@ -143,30 +143,31 @@ block content
 
 						else if tab == 'reviews'
 							h2 Reviews
-							each review in listing.reviews
-								.row
-									.review
-										.col-sm-3
-											p #{review.user.name}
-										.col-sm-9
-											.rating
-												- var n = 1;
-												while n < 6
-													if n <= review.rating / 2
-														span
-													else
-														span.nostar
-													- n++;
-											.content
-												p #{review.review}
-							if !listing.rating
-								p No reviews yet, be the first to leave one.
-								if user
-									.wrtieReview.black Write a review
-								else
-									a(href="/login") Write a review
-							if more_reviews
-								a(href="/reviews") #{more_reviews} more reviews
+							.theReviews.shorter
+								each review in listing.reviews
+									.row
+										.review
+											.col-sm-3
+												p #{review.user.name}
+											.col-sm-9
+												.rating
+													- var n = 1;
+													while n < 6
+														if n <= review.rating / 2
+															span
+														else
+															span.nostar
+														- n++;
+												.content
+													p #{review.review}
+								if !listing.rating
+									p No reviews yet, be the first to leave one.
+									if user
+										.wrtieReview.black Write a review
+									else
+										a(href="/login") Write a review
+								if more_reviews
+									a more reviews
 
 					.col-sm-6
 						#map

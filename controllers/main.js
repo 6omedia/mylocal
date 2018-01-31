@@ -202,7 +202,7 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 			more_reviews = listing.reviews.length;
 		}
 
-		listing.reviews = listing.reviews.sort().splice(0, 3);
+		listing.reviews = listing.reviews.sort().splice(0, 10);
 
 		try {
 	        listing.description = JSON.parse(listing.description);
@@ -340,45 +340,6 @@ mainRoutes.get('/find/:industry/:town', mid.loginRequired, function(req, res, ne
 			return next(err);
 
 		});
-
-});
-
-/*/////////////////////////////////////////////////////////////////////////
-
-	BLOG
-
-/////////////////////////////////////////////////////////////////////////*/
-
-// mainRoutes.get('/blog', mid.loginRequired, function(req, res){
-
-// 	return res.render('blog/blog', {
-//         error: '',
-//         user: req.session.user || false
-//     });
-
-// });
-
-mainRoutes.get('/blog/:id', function(req, res, next){
-
-	Post.findOne({slug: req.params.id}, function(err, post){
-
-		if(err){
-			return next(err);
-		}
-
-		try {
-	        post.body = JSON.parse(post.body);
-	    } catch(e) {
-	        post.body = post.body;
-	    }
-
-		return res.render('blog/single', {
-			post: post,
-	        error: '',
-	        user: req.session.user || false
-	    });
-
-	});
 
 });
 

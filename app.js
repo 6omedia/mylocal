@@ -54,6 +54,7 @@ app.use('/static', express.static('public'));
 
 // main routes
 app.use('/', require('./controllers/main.js'));
+app.use('/blog', require('./controllers/blog.js'));
 
 // admin routes
 app.use('/admin', require('./controllers/admin/admin.js'));
@@ -77,8 +78,8 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-app.listen(9000, function () {
-	console.log('App running on port 9000');
+app.listen(20102, function () {
+	console.log('App running on port 20102');
 });
 
 module.exports = app;

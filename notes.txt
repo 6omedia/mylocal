@@ -75,7 +75,6 @@ FRONT:
 		DONE - linkedin & pinterst icons
 		DONE - tabs switching
 		DONE - gallary
-		- review page to show all reviews
 		DONE - rating stars
 		DONE - output correct review in header
 		DONE - other listings
@@ -106,3 +105,10 @@ OTHER:
 	- break up main routes
 
 	- sass it all
+
+	- upload to digital ocean
+	- design better the listing page (maybe not custom colors)
+	- SEO Conerns
+		- titles
+		- meta description
+		- rich text snippets
