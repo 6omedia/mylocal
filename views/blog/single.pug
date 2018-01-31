@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+
+	header.full
+		include ../partials/header
+
+	#page-blogsingle
+		.hero(style=`background: url(${post.feat_img}) no-repeat 50%/100%;`)
+			//- .container
+			h1 #{post.title}
+		.container
+			.row
+				.col-sm-7
+					.content !{post.body}
+				.col-sm-5
+					.side
+						h2 Recent Posts

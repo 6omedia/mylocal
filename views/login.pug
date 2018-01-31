@@ -2,12 +2,24 @@ extends layout
 
 block content
 
-	h1 Welcome, please login or if you dont have an account, 
-		a(href="/register") signup here
-	form(action="/login" method="post")
-		label Email
-		input(type="text" name="email")
-		label Password
-		input(type="text" name="password")
-		button(type="submit") Login
-	#error #{error}
+	header.full
+		include ./partials/header
+
+	#page-login
+		.bigBg
+			.container
+				h1.big_white_h1 Welcome, please login or if you dont have an account, 
+								a(href="/register") Sign Up Here
+				.row
+					.col-sm-6
+						.panel
+							h2 Login
+							form(action="/login" method="post")
+								label Email
+								input(type="text" name="email" class=yeah ? theUser.name : '')
+								label Password
+								input(type="password" name="password")
+								span Don't have an Account?
+									a(href="/register")  Sign up Here
+								button(type="submit") Enter
+							#error #{error}

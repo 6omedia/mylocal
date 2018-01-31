@@ -2,3 +2,41 @@ include ./partials/_head
 	
 body
 	block content
+
+	footer
+		if user
+			if user.user_role == 'Admin' || user.user_role == 'Super Admin'
+				a(href="/admin")#adminLink Go to Admin Area
+		.container
+			.row
+				.col-sm-4
+					h4 Quick Links
+					ul.quickLinks
+						li
+							a(href="/") Terms &amp; Conditions
+						li
+							a(href="/") Privacy Policy
+						li
+							a(href="/") FAQs
+						li
+							a(href="/") Contact Us
+				.col-sm-4
+					h4 Follow MyLocal
+					ul.social
+						li
+							a(href="").fb
+						li
+							a(href="").ig
+						li
+							a(href="").tw
+						li
+							a(href="").gp
+				
+				.col-sm-4
+					.newsletter
+						h4 Sign Up To Our Newsletter
+						input(type="email", placeholder="Email Address...")
+						.btn Sign Up
+				
+			hr
+			p Copyright © 2018 MyLocal. All rights reserved.

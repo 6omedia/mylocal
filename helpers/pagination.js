@@ -10,7 +10,7 @@ function getSkip(page, docsPerPage) {
 
 }
 
-function getLinks(totalDocs, docsPerPage, currentPage) {
+function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 
 	let links = '<ul class="pagination">';
 	const pages = totalDocs / docsPerPage;
@@ -22,7 +22,7 @@ function getLinks(totalDocs, docsPerPage, currentPage) {
 			current = 'active';
 		links += `
 			<li class="page-item ${current}">
-				<a class="page-link" href="?page=${page}">${page}</a>
+				<a class="page-link" href="${url}?page=${page}">${page}</a>
 			</li>
 		`;
 	}

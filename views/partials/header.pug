@@ -1,0 +1,24 @@
+.container-fluid
+	h1
+		a(href="/") MyLocal
+	if !home
+		.searchBox
+			input(type="text" placeholder="Find a...")
+			input(type="text" placeholder="In...")
+			button Find
+
+	ul
+		if user
+			if !user.listing
+				li
+					a(href="/listing") Claim FREE Listing
+			else
+				li
+					a(href="/listing") Edit Listing
+			li
+				a(href="/logout") Logout
+		else
+			li
+				a(href="/login") Login
+			li
+				a(href="/register") Register

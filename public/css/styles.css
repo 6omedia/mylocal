@@ -1,0 +1,152 @@
+/* VARIABLES */
+/* MIXINS */
+/* STYLES */
+* {
+  box-sizing: border-box; }
+
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(../img/town1.jpeg) no-repeat 50%;
+  background-size: cover;
+  background-attachment: fixed; }
+
+/* Text */
+h1, h2, h3, h4, h5 {
+  font-family: "Marcellus", serif;
+  color: #727272; }
+
+p, a, input, div, button, label {
+  font-family: "Didact Gothic", sans-serif;
+  color: #727272; }
+
+p {
+  font-size: 18px; }
+
+a:hover, a:active, a:visited {
+  text-decoration: none; }
+
+/* Form Elements */
+button {
+  background: #38c2dc; }
+
+/* Layout */
+/* DRY */
+img {
+  max-width: 100%; }
+
+ul {
+  padding: 0px;
+  margin: 0px;
+  list-style: none; }
+
+.btn {
+  color: #fff; }
+  .btn:hover {
+    color: #fff; }
+
+.invalid {
+  border-bottom: solid 3px #d31c1c !important;
+  background: #ffefef !important; }
+
+.spinBtn {
+  position: relative; }
+  .spinBtn:before {
+    content: '';
+    position: absolute;
+    width: 105%;
+    height: 120%;
+    background: #ffffffd9 url("../img/useful/giphy.gif") no-repeat 50%;
+    top: -2px;
+    left: -2px;
+    background-size: 30px; }
+
+.editSpin:before {
+  background: #ffffffd9 url("../img/useful/giphy.gif") no-repeat 50%/20px !important; }
+
+/* HEADER
+***********************************/
+header {
+  padding: 20px 25px; }
+  header a {
+    font-family: "Marcellus", serif;
+    color: #fff; }
+  header h1 {
+    margin: 0px;
+    display: inline-block; }
+  header ul {
+    text-align: right;
+    float: right; }
+    header ul li {
+      display: inline-block; }
+      header ul li a {
+        font-size: 18px;
+        padding-left: 15px;
+        font-weight: 800; }
+      header ul li a:hover {
+        color: #fc23ab; }
+
+header.full {
+  padding: 5px 25px;
+  background: #2d3050; }
+
+header.full.fixed {
+  background: #ffffff80;
+  position: fixed;
+  width: 100%;
+  z-index: 1; }
+  header.full.fixed h1 a {
+    font-size: 29px; }
+  header.full.fixed input {
+    font-size: 16px;
+    padding: 2px 8px;
+    background: #ffffffb8;
+    margin-right: 3px; }
+
+/* FOOTER
+**********************************/
+/* HERO SEARCH
+**********************************/
+/* HOME
+**********************************/
+.imgGrid img {
+  height: 480px;
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
+  transition: 0.3s; }
+.imgGrid .smallerImg {
+  height: 225px;
+  width: 100%; }
+  .imgGrid .smallerImg + h3 {
+    font-size: 26px; }
+.imgGrid .evenSmallerImg {
+  height: 225px; }
+  .imgGrid .evenSmallerImg + h3 {
+    font-size: 20px; }
+.imgGrid .evenSmallerPost {
+  margin-bottom: 30px; }
+.imgGrid .post {
+  position: relative;
+  overflow: hidden; }
+  .imgGrid .post:hover img {
+    transform: rotate(3deg) scale(1.1); }
+.imgGrid h3 {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  color: #fff;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.7215686275));
+  margin: 0px;
+  border-radius: 0px 0px 5px 5px;
+  padding: 15px;
+  text-shadow: 2px 2px #000;
+  width: 100%;
+  font-size: 30px; }
+
+/* REGISTER / LOGIN
+**********************************/
+/* BLOG
+**********************************/
+/* LISTING
+**********************************/
+
+/*# sourceMappingURL=styles.css.map */

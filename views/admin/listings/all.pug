@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Listings
+			ul.bread-crumb
+				li
+					span.current Listings
+
+			.floatLeft
+				table
+					tr
+						th Business Name
+						th Owner
+						th Industry
+						th Town
+						th Actions
+					each listing in listings
+						tr
+							td #{listing.business_name}
+							if listing.userId
+								td #{listing.userId.name}
+							else
+								td Not Claimed
+							td #{listing.industry}
+							td #{listing.address.town}
+							td
+								a(href=`/listing/${listing.slug}`).view
+								a(href=`/admin/listings/edit/${listing._id}`).edit
+								span(data-listingid=`${listing._id}`).delete
+				div.paginationDiv !{paginationLinks}
+			.mini-side
+				a(href="/admin/listings/add").add Add Listing
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/listings-all.js")

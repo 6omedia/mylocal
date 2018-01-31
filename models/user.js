@@ -15,6 +15,14 @@ let UserSchema = new Schema(
             type: String,
             default: 'Subscriber'
         },
+        listing: {
+            type: Schema.Types.ObjectId,
+            ref: 'Listing'
+        },
+        membership: {
+            type: String,
+            default: 'free'
+        },
         meta: {
           age: Number,
           website: String

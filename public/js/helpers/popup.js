@@ -44,6 +44,10 @@ var PopUp = (function(){
 			let box = $('<div>', {"class": "box"});
 			let msg = $('<p>').html(message);
 
+			if(this.options.custom_class){
+				modal.addClass(this.options.custom_class);
+			}
+
 			let yesBtn = $('<button>', {"class": "yesBtn"}).html('yes').on('click', function(){
 							thisClass.positiveFunc();
 						});
@@ -92,9 +96,10 @@ var PopUp = (function(){
 
 		}
 
-		constructor(positiveFunc, negativeFunc){
+		constructor(positiveFunc, negativeFunc, options = {}){
 			this.positiveFunc = positiveFunc;
 			this.negativeFunc = negativeFunc;
+			this.options = options;
 		}
 
 	}

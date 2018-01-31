@@ -1,0 +1,247 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Listings
+			ul.bread-crumb
+				li
+					a(href="/admin/listings") Listings
+				li
+					span &#x2192;
+				li
+					a(href="").current Edit Listing
+
+			.form.third
+				h4 General Details
+				ul
+					li
+						label Business Name
+						input(type="text" value=listing.business_name != undefined ? listing.business_name : '')#business_name
+					li
+						label Email
+						input(type="email" value=listing.contact.email != undefined ? listing.contact.email : '')#email
+					li
+						label Phone Number
+						input(type="text" value=listing.contact.phone != undefined ? listing.contact.phone : '')#phone
+					li
+						label Website
+						input(type="text" value=listing.contact.website != undefined ? listing.contact.website : '')#website
+				h4 Address
+				ul
+					li
+						label Line One
+						input(type="text" value=listing.address.line_one != undefined ? listing.address.line_one : '')#line_one
+					li
+						label Line Two
+						input(type="text" value=listing.address.line_two != undefined ? listing.address.line_two : '')#line_two
+					li
+						label Town / City
+						input(type="text" value=listing.address.town != undefined ? listing.address.town : '')#town
+					li
+						label Post Code
+						input(type="text" value=listing.address.post_code != undefined ? listing.address.post_code : '')#postcode
+				h4 Opening Times
+				ul.openingTimes
+					li
+						label Monday
+						input(type="number" min="00" max="23" value=openingtimes.monday != undefined ? openingtimes.monday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.monday != undefined ? openingtimes.monday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.monday != undefined ? openingtimes.monday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.monday != undefined ? openingtimes.monday.close.mins : '')
+					li
+						label Tuesday
+						input(type="number" min="00" max="23" value=openingtimes.tuesday != undefined ? openingtimes.tuesday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.tuesday != undefined ? openingtimes.tuesday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.tuesday != undefined ? openingtimes.tuesday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.tuesday != undefined ? openingtimes.tuesday.close.mins : '')
+					li
+						label Wednesday
+						input(type="number" min="00" max="23" value=openingtimes.wednesday != undefined ? openingtimes.wednesday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.wednesday != undefined ? openingtimes.wednesday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.wednesday != undefined ? openingtimes.wednesday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.wednesday != undefined ? openingtimes.wednesday.close.mins : '')
+					li
+						label Thursday
+						input(type="number" min="00" max="23" value=openingtimes.thursday != undefined ? openingtimes.thursday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.thursday != undefined ? openingtimes.thursday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.thursday != undefined ? openingtimes.thursday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.thursday != undefined ? openingtimes.thursday.close.mins : '')
+					li
+						label Friday
+						input(type="number" min="00" max="23" value=openingtimes.friday != undefined ? openingtimes.friday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.friday != undefined ? openingtimes.friday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.friday != undefined ? openingtimes.friday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.friday != undefined ? openingtimes.friday.close.mins : '')
+					li
+						label Saturday
+						input(type="number" min="00" max="23" value=openingtimes.saturday != undefined ? openingtimes.saturday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.saturday != undefined ? openingtimes.saturday.open.mins : '')
+						span.to to 
+						input(type="number" min="00" max="23" value=openingtimes.saturday != undefined ? openingtimes.saturday.close.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.saturday != undefined ? openingtimes.saturday.close.mins : '')
+					li
+						label Sunday
+						input(type="number" min="00" max="23" value=openingtimes.sunday != undefined ? openingtimes.sunday.open.hours : '')
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.sunday != undefined ? openingtimes.sunday.open.mins : '')#sun_open_mins
+						span.to to  
+						input(type="number" min="00" max="23" value=openingtimes.sunday != undefined ? openingtimes.sunday.close.hours : '')#sun_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60" value=openingtimes.sunday != undefined ? openingtimes.sunday.close.mins : '')#sun_close_mins
+			.form.third
+				h4 About the Business
+				ul
+					li
+						label Industry
+						input(type="text" value=listing.industry != undefined ? listing.industry : '')#industry
+					li
+						label Services
+						input(type="text")#services
+						.btn +
+						#selected_services
+							if listing.services
+								each service in listing.services
+									span #{service}
+										span.x x
+					li
+						label.full Other Information (displayed on listing)
+						.yeahEditor.small
+							.toolbar
+								button(data-command='undo')
+									i.fa.fa-undo
+								button(data-command='redo')
+									i.fa.fa-repeat
+								button(data-command='bold')
+									i.fa.fa-bold
+								button(data-command='italic')
+									i.fa.fa-italic
+								button(data-command='underline')
+									i.fa.fa-underline
+								button(data-command='insertUnorderedList')
+									i.fa.fa-list-ul
+								button(data-command='insertOrderedList')
+									i.fa.fa-list-ol
+								button(data-command='h2') H2
+								button(data-command='p') P
+							if listing
+								.editor#otherinfo(contenteditable='') !{listing.description}
+							else
+								.editor#otherinfo(contenteditable='')
+									h1 Post Content Editor
+									p Try making some changes here. Add your own text or maybe an image.
+				h4 Social Media
+				ul
+					li
+						label Icon Style
+						.fakeInput#social_style(data-style=listing.social.style != undefined ? listing.social.style : 'standard' class=listing.social.style != undefined ? listing.social.style : 'standard')
+							span #{listing.social.style}
+					li
+						label Facebook
+						input(type="text" value=listing.social.icons.facebook != undefined ? listing.social.icons.facebook.link : '')#social_fb
+					li
+						label Twitter
+						input(type="text" value=listing.social.icons.twitter != undefined ? listing.social.icons.twitter.link : '')#social_tw
+					li
+						label Instagram
+						input(type="text" value=listing.social.icons.instagram != undefined ? listing.social.icons.instagram.link : '')#social_ig
+					li
+						label Google +
+						input(type="text" value=listing.social.icons.googleplus != undefined ? listing.social.icons.googleplus.link : '')#social_gp
+					li
+						label YouTube
+						input(type="text" value=listing.social.icons.youtube != undefined ? listing.social.icons.youtube.link : '')#social_yt
+					li
+						label Linked In
+						input(type="text" value=listing.social.icons.linkedin != undefined ? listing.social.icons.linkedin.link : '')#social_li
+					li
+						label Pinterst
+						input(type="text" value=listing.social.icons.pinterest != undefined ? listing.social.icons.pinterest.link : '')#social_pi
+			.form.third
+				h4 Gallery
+				ul
+					li 
+						label Edit Gallery
+						.fakeInput#galleryInput(data-images=`${listing.gallery}`)
+							- var imgCount = 0; if(listing.gallery) var imgCount = listing.gallery.length || 0
+							span.imgCount #{imgCount}   
+							span Images
+				h4 Branding
+				ul
+					li
+						label Logo
+						.file_upload_box#listinglogo_box
+							//- label
+							//- input(type="file")#listinglogo
+							img(src=listing.branding.logo != undefined ? listing.branding.logo : '/static/img/admin/placeholder-logo.png')
+							//- .fakeInput.fileUpload
+							//- 	p Upload Logo
+					li
+						label Background
+						.file_upload_box#listingbg_box
+							//- label
+							//- input(type="file")#listingbg
+							img(src=listing.branding.background != undefined ? listing.branding.background : '/static/img/admin/placeholder-bg.png')
+							//- .fakeInput.fileUpload
+							//- 	p Upload Background
+					li
+						label Primary Colour
+						input(type="text" value=listing.branding.primary_color != undefined ? listing.branding.primary_color : '17FFAB').jscolor#listing_color1
+					li
+						label Secondary Colour
+						input(type="text" value=listing.branding.secondary_color != undefined ? listing.branding.secondary_color : 'CEEDE4').jscolor#listing_color2
+					li
+						label Accent
+						input(type="text" value=listing.branding.accent != undefined ? listing.branding.accent : 'FFD766').jscolor#listing_color3
+					li
+						.btn#updateBtn(data-listingid=`${listing._id}`) Update Listing
+
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn Upload Image
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/jscolor.min.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/helpers/yeahtexteditor.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/admin/listings.js")

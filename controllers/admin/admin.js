@@ -27,7 +27,7 @@ adminRoutes.get('/users', mid.onlyAdmin, function(req, res){
 		}
 
 		User.find({})
-			.sort({created_at: 1})
+			.sort({created_at: -1})
 			.limit(docsPerPage)
 			.skip(pagination.getSkip(req.query.page || 1, docsPerPage))
 			.exec(function(err, users){

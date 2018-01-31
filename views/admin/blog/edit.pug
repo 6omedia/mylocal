@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-blog
+		include ../partials/side
+
+		.main
+			h1 Blog
+			ul.bread-crumb
+				li
+					a(href="/admin/blog") All Posts
+				li
+					span &#x2192;
+				li
+					span.current Edit Post
+
+			.form.the60
+				label.break Title
+				input(type="text" value=post.title != undefined ? post.title : '')#q_title
+				span.slug View Post   
+				a(href=`/blog/${post.slug}`).slug#slug /blog/ #{post.slug}
+				include ../partials/editor
+				.btn#update(data-postid=`${post._id}`) Update Post
+			.form.the40
+				ul
+					li
+						label.break Featured Image
+						.file_upload_box.featured_img
+							img(src=post.feat_img != undefined ? post.feat_img : '/static/img/admin/landscape-image.png')#q_featimg
+
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn Upload Image
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/helpers/yeahtexteditor.js")
+	script(src="/static/js/admin/blog.js")

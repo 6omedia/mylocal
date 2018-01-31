@@ -9,6 +9,20 @@
 					a(href="/admin/users") All
 				li
 					a(href="/admin/users/add") Add	
+		li(class=section === "blog" ? "active" : "")
+			span(class=section === "blog" ? "open noclickaway" : "") Blog
+			ul.list.sub
+				li
+					a(href="/admin/blog") All Posts
+				li
+					a(href="/admin/blog/add") New Post
+		li(class=section === "listings" ? "active" : "")
+			span(class=section === "listings" ? "open noclickaway" : "") Listings
+			ul.list.sub
+				li
+					a(href="/admin/listings") All Listings
+				li
+					a(href="/admin/listings/add") New Listing
 		li(class=section === "settings" ? "active" : "")
 			span(class=section === "settings" ? "open noclickaway" : "") Settings
 			ul.list.sub
@@ -18,3 +32,4 @@
 					a(href="") Settings
 				li
 					a(href="") Settings
+	a(href="/").toBottom View Front End

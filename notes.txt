@@ -9,12 +9,18 @@ Subscriber
 		Users:
 		- can view, update and delete own user
 
+		Listings:
+		- can view and add one. Update only own listing
+
 Editor
 
 - can access backend but has limited permissions
 
 		Users:
 		- can view, update and delete own user
+
+		Listings:
+		- can view, cant update or delete
 
 Admin
 
@@ -24,6 +30,9 @@ Admin
 		- can view, update and delete own user
 		- can view, update and delete all (except supadmins) users
 
+		Listings:
+		- can add, update or delete
+
 Superadmin
 
 - has ultamate powers
@@ -31,3 +40,69 @@ Superadmin
 		Users:
 		- can view, update and delete own user
 		- can view, update and delete all users
+
+		Listings:
+		- can add, update or delete
+
+
+/************************************************************************
+
+	MYLOCAL
+
+*************************************************************************/
+
+subscriber = (visitor or business)
+admin = Us (6omedia)
+superadmin = Us (6omedia)
+
+TODO
+- fuzzy search only works with letters missed off the end not between (listings /town/:town)
+
+PRIORITY TODO
+
+FRONT:
+	home:
+		DONE - style listings better
+		DONE - limit search listings - pagination
+		DONE - search both industries and services
+		DONE - auto complete towns
+		DONE - did you mean? Corrections thing
+		DONE - output links to blogs, have them return most recent
+		DONE - output reviews correctly
+	blog:
+		- all posts page (talk to jason)
+	listing:
+		DONE - linkedin & pinterst icons
+		DONE - tabs switching
+		DONE - gallary
+		- review page to show all reviews
+		DONE - rating stars
+		DONE - output correct review in header
+		DONE - other listings
+		DONE - opening times
+		DONE - edit listing btn when admin
+		DONE - make better response when geocode fails
+		EDIT MODE:
+			DONE - social icons and style
+			DONE - update screen when social icons update
+			- background
+			- logo
+			- gallary
+			- contact
+			- address
+
+BACK:
+	listings:
+		DONE - other information to use editor
+		DONE - services should empty after added
+		DONE - pagintion after ajax
+		DONE - all listing enable deleting
+	blog:
+		DONE - all posts enable deleting
+		DONE - pagintion after ajax
+OTHER:
+	- newsletter signup
+	- search bar in header needs to work from everywhere
+	- break up main routes
+
+	- sass it all

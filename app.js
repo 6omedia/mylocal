@@ -8,6 +8,7 @@ var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var config = '';
 var cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 
 if(process.env.NODE_ENV == 'test'){
 	config = require('./config/test.json');
@@ -46,7 +47,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());                                     
 app.use(bodyParser.urlencoded({extended: true}));               
 app.use(bodyParser.text());                                    
-app.use(bodyParser.json({ type: 'application/json'}));  
+app.use(bodyParser.json({ type: 'application/json'}));
+app.use(fileUpload());
 
 app.use('/static', express.static('public'));
 
@@ -55,10 +57,17 @@ app.use('/', require('./controllers/main.js'));
 
 // admin routes
 app.use('/admin', require('./controllers/admin/admin.js'));
+app.use('/admin/listings', require('./controllers/admin/listings.js'));
+app.use('/admin/blog', require('./controllers/admin/blog.js'));
 
 // api routes
 app.use('/api', require('./controllers/api/main.js'));
 app.use('/api/users', require('./controllers/api/users.js'));
+app.use('/api/listings', require('./controllers/api/listings.js'));
+app.use('/api/reviews', require('./controllers/api/reviews.js'));
+app.use('/api/industries', require('./controllers/api/industries.js'));
+app.use('/api/image_library', require('./controllers/api/image_library.js'));
+app.use('/api/blog', require('./controllers/api/blog.js'));
 
 app.use(function(err, req, res, next) {
 	res.status(err.status || 500);

@@ -39,6 +39,7 @@ block content
 						label User Role
 						select#q_user_role
 							option(value="Subscriber") Subscriber
+							option(value="Editor") Editor
 							option(value="Admin") Admin
 							if user.user_role == 'Super Admin'
 								option(value="Super Admin") Super Admin

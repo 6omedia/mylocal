@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Listings
+			ul.bread-crumb
+				li
+					a(href="/admin/listings") Listings
+				li
+					span &#x2192;
+				li
+					a(href="").current Upload
+
+			.form

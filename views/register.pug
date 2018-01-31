@@ -2,23 +2,90 @@ extends layout
 
 block content
 
-	h1 Sign Up for Bastion
+	header.full
+		include ./partials/header
 
-	form(action="/register", method="post")
-		ul
-			li
-				label Name
-				input(type="text", name="name")
-			li
-				label Email
-				input(type="email", name="email")
-			li
-				label Password
-				input(type="password", name="password")
-			li
-				label Confirm Password
-				input(type="password", name="confirm_password")
-			li
-				button(type="submit") Sign Up
+	.bigBg
+		.container
+			h1.big_white_h1 Welcome to MyLocal
+			.row
+				.col-sm-6
+					.panel.panel-register
+						//- h2#question Do you own a business?
+						//- .theBtns
+						//- 	.btn.half#q-yes Yes
+						//- 	.btn.half#q-no No
+						//- .formBox#form-standardinfo.gone
+						h2 Create an Account
 
-	.error #{error}
+						if submitted
+
+							form(action="/register", method="post")
+								ul
+									li
+										label Name
+										input(type="text", name="name", value=`${submitted.name}`, class=submitted.name != '' ? '' : 'invalid')
+									li
+										label Email
+										input(type="email", name="email", value=`${submitted.email}`, class=submitted.email != '' ? '' : 'invalid')
+									li
+										label Password
+										input(type="password", name="password", class=submitted.password != '' ? '' : 'invalid')
+									li
+										label Confirm Password
+										input(type="password", name="confirm_password", class=submitted.password != '' ? '' : 'invalid')
+									li
+										button(type="submit") Sign Up
+
+						else
+
+							form(action="/register", method="post")
+								ul
+									li
+										label Name
+										input(type="text", name="name")
+									li
+										label Email
+										input(type="email", name="email")
+									li
+										label Password
+										input(type="password", name="password")
+									li
+										label Confirm Password
+										input(type="password", name="confirm_password")
+									li
+										button(type="submit") Sign Up
+
+						//- .formBox#form-ownbusiness.gone
+						//- 	ul
+						//- 		li
+						//- 			input(type="checkbox")#cb_ownbusiness
+						//- 		li
+						//- 			input(type="text" placeholder="Search business name...")
+						//- .formBox#form-businessinfo.gone
+						//- 	ul
+						//- 		li
+						//- 			label Business Name
+						//- 			input(type="text", name="name")
+						//- 		li
+						//- 			label Industry
+						//- 			input(type="text", name="name")
+						//- 		li
+						//- 			label Services
+						//- 			input(type="text", name="name")
+						//- .formBox#form-contactinfo.gone
+						//- 	ul
+						//- 		li
+						//- 			label Website (optional)
+						//- 			input(type="text", name="website")
+						//- 		li
+						//- 			label Email
+						//- 			input(type="email", name="email")
+						//- 		li
+						//- 			label Phone Number
+						//- 			input(type="text", name="phone")
+						#error #{error}
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/register.js")

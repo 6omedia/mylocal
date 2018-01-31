@@ -1,0 +1,217 @@
+/* VARIABLES */
+
+$color-primary: #38c2dc;
+$color-secondary: #2d3050;
+$color-accent: #fc23ab;
+$color-text: #727272;
+$color-trans-white: #ffffffb8;
+
+$font-stack-primary: 'Marcellus', serif;
+$font-stack-secondary: 'Didact Gothic', sans-serif;
+
+/* MIXINS */
+
+@mixin coverimg {
+	object-fit: cover;
+    object-position: center;
+}
+
+@mixin textoverlay {
+	position: absolute;
+    bottom: 0px;
+    left: 0px;
+    color: #fff;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.7215686274509804));
+    margin: 0px;
+    border-radius: 0px 0px 5px 5px;
+    padding: 15px;
+    text-shadow: 2px 2px #000;
+    width: 100%;
+}
+
+/* STYLES */
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(../img/town1.jpeg) no-repeat 50%;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Text */
+
+h1, h2, h3, h4, h5 {
+	font-family: $font-stack-primary;
+	color: $color-text;
+}
+
+p, a, input, div, button, label {
+	font-family: $font-stack-secondary;
+	color: $color-text;
+}
+
+p {
+    font-size: 18px;
+}
+
+a:hover, a:active, a:visited {
+	text-decoration: none;
+}
+
+/* Form Elements */
+
+button {
+	background: $color-primary;
+}
+
+/* Layout */
+
+/* DRY */
+
+img {
+	max-width: 100%;
+}
+
+ul {
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+
+.btn {
+    color: #fff;
+    &:hover {
+	    color: #fff;
+	}
+}
+
+.invalid {
+    border-bottom: solid 3px #d31c1c !important;
+    background: #ffefef !important;
+}
+
+.spinBtn {
+    position: relative;
+    &:before {
+	    content: '';
+	    position: absolute;
+	    width: 105%;
+	    height: 120%;
+	    background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%;
+	    top: -2px;
+	    left: -2px;
+	    background-size: 30px;
+	}
+}
+
+.editSpin:before {
+    background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%/20px !important;
+}
+
+/* HEADER
+***********************************/
+
+header {
+    padding: 20px 25px;
+    a {
+    	font-family: $font-stack-primary;
+    	color: #fff;
+    }
+    h1 {
+		margin: 0px;
+		display: inline-block;
+    }
+    ul {
+    	text-align: right;
+		float: right;
+    	li {
+			display: inline-block;
+			a {
+			    font-size: 18px;
+			    padding-left: 15px;
+			    font-weight: 800;
+			}
+			a:hover {
+				color: #fc23ab;
+			}
+		}
+    }
+}
+
+header.full {
+	padding: 5px 25px;
+    background: $color-secondary;
+}
+
+header.full.fixed {
+	background: #ffffff80;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    h1 a {
+	    font-size: 29px;
+	}
+	input {
+	    font-size: 16px;
+	    padding: 2px 8px;
+	    background: $color-trans-white;
+	    margin-right: 3px;
+	}
+}
+
+/* FOOTER
+**********************************/
+
+/* HERO SEARCH
+**********************************/
+
+/* HOME
+**********************************/
+
+.imgGrid {
+	img {
+	    height: 480px;
+	    border-radius: 5px;
+	    @include coverimg;
+	    transition: 0.3s;
+	}
+	.smallerImg {
+	    height: 225px;
+	    width: 100%;
+	    + h3 {
+		    font-size: 26px;
+		}
+	}
+	.evenSmallerImg {
+	    height: 225px;
+	    + h3 {
+		    font-size: 20px;
+		}
+	}
+	.evenSmallerPost {
+	    margin-bottom: 30px;
+	}
+	.post {
+	    position: relative;
+	    overflow: hidden;
+	    &:hover img {
+		    transform: rotate(3deg) scale(1.1);
+		}
+	}
+	h3 {
+	    @include textoverlay;
+	    font-size: 30px;
+	}
+}
+
+/* REGISTER / LOGIN
+**********************************/
+
+/* BLOG
+**********************************/
+
+/* LISTING
+**********************************/

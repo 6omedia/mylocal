@@ -23,9 +23,16 @@ function loggedIn(req, res, next) {
 
 function loginRequired(req, res, next) {
     if(req.session && req.session.userId) {
-        return next();
+        User.findById(req.session.userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            req.session.user = user;
+            return next();
+        });
+    }else{
+        return res.redirect('/');
     }
-    return res.redirect('/');
 }
 
 function onlyAdmin(req, res, next) {
@@ -39,10 +46,12 @@ function onlyAdmin(req, res, next) {
                 req.session.user = user;
                 return next();
             }
-            return res.redirect('/profile');
+            res.status(403);
+            return res.redirect('/login');
         });
 
     }else{
+        res.status(401);
         return res.redirect('/');
     }
 }
@@ -53,15 +62,17 @@ function jsonOnlyAdmin(req, res, next){
     if(req.session && req.session.userId) {
 
         User.findById(req.session.userId, function(err, user){
-            if(err) return next(err);
-            if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
-                res.status(403);
-                return res.json({error: 'unauthorized'});
+            if(err){
+                return next(err);
             }
-            return res.redirect('/profile');
+            if(user.user_role == 'Editor' || user.user_role == 'Admin' || user.user_role == 'Super Admin'){
+                req.session.user = user;
+                return next();
+            }
+            res.status(403);
+            return res.json({error: 'Unathorized'});
         });
 
-        return next();
     }else{
         res.status(401);
         return res.json({error: 'unauthenticated'});
