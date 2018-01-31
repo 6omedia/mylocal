@@ -13,7 +13,7 @@ block content
 				.searchBox
 					input(type="text" placeholder="Barber, Indian Take-a-way, Dentist Surgery...")#industry
 					input(type="text" placeholder="In...")#town
-					button#find Find
+					button#find Find #{posts.length}
 
 	section.bigWhite
 		.container
@@ -37,7 +37,7 @@ block content
 										img(src=`${listing.branding.logo}`).logo
 				div !{pagination}
 
-			if posts.length > 4
+			if posts.length >= 4
 				.imgGrid
 					h2 News &amp; Stuff
 					.row
