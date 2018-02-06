@@ -54,7 +54,7 @@ app.use('/static', express.static('public'));
 
 // main routes
 app.use('/', require('./controllers/main.js'));
-app.use('/blog', require('./controllers/blog.js'));
+app.use('/articles', require('./controllers/blog.js'));
 
 // admin routes
 app.use('/admin', require('./controllers/admin/admin.js'));
@@ -69,6 +69,7 @@ app.use('/api/reviews', require('./controllers/api/reviews.js'));
 app.use('/api/industries', require('./controllers/api/industries.js'));
 app.use('/api/image_library', require('./controllers/api/image_library.js'));
 app.use('/api/blog', require('./controllers/api/blog.js'));
+app.use('/api/tags', require('./controllers/api/tags.js'));
 
 app.use(function(err, req, res, next) {
 	res.status(err.status || 500);

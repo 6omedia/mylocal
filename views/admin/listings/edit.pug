@@ -123,9 +123,9 @@ block content
 						input(type="text" value=listing.industry != undefined ? listing.industry : '')#industry
 					li
 						label Services
-						input(type="text")#services
+						input(type="text")#services.inputPlus
 						.btn +
-						#selected_services
+						#selected_services.tags_ul
 							if listing.services
 								each service in listing.services
 									span #{service}

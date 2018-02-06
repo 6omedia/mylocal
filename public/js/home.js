@@ -24,23 +24,23 @@
     var inputIndustry = $('#industry');
     var inputTown = $('#town');
 
-    var industryAutocomplete = new YeahAutocomplete({
-        input: 'industry',
-        allowFreeType: true,
-        dataUrl: '/api/industries/search?term=',
-        method: 'GET',
-        arrName: 'results',
-        property: 'name'
-    });
+    // var industryAutocomplete = new YeahAutocomplete({
+    //     input: 'industry',
+    //     allowFreeType: true,
+    //     dataUrl: '/api/industries/search?term=',
+    //     method: 'GET',
+    //     arrName: 'results',
+    //     property: 'name'
+    // });
 
-    var townAutocomplete = new YeahAutocomplete({
-        input: 'town',
-        allowFreeType: true,
-        dataUrl: '/api/towns/search?term=',
-        method: 'GET',
-        arrName: 'results',
-        property: 'name'
-    });
+    // var townAutocomplete = new YeahAutocomplete({
+    //     input: 'town',
+    //     allowFreeType: true,
+    //     dataUrl: '/api/towns/search?term=',
+    //     method: 'GET',
+    //     arrName: 'results',
+    //     property: 'name'
+    // });
 
     function getListings(industry, town, callback){
         $.ajax({

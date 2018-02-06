@@ -6,10 +6,19 @@ block content
 		include ./partials/header
 
 	#page-listing(data-postcode=`${listing.address.post_code}` data-listingid=`${listing._id}`)
-		.theListing-bg(style=`background: linear-gradient(#0000, #${listing.branding.secondary_color}96), url(${listing.branding.background}) no-repeat 50% 50%/100%`).editable.editable-bg
+		.theListing-bg(style=`background: linear-gradient(#0000, #${listing.branding.secondary_color}), url(${listing.branding.background}) no-repeat 50% 50%/100%` data-field="background").editable.editable-bg
 			.container
 				.row
 					.col-sm-7
+						.colors.editable(data-field="colors")
+							.colorInputs
+								label Primary
+								input(type="text" class="jscolor {onFineChange:'update(this, 1)'}" value=`${listing.branding.primary_color}`)#q_color1
+								label Secondary
+								input(type="text" class="jscolor {onFineChange:'update(this, 2)'}" value=`${listing.branding.secondary_color}`)#q_color2
+								label Accent
+								input(type="text" class="jscolor {onFineChange:'update(this, 3)'}" value=`${listing.branding.accent}`)#q_color3
+								button(data-editing="colors")#update Save
 						h1(style=`color: ${listing.branding.primary_color}` data-field="business_name").editable #{listing.business_name}
 						ul.social(class=`${listing.social.style}` data-field="social" data-style=`${listing.social.style}`).editable
 							if listing.social.icons.facebook
@@ -49,9 +58,10 @@ block content
 							else
 								a(href="/login") Write a review 
 						br
-						a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone.editable #{listing.contact.phone}
+						a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone #{listing.contact.phone}
 					.col-sm-5
-						img(src=`${listing.branding.logo}`).theListing-logo.editable
+						.logoBox(data-field="logo").theListing-logo.editable
+							img(src=`${listing.branding.logo}`)
 		.bigWhite
 			.container
 				.row
@@ -72,74 +82,77 @@ block content
 								.col-xs-6
 									h3 Address
 									address
-										ul
-											li(data-field="address").editable #{listing.address.line_one}
+										ul(data-field="address").editable
+											li(data-field="address").lineone #{listing.address.line_one}
 											if listing.address.line_two
-												li(data-field="address").editable #{listing.address.line_two}
-											li(data-field="address").editable #{listing.address.town}
-											li(data-field="address").editable #{listing.address.post_code}
+												li(data-field="address").linetwo #{listing.address.line_two}
+											else
+												li(data-field="address").linetwo
+											li(data-field="address").town #{listing.address.town}
+											li(data-field="address").postcode #{listing.address.post_code}
 								.col-xs-6
 									h3 Contact
-									ul
+									ul(data-field="contact").editable
 										li
-											a(href=`${listing.contact.phone}` data-field="contact").editable #{listing.contact.phone}
+											a(href=`${listing.contact.phone}`) #{listing.contact.phone}
 										li
-											a(href=`${listing.contact.email}` data-field="contact").editable #{listing.contact.email}
+											a(href=`${listing.contact.email}` data-field="contact") #{listing.contact.email}
 										li
-											a(href=`${listing.contact.website}` data-field="contact").editable #{listing.contact.website}
+											a(href=`${listing.contact.website}` data-field="contact") #{listing.contact.website}
 							h3 Opening Hours
-							table
+							table(data-field="opening_hours").editable
 								tr
 									td
 										p Monday
-									td #{listing.opening_hours.monday.open}
+									td.times #{listing.opening_hours.monday.open}
 									td - 
-									td #{listing.opening_hours.monday.close}
+									td.times #{listing.opening_hours.monday.close}
 								tr
 									td
 										p Tuesday
-									td #{listing.opening_hours.tuesday.open} 
+									td.times #{listing.opening_hours.tuesday.open}
 									td - 
-									td #{listing.opening_hours.tuesday.close}
+									td.times #{listing.opening_hours.tuesday.close}
 								tr
 									td
 										p Wednesday
-									td #{listing.opening_hours.wednesday.open} 
+									td.times #{listing.opening_hours.wednesday.open}
 									td - 
-									td #{listing.opening_hours.wednesday.close}
+									td.times #{listing.opening_hours.wednesday.close}
 								tr
 									td
 										p Thursday
-									td #{listing.opening_hours.thursday.open} 
+									td.times #{listing.opening_hours.thursday.open}
 									td - 
-									td #{listing.opening_hours.thursday.close}
+									td.times #{listing.opening_hours.thursday.close}
 								tr
 									td
 										p Friday
-									td #{listing.opening_hours.friday.open} 
+									td.times #{listing.opening_hours.friday.open}
 									td - 
-									td #{listing.opening_hours.friday.close}
+									td.times #{listing.opening_hours.friday.close}
 								tr
 									td
 										p Saturday
-									td #{listing.opening_hours.saturday.open} 
+									td.times #{listing.opening_hours.saturday.open}
 									td - 
-									td #{listing.opening_hours.saturday.close}
+									td.times #{listing.opening_hours.saturday.close}
 								tr
 									td
 										p Sunday
-									td #{listing.opening_hours.sunday.open} 
+									td.times #{listing.opening_hours.sunday.open}
 									td - 
-									td #{listing.opening_hours.sunday.close}
+									td.times #{listing.opening_hours.sunday.close}
 
 						else if tab == 'gallary'
 							h2 Gallary
 
-							if listing.gallery
+							.galleryBox(data-field="gallery").editable
 								ul.gallery.cb_gallery
-									each img in listing.gallery
-										li
-											img(src=`${img}`)
+									if listing.gallery
+										each img in listing.gallery
+											li
+												img(src=`${img}`)
 
 						else if tab == 'reviews'
 							h2 Reviews
@@ -199,8 +212,58 @@ block content
 
 	if user
 		if userOwnsListing || user.user_role == 'Admin' || user.user_role == 'Super Admin'
+
+			script.
+				function update(jscolor, color) {
+					// 'jscolor' instance can be used as a string
+
+					switch(color){
+						case 1:
+
+							var elem = document.getElementsByTagName('h1');
+							for(i=0;i<elem.length;i++){
+								elem[i].style.color = '#' + jscolor;
+							}
+
+							break;
+						case 2:
+
+							var headerBg = $('.theListing-bg');
+							var bg = headerBg.css('background');
+							bg = bg.substring(bg.indexOf('url("') + 5, bg.lastIndexOf(')') - 1);
+							
+							headerBg.css('background', 'linear-gradient(#0000, #' + jscolor + '), url(' + bg + ')');
+							headerBg.css('background-repeat', 'no-repeat');
+							headerBg.css('background-size', '100%');
+							headerBg.css('background-position', '50%');
+
+							break;
+						case 3:
+
+							console.log(';bfbvd');
+
+							$('.theListing-phone').css('color', '#' + jscolor);
+
+							break;
+						default:
+					}
+
+				}
+
 			#editSide
 				h2 Edit
+
+			#image_library_modal
+				#image_library
+					.header
+						h1 Image Library
+						label(for="uploadImgBtn").uploadBtn Upload Image
+						input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+					.prog_wrap
+						.progress-bar
+					.imgWindow
+						ul.images
+						.message Select Image
 					//- ul
 					//- 	li
 					//- 		label Facebook
@@ -280,6 +343,10 @@ block content
 	script(src="/static/js/helpers/popup.js")
 	script(src="/static/js/helpers/form.js")
 	script(src="/static/js/listing.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/main.js")
 
 	if userOwnsListing || user.user_role == 'Admin' || user.user_role == 'Super Admin'
+		script(src="/static/js/helpers/jscolor.min.js")
+		script(src="/static/lib/image_library/image_library.js")
 		script(src="/static/js/listing-edit.js")

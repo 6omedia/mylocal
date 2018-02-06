@@ -173,6 +173,10 @@ table tr:first-child {
 	margin: 0px;
 }
 
+.relative {
+    position: relative;
+}
+
 .bread-crumb {
     list-style: none;
     padding: 0px;
@@ -591,13 +595,13 @@ footer {
 /* LISTINGS
 ************************************/
 
-#services {
+.inputPlus {
     width: 200px;
     border-radius: 3px 0px 0px 3px;
     border-right: 0px;
 }
 
-#services + .btn {
+.inputPlus + .btn {
     padding: 8px 5px 12px 5px;
     font-size: 21px;
     vertical-align: top;
@@ -609,15 +613,15 @@ footer {
     border-radius: 0px 3px 3px 0px;
 }
 
-#services:focus + .btn {
+.inputPlus:focus + .btn {
     background: var(--light-orange);
 }
 
-#services:focus + .btn:hover {
+.inputPlus:focus + .btn:hover {
     background: var(--light-orange);
 }
 
-#services + .btn:active {
+.inputPlus + .btn:active {
     margin-top: 0px;
     margin-left: 0px;
 }
@@ -632,11 +636,11 @@ footer {
     background: #eaeaea;
 }
 
-#selected_services {
+.tags_ul {
     margin: 20px 0px;
 }
 
-#selected_services > span {
+.tags_ul > span {
     background: #f2f2f2;
     padding: 3px 8px;
     font-size: 14px;
@@ -646,7 +650,7 @@ footer {
     color: #7d7d7d;
 }
 
-#selected_services .x {
+.tags_ul .x {
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -912,6 +916,11 @@ footer {
     right: 55px;
     bottom: 45px;
     z-index: 1;
+}
+
+.relative .YeahAutocomplete_list {
+    left: 0px;
+    top: 38px;
 }
 
 /* EDITOR

@@ -557,6 +557,8 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 	let data = {};
 	data.success = 0;
 
+	console.log('body ', req.body);
+
 	if(!req.body.listingid){
 		res.status(400);
 		data.error = 'listingid required';
@@ -712,7 +714,7 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 	    	};
 	    }
 
-	    console.log('GALLERY ', req.body.gallery);
+	    // console.log('GALLERY ', req.body.gallery);
 
 	    if(req.body.gallery){
 			updateObj.gallery = req.body.gallery;
@@ -731,9 +733,20 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 				listing.update(updateObj)
 					.then(() => {
 
-						data.success = 'listing updated';
-						res.status(200);
-						return res.send(data);
+						Listing.findById(listing._id, function(err, listing){
+
+							if(err){
+								data.error = err.message || 'Internal Server Error';
+								res.status(err.status || 500);
+								return res.send(data);
+							}
+
+							data.success = 'listing updated';
+							data.listing = listing;
+							res.status(200);
+							return res.send(data);
+
+						});
 
 					})
 					.catch((err) => {
@@ -749,9 +762,20 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 				listing.update(updateObj)
 					.then(() => {
 
-						data.success = 'listing updated';
-						res.status(200);
-						return res.send(data);
+						Listing.findById(listing._id, function(err, listing){
+
+							if(err){
+								data.error = err.message || 'Internal Server Error';
+								res.status(err.status || 500);
+								return res.send(data);
+							}
+
+							data.success = 'listing updated';
+							data.listing = listing;
+							res.status(200);
+							return res.send(data);
+
+						});
 
 					})
 					.catch((err) => {

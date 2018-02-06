@@ -81,8 +81,12 @@ var YeahAutocomplete = (function(){
 				method: 'GET',
 				success: function(data){
 
-					thisYac.view.displayResults(data[arrName], property);
-					thisYac.view.stopLoading();
+					try {
+						thisYac.view.displayResults(data[arrName], property);
+						thisYac.view.stopLoading();
+					}catch(e){
+						thisYac.view.stopLoading();
+					}
 
 				},
 				error: function(){

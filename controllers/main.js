@@ -296,6 +296,8 @@ mainRoutes.get('/find/:industry/:town', mid.loginRequired, function(req, res, ne
 						home: true,
 						user: req.session.user,
 						listings: listings,
+						industry: req.params.industry,
+						town: req.params.town,
 						pagination: pagination.getLinks(count, docsPerPage, req.query.page || 0, url),
 						error: ''
 					});
@@ -323,6 +325,8 @@ mainRoutes.get('/find/:industry/:town', mid.loginRequired, function(req, res, ne
 							home: true,
 							listings: listings,
 							user: req.session.user,
+							industry: req.params.industry,
+							town: req.params.town,
 							pagination: pagination.getLinks(count, docsPerPage, req.query.page || 0, url),
 							correction: 'Did you mean ' + listings[0].industry + ' in ' + listings[0].address.town + '?',
 							error: ''

@@ -1,4 +1,66 @@
-(function(Form, ImageLibrary, YeahTextEditor){
+(function(Form, ImageLibrary, YeahTextEditor, YeahAutocomplete){
+
+	function Tags(){
+
+		this.services = this.getTags();
+		this.box = $('#tags');
+		var thisServices = this;
+		this.box.on('click', '.x', function(){
+			thisServices.services.splice($(this).parent().index, 1);
+			$(this).parent().remove();
+		});
+
+		var tagsAutocomplete = new YeahAutocomplete({
+			input: 'tags_input',
+			allowFreeType: true,
+			dataUrl: '/api/tags/search/tag/',
+			method: 'GET',
+			arrName: 'tags',
+			property: 'name'
+		});
+
+	}
+
+	Tags.prototype.getTags = function(){
+		var arr = [];
+		$('#tags > span').each(function(){
+			arr.push($(this).text().substring(0, $(this).text().length-1));
+		});
+		return arr;
+	}
+
+	Tags.prototype.updateTags = function() {
+		
+		this.box.empty();
+		var theBox = this.box;
+
+		$(this.services).each(function(){
+			theBox.append('<span>' + this + '<span class="x">x</span></span>');
+		});
+
+	};
+
+	Tags.prototype.addTag = function(name){
+
+		$.ajax({
+			url: '/api/tags/add_tag',
+			method: 'POST',
+			data: {
+				field: 'tag',
+				name: name
+			},
+			success: function(data){
+				console.log(data);
+			},
+			error: function(a, b, c){
+				console.log(a, b, c);
+			}
+		});
+
+		this.services.push(name);
+		this.updateTags();
+
+	};
 
 	function slugify(text){
 
@@ -10,6 +72,8 @@
 
 	var imgLib = new ImageLibrary($('#image_library_modal'));
 	var txtEditor = new YeahTextEditor();
+
+	var tags = new Tags();
 
 	var imgTarget = 'featuredImg';
 
@@ -35,6 +99,10 @@
 		}
 	});
 
+	$('#tags_input + .btn').on('click', function(){
+		tags.addTag($('#tags_input').val());
+	});
+
 	var fieldsArray = [
 			{ id: 'q_title', validation: '' },
 			{ id: 'q_content', validation: 'none' },
@@ -55,6 +123,7 @@
 			postForm.send({
 				title: $('#' + postForm.fields[0].id).val(),
 				content: content,
+				tags: tags.getTags(),
 				featured_img: $('#' + postForm.fields[2].id).attr('src')
 			}, function(data){
 
@@ -89,6 +158,7 @@
 				postid: $('#update').data('postid'),
 				title: $('#' + postUpdateForm.fields[0].id).val(),
 				content: content,
+				tags: tags.getTags(),
 				featured_img: $('#' + postUpdateForm.fields[2].id).attr('src')
 			}, function(data){
 
@@ -113,4 +183,4 @@
 
 	});
 
-})(form.form, imageLibrary.ImageLibrary, YeahTextEditor);
+})(form.form, imageLibrary.ImageLibrary, YeahTextEditor, YeahAutocomplete);

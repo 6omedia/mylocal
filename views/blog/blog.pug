@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+
+	header.full
+		include ../partials/header
+
+	#page-blog.bigWhite
+		.container
+			h1 Articles
+			ul.list.filter
+				li
+					a(href=`/articles`) All
+				li
+					a(href=`/articles?page=${page}&tag=Home`) Home
+				li
+					a(href=`/articles?page=${page}&tag=Sport`) Sport
+				li
+					a(href=`/articles?page=${page}&tag=Things`) Things
+			.row
+				.col-sm-9
+					if posts.length > 0
+						if page == 1
+							.post.bigPost
+								h2 #{posts[0].title}
+								img(src=`${posts[0].feat_img}`)
+								a(href=`/articles/${posts[0].slug}`) Read
+					.row
+						- if(page == 1){ posts.shift() } 
+						each post in posts
+							.col-sm-6
+								.post
+									h2 #{post.title}
+									img(src=`${post.feat_img}`)
+									a(href=`/articles/${post.slug}`) Read
+
+					div !{paginationLinks}
+				.col-sm-3
+			
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/main.js")

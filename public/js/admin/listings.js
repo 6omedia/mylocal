@@ -12,7 +12,7 @@
 		});	
 	}
 
-	Services.prototype.updateServices = function() {
+	Services.prototype.updateServices = function(){
 		
 		this.box.empty();
 		var theBox = this.box;
@@ -65,7 +65,7 @@
 	// yeahcomplete
 
 	if($('#industry').val() == ''){
-		input_services.attr('disabled', 'disabled')
+		input_services.attr('disabled', 'disabled');
 	}
 
 	var industryAutocomplete = new YeahAutocomplete({

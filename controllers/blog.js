@@ -6,21 +6,41 @@ const Post = require('../models/post');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
 
-// blogRoutes.get('/blog', mid.loginRequired, function(req, res){
+blogRoutes.get('/', function(req, res, next){
 
-// 	return res.render('blog/blog', {
-//         error: '',
-//         user: req.session.user || false
-//     });
+	const docsPerPage = 9;
+	const query = {};
 
-// });
+	if(req.query.tag){
+		query.tags = req.query.tag;
+	}
 
-blogRoutes.get('/', function(req, res){
+	Post.count(query)
+		.then((count) => {
 
-	return res.render('blog/blog', {
-        error: '',
-        user: req.session.user || false
-    });
+			Post.find(query)
+				.limit(docsPerPage)
+				.skip(pagination.getSkip(req.query.page || 0, docsPerPage))
+				.exec(function(err, posts){
+
+				if(err){
+					return next(err);
+				}
+
+				return res.render('blog/blog', {
+			        error: '',
+			        user: req.session.user || false,
+			        page: req.query.page || 1,
+			        paginationLinks: pagination.getLinks(count, docsPerPage, req.query.page),
+			        posts: posts
+			    });
+
+			});
+
+		})
+		.catch((err) => {
+			return next(err);
+		});
 
 });
 

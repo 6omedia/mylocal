@@ -121,6 +121,7 @@ var imageLibrary = (function(){
 		
 		this.model = new Model();
 		this.view = new View(imageLibraryContainer);
+		this.selectedFunc;
 		var thisImgLib = this;
 
 		this.view.imageLibraryContainer.on('click', function(e){
@@ -136,15 +137,23 @@ var imageLibrary = (function(){
 			thisImgLib.view.showImageActions(this, imgName,
 				function(img){
 					
-					var useImgEvent = new CustomEvent('useImage', {
-						detail: {
-							image: img,
-							time: new Date(),
-						},
-						bubbles: true,
-						cancelable: true
-					});
-					document.dispatchEvent(useImgEvent);
+					if(thisImgLib.selectedFunc){
+						thisImgLib.selectedFunc(img);
+					}else{
+
+						var useImgEvent = new CustomEvent('useImage', {
+							detail: {
+								image: img,
+								time: new Date(),
+							},
+							bubbles: true,
+							cancelable: true
+						});
+						document.dispatchEvent(useImgEvent);
+
+					}
+
+					thisImgLib.closeLibrary();
 
 				},
 				function(){
@@ -174,9 +183,14 @@ var imageLibrary = (function(){
 		});
 
 	}
-	ImageLibrary.prototype.openLibrary = function(btn){
+	ImageLibrary.prototype.openLibrary = function(btn, func){
 		
 		var thisImgLib = this;
+
+		if(func){
+			thisImgLib.selectedFunc = func;	
+		}
+		
 		thisImgLib.view.btnLoading(btn);
 		thisImgLib.model.getImages(function(images){
 			thisImgLib.view.displayLibrary(images);

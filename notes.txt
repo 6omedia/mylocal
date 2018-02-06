@@ -70,7 +70,8 @@ FRONT:
 		DONE - output links to blogs, have them return most recent
 		DONE - output reviews correctly
 	blog:
-		- all posts page (talk to jason)
+		DONE - All posts page filter by category
+		DONE - tags in blog
 	listing:
 		DONE - linkedin & pinterst icons
 		DONE - tabs switching
@@ -84,11 +85,15 @@ FRONT:
 		EDIT MODE:
 			DONE - social icons and style
 			DONE - update screen when social icons update
-			- background
-			- logo
-			- gallary
-			- contact
-			- address
+			DONE - background
+			DONE - logo
+			DONE - colors
+			DONE - gallary
+			- description
+			DONE - opening times
+			DONE - contact
+			DONE - address
+		- dont allow to review own listing
 
 BACK:
 	listings:
@@ -101,14 +106,14 @@ BACK:
 		DONE - pagintion after ajax
 OTHER:
 	- newsletter signup
-	- search bar in header needs to work from everywhere
+	DONE - search bar in header needs to work from everywhere
 	- break up main routes
 
 	- sass it all
 
 	- upload to digital ocean
 	- design better the listing page (maybe not custom colors)
-	- SEO Conerns
+	- SEO Concerns
 		- titles
 		- meta description
 		- rich text snippets

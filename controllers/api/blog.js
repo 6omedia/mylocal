@@ -71,6 +71,7 @@ blogRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 		title: req.body.title,
 	    slug: slugify(req.body.title),
 	    author: req.session.userId,
+	    tags: req.body.tags || [],
 	    body: req.body.content,
 	    feat_img: req.body.featured_img
 	});
@@ -127,6 +128,10 @@ blogRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 
 		if(req.body.featured_img){
 			post.feat_img = req.body.featured_img;
+		}
+
+		if(req.body.tags){
+			post.tags = req.body.tags || [];
 		}
 
 		post.save()

@@ -28,7 +28,7 @@ block content
 							td #{post.title}
 							td #{post.slug}
 							td
-								a(href=`/blog/${post.slug}`).view
+								a(href=`/articles/${post.slug}`).view
 								a(href=`/admin/blog/edit/${post._id}`).edit
 								span(data-postid=`${post._id}`).delete
 				div.paginationDiv !{paginationLinks}
