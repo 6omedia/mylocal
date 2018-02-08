@@ -197,13 +197,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
     listingArray.forEach(function(listing){
 
-        if(listing.business_name == 'Cats Holiday (cat njcksd)'){
-
-            console.log('no () ', listing.business_name.substring(0, listing.business_name.indexOf('(')));
-            listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
-            console.log('business_name ', listing.business_name);
-
-        }
+        listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
 
         var listing = new Listing(listing);
         listing.save()

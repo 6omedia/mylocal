@@ -28,8 +28,6 @@ listingRoutes.get('/', mid.onlyAdmin, function(req, res){
 				next(err);
 			}
 
-			// console.log(listings);
-
 			res.render('admin/listings/all', {
 				section: 'listings',
 				listings: listings,
