@@ -44,32 +44,74 @@ let ListingSchema = new Schema(
         industry: String,
         opening_hours: {
         	monday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	tuesday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	wednesday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	thursday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	friday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	saturday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	sunday: {
-        		open: String,
-        		close: String
+        		open: {
+                    type: String,
+                    default: '-:-'
+                },
+        		close: {
+                    type: String,
+                    default: '-:-'
+                }
         	},
         	chirstmas_eve: {
         		open: String,
@@ -97,8 +139,14 @@ let ListingSchema = new Schema(
             trim: true
         },
         social: {
-        	style: String,
-        	icons: Object
+        	style: {
+                type: String,
+                default: 'Standard'
+            },
+        	icons: {
+                type: Object,
+                default: {}
+            }
 	    },
 	    branding: {
 	    	logo: String,

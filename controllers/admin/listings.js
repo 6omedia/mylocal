@@ -66,12 +66,12 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 			next(err);
 		}
 
-		console.log('LISTING: ', listing);
+		console.log('listing ', listing);								 			
 
 		var openingtimes = {};
 
 		if(listing.opening_hours){
-			if(listing.opening_hours.monday != 'closed'){
+			if(listing.opening_hours.monday && listing.opening_hours.monday != 'closed'){
 				var open = listing.opening_hours.monday.open.split(':');
 				var close = listing.opening_hours.monday.close.split(':');
 				openingtimes.monday = {
@@ -79,7 +79,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.tuesday != 'closed'){
+			if(listing.opening_hours.tuesday && listing.opening_hours.tuesday != 'closed'){
 				var open = listing.opening_hours.tuesday.open.split(':');
 				var close = listing.opening_hours.tuesday.close.split(':');
 				openingtimes.tuesday = {
@@ -87,7 +87,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.wednesday != 'closed'){
+			if(listing.opening_hours.wednesday && listing.opening_hours.wednesday != 'closed'){
 				var open = listing.opening_hours.wednesday.open.split(':');
 				var close = listing.opening_hours.wednesday.close.split(':');
 				openingtimes.wednesday = {
@@ -95,7 +95,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.thursday != 'closed'){
+			if(listing.opening_hours.thursday && listing.opening_hours.thursday != 'closed'){
 				var open = listing.opening_hours.thursday.open.split(':');
 				var close = listing.opening_hours.thursday.close.split(':');
 				openingtimes.thursday = {
@@ -103,7 +103,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.friday != 'closed'){
+			if(listing.opening_hours.friday && listing.opening_hours.friday != 'closed'){
 				var open = listing.opening_hours.friday.open.split(':');
 				var close = listing.opening_hours.friday.close.split(':');
 				openingtimes.friday = {
@@ -111,7 +111,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.saturday != 'closed'){
+			if(listing.opening_hours.saturday && listing.opening_hours.saturday != 'closed'){
 				var open = listing.opening_hours.saturday.open.split(':');
 				var close = listing.opening_hours.saturday.close.split(':');
 				openingtimes.saturday = {
@@ -119,7 +119,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 					close: {hours: close[0], mins: close[1]}
 				}
 			}
-			if(listing.opening_hours.sunday != 'closed'){
+			if(listing.opening_hours.sunday && listing.opening_hours.sunday != 'closed'){
 				var open = listing.opening_hours.sunday.open.split(':');
 				var close = listing.opening_hours.sunday.close.split(':');
 				openingtimes.sunday = {
