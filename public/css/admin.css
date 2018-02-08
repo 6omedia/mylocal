@@ -878,6 +878,18 @@ footer {
     width: 830px;
 }
 
+label[for="jsonUpload"] {
+    background: url(/static/img/admin/document.png) no-repeat 50% 0%;
+    text-align: center;
+    padding-top: 64px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+label[for="jsonUpload"]:hover {
+    /*filter: brightness(110%);*/
+}
+
 /* BLOG
 ************************************/
 

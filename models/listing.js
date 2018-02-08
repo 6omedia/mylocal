@@ -8,6 +8,10 @@ let ListingSchema = new Schema(
         	type: Schema.Types.ObjectId,
             ref: 'User'
         },
+        created_at: {
+            type: Date,
+            default: Date.now
+        },
         business_name: {
         	type: String,
         	required: true
@@ -88,7 +92,10 @@ let ListingSchema = new Schema(
         		close: String
         	}
         },
-        services: Array,
+        services: {
+            type: Array,
+            trim: true
+        },
         social: {
         	style: String,
         	icons: Object
@@ -96,9 +103,18 @@ let ListingSchema = new Schema(
 	    branding: {
 	    	logo: String,
 	    	background: String,
-	    	primary_color: String,
-	    	secondary_color: String,
-	    	accent: String
+	    	primary_color: {
+                type: String,
+                default: 'fff'
+            },
+	    	secondary_color: {
+                type: String,
+                default: '000'
+            },
+	    	accent: {
+                type: String,
+                default: '38c2dc'
+            }
 	    },
 	    reviews: [{
             user: {
@@ -153,15 +169,15 @@ ListingSchema.virtual('rating').get(function(){
 
 */
 
-// ListingSchema.pre('save', function(next){
+ListingSchema.pre('save', function(next){
 
-//     this.slug = this.business_name.toString().toLowerCase().replace(/\s+/g, '-')
-//         .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
-//         .replace(/^-+/, '').replace(/-+$/, '');
+    this.slug = this.business_name.toString().toLowerCase().replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
+        .replace(/^-+/, '').replace(/-+$/, '');
 
-//     next();
+    next();
 
-// });
+});
 
 // ListingSchema.pre('update', function(next){
 
@@ -172,6 +188,47 @@ ListingSchema.virtual('rating').get(function(){
 //     next();
 
 // });
+
+ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
+
+    let saved = 0;
+    let failed = 0;
+    let tasksToGo = listingArray.length;
+
+    listingArray.forEach(function(listing){
+
+        if(listing.business_name == 'Cats Holiday (cat njcksd)'){
+
+            console.log('no () ', listing.business_name.substring(0, listing.business_name.indexOf('(')));
+            listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
+            console.log('business_name ', listing.business_name);
+
+        }
+
+        var listing = new Listing(listing);
+        listing.save()
+            .then((listing) => {
+
+                saved++;
+
+                if(--tasksToGo === 0) {
+                    callback(saved + ' out of ' + listingArray.length + ' listings saved');
+                }
+
+            })
+            .catch((err) => {
+                console.log('err: ', err.errmsg);
+                failed++;
+
+                if(--tasksToGo === 0) {
+                    callback(saved + ' out of ' + listingArray.length + ' listings saved');
+                }
+
+            });
+    
+    });
+
+}
 
 var Listing = mongoose.model("Listing", ListingSchema);
 module.exports = Listing;

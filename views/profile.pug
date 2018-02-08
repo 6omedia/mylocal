@@ -6,33 +6,39 @@ block content
 		include ./partials/header
 
 	.bigBg
-		.container
-			h1.big_white_h1 Welcome, #{name}
+		#container
 
-			p Man braid sartorial keytar portland enamel pin. Paleo hoodie occupy beard four loko truffaut crucifix, stumptown bitters food truck cray. Beard trust fund biodiesel chicharrones bitters man braid vexillologist woke shaman drinking vinegar. Roof party semiotics vegan prism snackwave asymmetrical fam literally selfies flexitarian quinoa intelligentsia.
+		//- .container
+		//- 	h1.big_white_h1 Welcome, #{name}
 
-			.row
-				.col-sm-8
-					.panel
-						form(action="/profile", method="post")
-							input(type="hidden", name="userId", value=`${id}`)
-							h2 Update Profile
-							ul
-								li
-									label Name
-									input(type="text", name="q_name", value=`${name}`)
-								li
-									label Email
-									input(type="text", id="q_email", value=`${email}`)
-								li
-									label Age
-									input(type="text", id="q_age", value=`${age}`)
-								li
-									label Website
-									input(type="text", id="q_website", value=`${website}`)
-								li
-									button(type="submit") Update
+		//- 	p Man braid sartorial keytar portland enamel pin. Paleo hoodie occupy beard four loko truffaut crucifix, stumptown bitters food truck cray. Beard trust fund biodiesel chicharrones bitters man braid vexillologist woke shaman drinking vinegar. Roof party semiotics vegan prism snackwave asymmetrical fam literally selfies flexitarian quinoa intelligentsia.
+
+		//- 	.row
+		//- 		.col-sm-8
+		//- 			.panel
+		//- 				form(action="/profile", method="post")
+		//- 					input(type="hidden", name="userId", value=`${id}`)
+		//- 					h2 Update Profile
+		//- 					ul
+		//- 						li
+		//- 							label Name
+		//- 							input(type="text", name="q_name", value=`${name}`)
+		//- 						li
+		//- 							label Email
+		//- 							input(type="text", id="q_email", value=`${email}`)
+		//- 						li
+		//- 							label Age
+		//- 							input(type="text", id="q_age", value=`${age}`)
+		//- 						li
+		//- 							label Website
+		//- 							input(type="text", id="q_website", value=`${website}`)
+		//- 						li
+		//- 							button(type="submit") Update
 
 	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
 	script(src="/static/js/main.js")
+	script(src="/static/js/react/react.js")
+	script(src="/static/js/react/react-dom.js")
+	script(src="/static/js/react/babel-browser.min.js")
+	script(type="text/babel" src="/static/js/profile.jsx")
 

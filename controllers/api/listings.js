@@ -5,7 +5,10 @@ const User = require('../../models/user');
 const Listing = require('../../models/listing');
 const pagination = require('../../helpers/pagination');
 const bcrypt = require('bcrypt');
+const path = require('path');
+const fs = require('fs');
 const mid = require('../../middleware/session');
+const fileUpload = require('express-fileupload');
 
 function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -120,8 +123,6 @@ listingRoutes.get('/industry/:industry', function(req, res){
 
 		}else{
 
-			// console.log('industry ', req.params.industry);
-
 			Listing.find({industry: new RegExp(escapeRegex(req.params.industry), 'gi')}, function(err, listings){
 
 				if(err){
@@ -130,15 +131,11 @@ listingRoutes.get('/industry/:industry', function(req, res){
 			    	return res.json(data);
 				}
 
-				// console.log('listinga ', listings);
-
 				if(listings.length == 0){
 					data.message = 'Listing not found';
 					res.status(404);
 					return res.json(data);
 				}
-
-				// console.log('DATA ', data);
 
 				data.success = 1;
 				data.listings = listings;
@@ -178,8 +175,6 @@ listingRoutes.get('/town/:town', function(req, res){
 	    	return res.json(data);
 
 		}else{
-
-			// console.log('industry ', req.params.industry);
 
 			Listing.find({'address.town': new RegExp(escapeRegex(req.params.town), 'gi')}, function(err, listings){
 
@@ -254,8 +249,6 @@ listingRoutes.get('/find/:industry/:town', function(req, res){
 			    	return res.json(data);
 
 				}else{
-
-					// console.log('industry ', req.params.industry);
 
 					Listing.find({
 						'address.town': new RegExp(escapeRegex(req.params.town), 'gi'),
@@ -391,30 +384,8 @@ listingRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
         		open: req.body.opening_hours.Sunday.open || '',
         		close: req.body.opening_hours.Sunday.close || ''
         	}
-        	// chirstmas_eve: {
-        	// 	open: req.body.opening_hours.chirstmas_eve.open || '',
-        	// 	close: req.body.opening_hours.chirstmas_eve.close || ''
-        	// },
-        	// christmas: {
-        	// 	open: req.body.opening_hours.christmas.open || '',
-        	// 	close: req.body.opening_hours.christmas.close || ''
-        	// },
-        	// boxing_day: {
-        	// 	open: req.body.opening_hours.boxing_day.open || '',
-        	// 	close: req.body.opening_hours.boxing_day.close || ''
-        	// },
-        	// newyears_eve: {
-        	// 	open: req.body.opening_hours.newyears_eve.open || '',
-        	// 	close: req.body.opening_hours.newyears_eve.close || ''
-        	// },
-        	// newyears_day: {
-        	// 	open: req.body.opening_hours.newyears_day.open || '',
-        	// 	close: req.body.opening_hours.newyears_day.close || ''
-        	// }
     	};	
     }
-
-    // console.log(req.body);
 
     if(req.body.social){
     	listingObj.social = {
@@ -653,26 +624,6 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 	        		open: req.body.opening_hours.Sunday.open || '',
 	        		close: req.body.opening_hours.Sunday.close || ''
 	        	}
-	        	// chirstmas_eve: {
-	        	// 	open: req.body.opening_hours.chirstmas_eve.open || '',
-	        	// 	close: req.body.opening_hours.chirstmas_eve.close || ''
-	        	// },
-	        	// christmas: {
-	        	// 	open: req.body.opening_hours.christmas.open || '',
-	        	// 	close: req.body.opening_hours.christmas.close || ''
-	        	// },
-	        	// boxing_day: {
-	        	// 	open: req.body.opening_hours.boxing_day.open || '',
-	        	// 	close: req.body.opening_hours.boxing_day.close || ''
-	        	// },
-	        	// newyears_eve: {
-	        	// 	open: req.body.opening_hours.newyears_eve.open || '',
-	        	// 	close: req.body.opening_hours.newyears_eve.close || ''
-	        	// },
-	        	// newyears_day: {
-	        	// 	open: req.body.opening_hours.newyears_day.open || '',
-	        	// 	close: req.body.opening_hours.newyears_day.close || ''
-	        	// }
 	    	};	
 	    }
 
@@ -713,8 +664,6 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 		    	accent: req.body.branding.accent
 	    	};
 	    }
-
-	    // console.log('GALLERY ', req.body.gallery);
 
 	    if(req.body.gallery){
 			updateObj.gallery = req.body.gallery;
@@ -948,6 +897,61 @@ listingRoutes.delete('/:id', mid.jsonLoginRequired, function(req, res){
 			res.status(403);
 			return res.send(data);
 	}
+
+});
+
+
+listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
+
+	let body = {};
+	body.success = 0;
+
+	let listingsToSave = [];
+
+	if(!req.files){
+		body.error = 'No files were uploaded.';
+    	return res.status(400).json(body);
+	}
+
+	if(!req.files.listings){
+		body.error = 'No listings property found';
+    	return res.status(400).json(body);
+	}
+
+	var ext = req.files.listings.name.substr(req.files.listings.name.lastIndexOf('.') + 1);
+
+	if(ext != 'json'){
+		body.error = 'file type is not supported please upload a json file';
+    	return res.status(400).json(body);
+	}
+
+	/* DO THE UPLOADING!!! */
+	const uploads = path.join(__dirname, '../..', '/public/uploads/');
+	const filePath = uploads + '/' + req.files.listings.name;
+
+	if(!fs.existsSync(uploads)){
+		fs.mkdirSync(uploads);
+	}
+
+	req.files.listings.mv(filePath, function(err) {
+	    
+	    if(err){
+      		body.error = err;
+			return res.json(body);
+	    }
+
+		let rawdata = fs.readFileSync(filePath);  
+		let listingArray = JSON.parse(rawdata);  
+
+		Listing.uploadFromJSON(listingArray, function(message){
+
+			body.success = message;
+			res.status(200);
+			return res.json(body);
+
+		});
+
+	});
 
 });
 

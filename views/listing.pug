@@ -21,27 +21,28 @@ block content
 								button(data-editing="colors")#update Save
 						h1(style=`color: ${listing.branding.primary_color}` data-field="business_name").editable #{listing.business_name}
 						ul.social(class=`${listing.social.style}` data-field="social" data-style=`${listing.social.style}`).editable
-							if listing.social.icons.facebook
-								li
-									a(href=`${listing.social.icons.facebook.link}` data-platform="Facebook").fb
-							if listing.social.icons.twitter
-								li
-									a(href=`${listing.social.icons.twitter.link}` data-platform="Twitter").tw
-							if listing.social.icons.instagram
-								li
-									a(href=`${listing.social.icons.instagram.link}` data-platform="Instagram").ig
-							if listing.social.icons.youtube
-								li
-									a(href=`${listing.social.icons.youtube.link}` data-platform="YouTube").yt
-							if listing.social.icons.googleplus
-								li
-									a(href=`${listing.social.icons.googleplus.link}` data-platform="Google Plus").gp
-							if listing.social.icons.linkedin
-								li
-									a(href=`${listing.social.icons.linkedin.link}` data-platform="Linked In").li
-							if listing.social.icons.pinterest
-								li
-									a(href=`${listing.social.icons.pinterest.link}` data-platform="Pinterest").pi
+							if listing.social.icons
+								if listing.social.icons.facebook
+									li
+										a(href=`${listing.social.icons.facebook.link}` data-platform="Facebook").fb
+								if listing.social.icons.twitter
+									li
+										a(href=`${listing.social.icons.twitter.link}` data-platform="Twitter").tw
+								if listing.social.icons.instagram
+									li
+										a(href=`${listing.social.icons.instagram.link}` data-platform="Instagram").ig
+								if listing.social.icons.youtube
+									li
+										a(href=`${listing.social.icons.youtube.link}` data-platform="YouTube").yt
+								if listing.social.icons.googleplus
+									li
+										a(href=`${listing.social.icons.googleplus.link}` data-platform="Google Plus").gp
+								if listing.social.icons.linkedin
+									li
+										a(href=`${listing.social.icons.linkedin.link}` data-platform="Linked In").li
+								if listing.social.icons.pinterest
+									li
+										a(href=`${listing.social.icons.pinterest.link}` data-platform="Pinterest").pi
 						//- .social-editbox
 						//- 	input(type="")
 						.rating

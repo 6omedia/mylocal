@@ -9,6 +9,7 @@ let TagSchema = new Schema(
             type: String,
             required: true
         },
+        parent: String,
         field: {
             type: String,
             required: true,

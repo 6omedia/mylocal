@@ -1,0 +1,68 @@
+(function(){
+
+	$('#jsonUpload').on('change', function(){
+
+		// $.ajax({
+		// 	url: '/api/listings/upload',
+		// 	data: ,
+		// 	method: 'POST',
+		// 	success: function(data){
+		// 		console.log(data);
+		// 	},
+		// 	error: function(a, b, c){
+		// 		console.log(a, b, c);
+		// 	}
+		// });
+
+		console.log('HJKHJKH');
+
+		var jsonFile = $(this).get(0).files[0];
+		var formData = new FormData();
+		formData.append('listings', jsonFile);
+
+		console.log('jsonFile ', jsonFile);
+		console.log('formdata ', formData.entries());
+
+		// Display the key/value pairs
+		for (var pair of formData.entries())
+		{
+		 console.log(pair[0]+ ', '+ pair[1]); 
+		}
+
+	 	$.ajax({
+	        url: '/api/listings/upload',
+	        method: 'POST',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        xhr: function () {
+	            var xhr = new XMLHttpRequest();
+
+	            xhr.upload.addEventListener('progress', function (event) {
+	                if (event.lengthComputable) {
+	                    var percent = (event.loaded / event.total) * 100;
+                    	console.log(percent);
+	                }
+	            });
+
+	            return xhr;
+	        }
+	    }).done(function(data){
+
+	    	if(data.error){
+	    		var msg = new Message(data.error, true, $('#msg'));
+				msg.display(false);
+	    	}else{
+	    		var msg = new Message(data.success, false, $('#msg'));
+				msg.display(false);
+	    	}
+
+	    }).fail(function(xhr, status, hmm) {
+	       	console.log(xhr, status, hmm);
+	       	var msg = new Message(xhr, true, $('#msg'));
+			msg.display(false);
+	    });
+
+	});
+
+})();
