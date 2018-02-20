@@ -58,7 +58,7 @@ function uploadPostcodes(done){
 					let jsonArr = [];
 
 					csv()
-					.fromFile(csvFolder + "\\" + item)
+					.fromFile(csvFolder + "/" + item)
 					.on('json',(jsonObj)=>{
 					    jsonArr.push(jsonObj);
 					})
