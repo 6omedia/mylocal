@@ -24,24 +24,6 @@
     var inputIndustry = $('#industry');
     var inputTown = $('#town');
 
-    // var industryAutocomplete = new YeahAutocomplete({
-    //     input: 'industry',
-    //     allowFreeType: true,
-    //     dataUrl: '/api/industries/search?term=',
-    //     method: 'GET',
-    //     arrName: 'results',
-    //     property: 'name'
-    // });
-
-    // var townAutocomplete = new YeahAutocomplete({
-    //     input: 'town',
-    //     allowFreeType: true,
-    //     dataUrl: '/api/towns/search?term=',
-    //     method: 'GET',
-    //     arrName: 'results',
-    //     property: 'name'
-    // });
-
     function getListings(industry, town, callback){
         $.ajax({
             url: '/api/listings/find/' + industry + '/' + town + '?page=1',
@@ -66,11 +48,11 @@
             searchResults.addClass('searching');
             $('.heroSmall h1').html('Searching for <span>' + inputIndustry.val() + '</span> in ' + inputTown.val());
 
+            searchResults.empty();
+
             getListings(industry, town, function(data){
 
                 if(data.listings){
-
-                    searchResults.empty();
 
                     if(data.correction){
                         searchResults.append("<p class='noresults'>Did you mean " + data.correction);

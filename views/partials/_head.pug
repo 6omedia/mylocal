@@ -1,5 +1,8 @@
 head
-	title title
+	if title
+		title #{title}
+	else
+		title MyLocal
 	//- link(rel="icon" type="image/png" href="img/")
 	meta(name="viewport" content="width=device-width, initial-scale=1")
 	link(rel='stylesheet', href='/css/bootstrap.css', type='text/css')

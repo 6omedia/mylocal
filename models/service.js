@@ -9,7 +9,8 @@ let ServiceSchema = new Schema({
 		unique: true,
 		required: true
 	},
-    industry: String
+    industry: String,
+    problems: Array
 });
 
 var Service = mongoose.model("Service", ServiceSchema);

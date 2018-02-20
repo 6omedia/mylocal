@@ -24,6 +24,7 @@ block content
 						th Owner
 						th Industry
 						th Town
+						th Location
 						th Actions
 					each listing in listings
 						tr
@@ -34,6 +35,10 @@ block content
 								td Not Claimed
 							td #{listing.industry}
 							td #{listing.address.town}
+							if listing.loc
+								td #{listing.loc}
+							else
+								td no location data
 							td
 								a(href=`/listing/${listing.slug}`).view
 								a(href=`/admin/listings/edit/${listing._id}`).edit

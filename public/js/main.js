@@ -19,7 +19,7 @@
 	    dataUrl: '/api/towns/search?term=',
 	    method: 'GET',
 	    arrName: 'results',
-	    property: 'name'
+	    property: '_id'
 	});
 
 	// /find/Restaurants/Bournemouth?page=1

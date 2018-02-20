@@ -2,26 +2,9 @@
 
 	$('#jsonUpload').on('change', function(){
 
-		// $.ajax({
-		// 	url: '/api/listings/upload',
-		// 	data: ,
-		// 	method: 'POST',
-		// 	success: function(data){
-		// 		console.log(data);
-		// 	},
-		// 	error: function(a, b, c){
-		// 		console.log(a, b, c);
-		// 	}
-		// });
-
-		console.log('HJKHJKH');
-
 		var jsonFile = $(this).get(0).files[0];
 		var formData = new FormData();
 		formData.append('listings', jsonFile);
-
-		console.log('jsonFile ', jsonFile);
-		console.log('formdata ', formData.entries());
 
 		// Display the key/value pairs
 		for (var pair of formData.entries())

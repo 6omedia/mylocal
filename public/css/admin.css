@@ -247,6 +247,14 @@ table tr:first-child {
     vertical-align: middle;
 }
 
+.form.box {
+    background: #eee;
+    padding: 10px 20px 20px 20px;
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
 .btn {
     background: var(--light-orange);
     color: #a65820;
@@ -1083,4 +1091,18 @@ button.palette-item:hover {
 
 .yeahEditor.small {
     max-width: 440px;
+}
+
+.progress {
+    width: 600px;
+    height: 25px;
+    text-align: center;
+    padding: 5px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(to left, #224ea7, #247e9b);
+    border-radius: 3px;
 }

@@ -36,6 +36,10 @@ let ListingSchema = new Schema(
         		required: true
         	}
         },
+        loc: { 
+            type: [Number],
+            index: '2dsphere'
+        },
         contact: {
         	website: String,
         	phone: String,
@@ -178,9 +182,17 @@ let ListingSchema = new Schema(
                 }
             },
             review: String,
+            approved: {
+                type: Boolean,
+                default: false
+            },
             created_at: {
                 type: Date,
                 default: Date.now
+            },
+            curated: {
+                review: String,
+                img: String
             }
         }],
 	    gallery: Array
@@ -227,16 +239,6 @@ ListingSchema.pre('save', function(next){
 
 });
 
-// ListingSchema.pre('update', function(next){
-
-//     this.slug = this.business_name.toString().toLowerCase().replace(/\s+/g, '-')
-//         .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
-//         .replace(/^-+/, '').replace(/-+$/, '');
-
-//     next();
-
-// });
-
 ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
     let saved = 0;
@@ -259,7 +261,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
             })
             .catch((err) => {
-                console.log('err: ', err.errmsg);
+                // console.log('err: ', err.errmsg);
                 failed++;
 
                 if(--tasksToGo === 0) {
@@ -270,7 +272,11 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
     
     });
 
-}
+};
+
+ListingSchema.statics.findNearest = function(postcode, callback){
+
+};
 
 var Listing = mongoose.model("Listing", ListingSchema);
 module.exports = Listing;

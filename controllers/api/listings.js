@@ -227,6 +227,22 @@ listingRoutes.get('/find/:industry/:town', function(req, res){
 						{
 							'address.town': req.params.town,
 							services: req.params.industry
+						},
+						{
+							'address.line_two': req.params.town,
+							industry: req.params.industry
+						},
+						{
+							'address.line_two': req.params.town,
+							services: req.params.industry
+						},
+						{
+							'address.post_code': req.params.town,
+							industry: req.params.industry
+						},
+						{
+							'address.post_code': req.params.town,
+							services: req.params.industry
 						}
 					]
 			})
@@ -325,8 +341,6 @@ listingRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 		data.error = 'Postcode Required';
 		return res.send(data);
 	}
-
-	console.log('BODY ', req.body.description);
 
 	let listingObj = { 
         business_name: req.body.business_name,
@@ -954,5 +968,14 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 	});
 
 });
+
+// listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
+
+// 	let body = {};
+// 	body.success = 0;
+
+	
+
+// });
 
 module.exports = listingRoutes;

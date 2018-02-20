@@ -16,3 +16,4 @@
 // Modals
 
 	// var user_model = require('./models/user_test.js');
+	var listing_model = require('./models/listing_test.js');

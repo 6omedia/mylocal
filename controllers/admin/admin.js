@@ -88,4 +88,13 @@ adminRoutes.get('/settings', mid.onlyAdmin,function(req, res){
 
 });
 
+adminRoutes.get('/postcodes/upload', mid.onlyAdmin,function(req, res){
+
+	res.render('admin/uploadpostcodes', {
+		section: 'settings',
+		error: ''
+	});
+
+});
+
 module.exports = adminRoutes;

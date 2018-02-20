@@ -111,9 +111,19 @@ OTHER:
 
 	- sass it all
 
-	- upload to digital ocean
 	- design better the listing page (maybe not custom colors)
 	- SEO Concerns
 		- titles
 		- meta description
 		- rich text snippets
+	|| - theFrog track searches (make react + sass)
+	   - cronjob - https://www.udemy.com/become-an-ubuntu-server-pro-in-just-3-days/learn/v4/t/lecture/2399502?start=0
+	   - write script to upload all things automaticly
+
+/*****************************************************************
+	DATA
+******************************************************************/
+
+Import All Postcodes from csvs
+	node locations.js upc <path to folder>
+

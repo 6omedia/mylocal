@@ -71,7 +71,7 @@ input {
 
 input:focus {
     outline: none;
-    background: #fff !important;
+    background: #fff;
 }
 
 button {
@@ -239,6 +239,10 @@ header.full.fixed ul {
     padding: 5px 10px;
     background: #ffffffb8;
     margin-right: 5px;
+}
+
+.searchBox input:focus {
+    background: #fff;
 }
 
 header.full .YeahAutocomplete_list {
@@ -608,7 +612,7 @@ a.gp { background: url(../img/Google+.png) no-repeat 50%; background-size: 40px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
     border: solid 1px rgba(0, 0, 0, 0.07);
     padding: 0px !important;
-    z-index: 1;
+    z-index: 2;
     top: 61px;
     left: 10px;
 }
@@ -628,6 +632,11 @@ a.gp { background: url(../img/Google+.png) no-repeat 50%; background-size: 40px;
 .yac_li:hover {
     background: #38c2dc !important;
     color: #fff;
+}
+
+.yac_loading {
+    background: #f2f2f2 url(/static/img/useful/91.gif) no-repeat 95% 50% !important;
+    background-size: 20px !important;
 }
 
 .noresults {

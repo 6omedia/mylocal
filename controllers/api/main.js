@@ -4,7 +4,12 @@ const mongoose = require('mongoose');
 const User = require('../../models/user');
 const Town = require('../../models/town');
 const Industry = require('../../models/industry');
+const Postcode = require('../../models/postcode');
+const path = require('path');
+const fs = require('fs');
 const mid = require('../../middleware/session');
+const backup = require('mongodb-backup');
+var csv = require('csvtojson');
 
 function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -16,13 +21,13 @@ apiRoutes.get('/towns/search', function(req, res){
 	let data = {};
 	data.success = 0;
 
-	let query = {};
+	const search = new RegExp(escapeRegex(req.query.term), 'gi');
 
-	if(req.query.term){
-		query.name = new RegExp(escapeRegex(req.query.term), 'gi');
-	}
-
-	Town.find(query).limit(10).exec(function(err, towns){
+	Postcode.aggregate([
+			{'$match': {town: {$regex: search}}},
+			{'$group': {"_id": "$town"}},
+			{'$limit': 8}
+		], function(err, towns){
 
 		if(err){
 			data.error = err.message || 'Internal Server Error';
@@ -30,9 +35,115 @@ apiRoutes.get('/towns/search', function(req, res){
 	    	return res.json(data);
 		}
 
-		res.status(200);
-		data.results = towns;
-    	return res.json(data);
+		if(towns.length > 0){
+			res.status(200);
+			data.results = towns;
+	    	return res.json(data);
+		}
+
+		Postcode.aggregate([
+			{'$match': {postcode: {$regex: search}}},
+			{'$group': {"_id": "$postcode"}},
+			{'$limit': 8}
+		], function(err, towns){
+
+			if(err){
+				data.error = err.message || 'Internal Server Error';
+		    	res.status(err.status || 500);
+		    	return res.json(data);
+			}
+
+			Postcode.aggregate([]);
+
+			res.status(200);
+			data.results = towns;
+	    	return res.json(data);
+
+		});
+
+	});
+
+});
+
+apiRoutes.post('/postcodes/upload', mid.jsonLoginRequired, function(req, res){
+
+	let body = {};
+	body.success = 0;
+
+	let postcodesToSave = [];
+
+	if(!req.files){
+		body.error = 'No files were uploaded.';
+    	return res.status(400).json(body);
+	}
+
+	if(!req.files.postcodes){
+		body.error = 'No postcodes property found';
+    	return res.status(400).json(body);
+	}
+
+	var ext = req.files.postcodes.name.substr(req.files.postcodes.name.lastIndexOf('.') + 1);
+
+	if(ext != 'json' && ext != 'csv'){
+		body.error = 'file type is not supported please upload a json file';
+    	return res.status(400).json(body);
+	}
+
+	/* DO THE UPLOADING!!! */
+	const uploads = path.join(__dirname, '../..', '/public/uploads/');
+	const filePath = uploads + '/' + req.files.postcodes.name;
+
+	if(!fs.existsSync(uploads)){
+		fs.mkdirSync(uploads);
+	}
+
+	req.files.postcodes.mv(filePath, function(err) {
+	    
+	    if(err){
+      		body.error = err;
+			return res.json(body);
+	    }
+
+		if(ext == 'json'){
+
+			let rawdata = fs.readFileSync(filePath);  
+			let postcodeArray = JSON.parse(rawdata);
+
+			Postcode.uploadFromJSON(postcodeArray, function(message){
+
+				body.success = message;
+				res.status(200);
+				return res.json(body);
+
+			});
+
+		}else{
+
+			let jsonArr = [];
+
+			csv()
+			.fromFile(filePath)
+			.on('json',(jsonObj)=>{
+			    jsonArr.push(jsonObj);
+			})
+			.on('done',(error)=>{
+
+				Postcode.uploadFromJSON(jsonArr, function(message){
+
+					body.success = message;
+					res.status(200);
+					return res.json(body);
+
+				});
+
+			})
+			.on('error',(err)=>{
+			    body.error = err;
+				res.status(err.status || 500);
+				return res.json(body);
+			});
+
+		}	
 
 	});
 

@@ -2,8 +2,9 @@
 
 var gulp = require('gulp'),
 	concat = require('gulp-concat'),
-	uglify = require('uglify'),
-	sass = require('gulp-sass');
+	uglify = require('gulp-uglify'),
+	sass = require('gulp-sass'),
+	maps = require('gulp-sourcemaps');
 
 gulp.task("concatScripts", function(){
 	gulp.src([ 
@@ -20,7 +21,10 @@ gulp.task("minifyScripts", function(){
 });
 
 // gulp.task("compileSass", function(){
-// 	gulp.src('./public/scss/');
+// 	gulp.src('./public/scss/styles.scss')
+// 		.pipe(maps.init())
+// 		.pipe(sass())
+// 		.pipe(gulp.dest('./public/css/styles.css'));
 // });
 
 gulp.task("default", ["hello"], function(){

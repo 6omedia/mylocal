@@ -30,36 +30,6 @@ function logIn(user, pass, callback){
 
 }
 
-// function logSallyEditorIn(callback){
-
-//     agent
-//         .post('/login')
-//         .send({ email: 'sal@sally.com', password: '890', test: true})
-//         .end(function (err, res) {
-
-//             var loggedInUser = res.loggedInUser;
-//             res.should.have.a.cookie;
-//             callback(agent, loggedInUser);
-            
-//         });
-
-// }
-
-// function logGeorgeAdminIn(callback){
-
-//     agent
-//         .post('/login')
-//         .send({ email: 'george@georgy.com', password: '456', test: true, admin: true})
-//         .end(function (err, res) {
-
-//             var loggedInUser = res.loggedInUser;
-//             res.should.have.a.cookie;
-//             callback(agent, loggedInUser);
-            
-//         });
-
-// }
-
 var franky, bob, jonny, jenny, sally, george;
 var johnsTattoos, jensFlowers, bobsBakers, brucesBar;
 
