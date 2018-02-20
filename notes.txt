@@ -127,3 +127,8 @@ OTHER:
 Import All Postcodes from csvs
 	node locations.js upc <path to folder>
 
+Update all Listings to include lat lngs from listings postcode
+	node locations.js update
+
+Findout how many listings dont have lat lngs
+	node locations.js unknown

@@ -3,6 +3,7 @@ var session = require('express-session');
 var app = express();
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const https = require('https');
 
 var each = require('async-each');
 var csv = require('csvtojson');
@@ -32,6 +33,51 @@ let options = {
 mongoose.connect(config.db, options);
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+
+function geocodePostcode(postcode, callback){
+
+	const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyD73USVFKI1lO5dQV4KYVs-UiZOBVYuAPo`;
+
+	https.get(url, (resp) => {
+
+		let data = '';
+
+		resp.on('data', (chunk) => {
+			data += chunk;
+		});
+
+		resp.on('end', () => {
+
+			const jsonData = JSON.parse(data);
+
+			if(jsonData.results.length == 0){
+				return callback('No Results');
+			}else{
+
+				let town;
+
+				const jsonLocation = jsonData.results[0].geometry.location;
+				const address = jsonData.results[0].address_components;
+
+				const townFilter = address.filter(function( obj ) {
+					return obj.types.includes('postal_town');
+				});
+
+				if(townFilter.length > 0){
+					town = townFilter[0].long_name;
+				}
+
+				callback(null, jsonLocation.lng, jsonLocation.lat, town);	
+			}
+			
+		});
+
+	}).on("error", (err) => {
+		console.log("Geocode Error: " + err.message);
+		callback(err);
+	});
+
+}
 
 function uploadPostcodes(done){
 
@@ -85,42 +131,6 @@ function uploadPostcodes(done){
 
 		});
 
-		
-
-		// each(items, (item, next) => {
-
-		// 	let jsonArr = [];
-
-		// 	csv()
-		// 	.fromFile(csvFolder + "\\" + item)
-		// 	.on('json',(jsonObj)=>{
-		// 	    jsonArr.push(jsonObj);
-		// 	})
-		// 	.on('done',(error)=>{
-
-		// 		process.stdout.write(item + ' CSV to JSON complete \n');
-
-		// 		Postcode.uploadFromJSON(jsonArr, (msg) => {
-		// 			process.stdout.write('========================================= \n');
-		// 			process.stdout.write(msg);
-		// 			process.stdout.write('========================================= \n');
-		// 			next();
-		// 		});
-
-		// 	})
-		// 	.on('error',(err)=>{
-		// 	    console.log('Json Error: ', err);
-		// 	    done();
-		// 	});
-
-		// }, (err) => {
-		// 	if(err){
-		// 		console.log('ERRO: ', err);
-		// 	}
-		// 	console.log('all imported');
-		// 	done();
-		// });
-
 	});
 
 }
@@ -142,7 +152,8 @@ function countUnknownLocs(done){
 }
 
 function updateAllLocs(done){
-	Listing.find({loc: undefined}).limit(10).exec(function(err, listings){
+
+	Listing.find({loc: undefined}).exec(function(err, listings){
 
 		if(err){
 			console.log(err);
@@ -151,31 +162,77 @@ function updateAllLocs(done){
 
 		console.log(listings.length + ' listings found');
 
-		each(listings, function(item, next){
+		listings.forEach(function(listing){
+			pn.pushJob(function(){
 
-			Postcode.findOne({'postcode': item.address.post_code}, function(err, postcode){
+				return new Promise(function(resolve, reject){
 
-				if(postcode){
+					Postcode.findOne({'postcode': listing.address.post_code}, function(err, postcode){
 
-					item.loc = [postcode.longitude, postcode.latitude];
-					item.save(function(err, item, saved){
-						console.log('saved ', saved);
-						next();
-					});
+						if(postcode){
 
-				}else{
-					console.log('NO POSTCODE');
-					next();
-				}
+							listing.loc = [postcode.longitude, postcode.latitude];
+							listing.save(function(err, item, saved){
+								console.log('saved ', saved);
+								resolve();
+							});
+
+						}else{
+							console.log('NO POSTCODE gonna geocode it...');
+
+							geocodePostcode(listing.address.post_code, (err, lng, lat, town) => {
+
+								if(!err){
+
+									if(!town){
+										return reject();
+									}
+
+									const postcode = new Postcode({
+										postcode: listing.address.post_code,
+									    county: '',
+									    town: town,
+									    suburb: '',
+									    latitude: lat,
+									    longitude: lng
+									});
+
+									postcode.save()
+									.then((postcode) => {
+										resolve(postcode);
+									})
+									.catch((err) => {
+										reject(err);
+									});
+									
+								}else{
+									console.log('Err ', listing.address.post_code);
+									reject();
+								}	
+
+							});
+
+						}
+
+					});	
+
+				});
 
 			});
+		});
 
-		}, function(){
-			console.log('done');
-			process.exit();
+		pn.pushJob(function(){
+
+			return new Promise(function(resolve, reject){
+				console.log('All Listings Updated');
+				process.exit();
+				resolve();
+			});
+
 		});
 
 	});
+
 }
 
 switch(process.argv[2]){
@@ -200,6 +257,16 @@ switch(process.argv[2]){
 		break;
 	case 'upc':
 		uploadPostcodes(() => {
+			process.exit();
+		});
+		break;
+	case 'geocode':
+		geocodePostcode(process.argv[3], (err, lng, lat) => {
+
+			if(!err){
+				console.log(lng, ' ', lat);
+			}	
+
 			process.exit();
 		});
 		break;
