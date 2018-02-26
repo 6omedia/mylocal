@@ -7,7 +7,7 @@
 	var industryAutocomplete = new YeahAutocomplete({
 	    input: 'industry',
 	    allowFreeType: true,
-	    dataUrl: '/api/industries/search?term=',
+	    dataUrl: '/api/locations/search?term=',
 	    method: 'GET',
 	    arrName: 'results',
 	    property: 'name'
@@ -16,10 +16,10 @@
 	var townAutocomplete = new YeahAutocomplete({
 	    input: 'town',
 	    allowFreeType: true,
-	    dataUrl: '/api/towns/search?term=',
+	    dataUrl: '/api/locations/search?term=',
 	    method: 'GET',
-	    arrName: 'results',
-	    property: '_id'
+	    arrName: 'locations',
+	    property: ''
 	});
 
 	// /find/Restaurants/Bournemouth?page=1

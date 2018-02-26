@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise;
 const https = require('https');
 
 var each = require('async-each');
+var eachSync = require('sync-each');
 var csv = require('csvtojson');
 var fs = require('fs');
 var SN = require('sync-node');
@@ -135,17 +136,17 @@ function uploadPostcodes(done){
 
 }
 
-function countUnknownLocs(done){
+function countUnknownLocs(Model, prop, done){
 
-	Listing.count({loc: undefined}, function(err, count){
+	Model.count({[prop]: undefined}, function(err, count){
 
 		if(err){
 			console.log(err);
 			return;
 		}
 
-		console.log(count);
-		done();
+		// console.log(count);
+		done(count);
 
 	});
 
@@ -235,6 +236,44 @@ function updateAllLocs(done){
 
 }
 
+function updatesuburb_towns(callback){
+
+	countUnknownLocs(Postcode, 'suburb_town', (count) => {
+
+		Postcode.find({suburb_town: undefined}).limit(50000).exec((err, postcodes) => {
+
+			var index = 0;
+
+			postcodes.forEach((postcode) => {
+
+				pn.pushJob(function(){
+					return new Promise(function(resolve, reject){
+						postcode.suburb_town = postcode.suburb + ', ' + postcode.town;
+						postcode.save(function(err, item, saved){
+							index++;
+							if(saved > 0){
+								console.log(index + ' out of ' + count + ' updated');
+							}
+							resolve();
+						});
+					});
+				});
+
+			});
+
+			pn.pushJob(function(){
+				return new Promise(function(resolve, reject){
+					process.exit();
+					resolve();
+				});
+			});	
+
+		});
+
+	});
+
+}
+
 switch(process.argv[2]){
 
 	case undefined: 
@@ -242,7 +281,7 @@ switch(process.argv[2]){
 		console.log('No option given, choose from:');
 		console.log('update - updates all locations from postcode');
 		console.log('unknown - returns how many listings have unkonw locations');
-		consoel.log('upc - uploads all postcodes');
+		console.log('upc - uploads all postcodes');
 		console.log('-------------------------------------------------------------');
 		break;
 	case 'update':
@@ -251,7 +290,12 @@ switch(process.argv[2]){
 		});
 		break;
 	case 'unknown':
-		countUnknownLocs(() => {
+		if(!process.argv[3] || !process.argv[4]){
+			console.log('Must provide name of model and name of unknown property');
+			process.exit();
+		}
+		countUnknownLocs(eval(process.argv[3]), process.argv[4], (count) => {
+			console.log(count);
 			process.exit();
 		});
 		break;
@@ -267,6 +311,11 @@ switch(process.argv[2]){
 				console.log(lng, ' ', lat);
 			}	
 
+			process.exit();
+		});
+		break;
+	case 'suburbtowns':
+		updatesuburb_towns(() => {
 			process.exit();
 		});
 		break;

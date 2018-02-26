@@ -37,8 +37,8 @@ let ListingSchema = new Schema(
         	}
         },
         loc: { 
-            type: [Number],
-            index: '2dsphere'
+            type: { type: String },
+            coordinates: [Number]
         },
         contact: {
         	website: String,
@@ -202,6 +202,8 @@ let ListingSchema = new Schema(
         toJSON: { virtuals: true }
     }
 );
+
+ListingSchema.index({ "loc": "2dsphere" });
 
 ListingSchema.virtual('rating').get(function(){
 

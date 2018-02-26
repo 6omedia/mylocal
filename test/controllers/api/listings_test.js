@@ -4,12 +4,20 @@ let mongoose = require("mongoose");
 let User = require('../../../models/user');
 let Listing = require('../../../models/listing');
 let Industry = require('../../../models/industry');
+let Postcode = require('../../../models/postcode');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../../app');
 let should = chai.should();
 let expect = chai.expect;
+let each = require('async-each'); 
+
+let mockCollection = require('../../helpers.js').mockCollection;
+
+let mockJsonPostcodes = require('../../mockdata/postcodes.json');
+let mockJsonUsers = require('../../mockdata/users.json');
+let mockJsonListings = require('../../mockdata/listings.json');
 
 chai.use(chaiHttp);
 
@@ -33,181 +41,63 @@ function logIn(user, pass, callback){
 var franky, bob, jonny, jenny, sally, george;
 var johnsTattoos, jensFlowers, bobsBakers, brucesBar;
 
+var users = {franky: "", bob: "", jonny: "", jenny: "", sally: "", george: ""};
+var listings = [johnsTattoos, jensFlowers, bobsBakers, brucesBar];
+
 /**************** TESTS ******************/
 
 describe('Listing API Routes', () => {
 
+    before((done) => {
+        mockCollection(mockJsonPostcodes, Postcode, () => { done(); });
+    });
+
 	beforeEach(function(done){
 
-	 	Promise.all([Industry.remove({}), Listing.remove({}), User.remove({})])
- 		.then(() => {
+        Promise.all([Industry.remove({}), Listing.remove({}), User.remove({})])
+        .then(() => {
 
- 			bob = new User({
-                name: 'Bobby',
-                email: 'bob@bobert.com',
-                password: 'abc',
-                user_role: 'Subscriber',
-                meta: {
-                  age: 22,
-                  website: 'www.bobby.com'
+            var userSaves = [];
+            var listingSaves = [];
+
+            var index = 0;
+
+            for(var user in users) {
+                if(users.hasOwnProperty(user)) {
+                    users[user] = new User(mockJsonUsers[index]);
+                    userSaves.push(users[user].save());
                 }
+                index++;
+            }
+
+            index = 0;
+
+            for(var listing in listings) {
+                if(listings.hasOwnProperty(listing)) {
+                    var jsonListing = mockJsonListings[index];
+                    switch(jsonListing.business_name){
+                        case "Jonnys Tattoos":
+                            jsonListing.userId = users['jonny']._id;
+                            break;
+                        case "Jennys Flowers":
+                            jsonListing.userId = users['jenny']._id;
+                            break;
+                        case "Bobs Bakers":
+                            jsonListing.userId = users['bob']._id;
+                            break;
+                        default:
+                    }
+                    listings[listing] = new Listing(jsonListing);
+                    listingSaves.push(listings[listing].save());
+                }
+                index++;
+            }
+
+            Promise.all(userSaves.concat(listingSaves)).then(() => {
+                done();
             });
 
-            franky = new User({
-                name: 'Franky',
-                email: 'frank@franky.com',
-                password: 'abc',
-                user_role: 'Subscriber',
-                meta: {
-                  age: 22,
-                  website: 'www.franky.com'
-                }
-            });
-
-            jonny = new User({
-                name: 'John',
-                email: 'jon@jonny.com',
-                password: '123',
-                confirm_password: '123',
-                user_role: 'Subscriber',
-                meta: {
-                  age: 22,
-                  website: 'www.john.com'
-                }
-            });
-
-            jenny = new User({
-                name: 'Jenny',
-                email: 'jen@jenny.com',
-                password: '123',
-                confirm_password: '123',
-                user_role: 'Subscriber',
-                meta: {
-                  age: 22,
-                  website: 'www.john.com'
-                }
-            });
-
-            sally = new User({
-                name: 'Sally',
-                email: 'sal@sally.com',
-                password: '890',
-                user_role: 'Editor',
-                meta: {
-                  age: 22,
-                  website: 'www.sally.com'
-                }
-            });
-
-            george = new User({
-                name: 'Bill',
-                email: 'george@georgy.com',
-                password: '456',
-                user_role: 'Admin',
-                meta: {
-                  age: 22,
-                  website: 'www.george.com'
-                }
-            });
-
-			Promise.all([franky.save(), bob.save(), jonny.save(), jenny.save(), sally.save(), george.save()])
-                .then(() => {
-
-                	johnsTattoos = new Listing({
-                		userId: jonny._id,
-				        business_name: 'Jonnys Tattoos',
-                        slug: 'jonnys-tattoos',
-				        address: {
-				        	line_one: '134 Yeah Street',
-				        	line_two: 'Yearington',
-				        	town: 'Bournemouth',
-				        	post_code: 'ABC 123'
-				        },
-                        services: ['tattooing', 'bodyart'],
-				        contact: {
-				        	website: 'www.jonnystattoos.com',
-				        	phone: '09090909',
-				        	email: 'jon@tattoos.com'
-				        },
-				        industry: 'tattooing'
-                	});
-
-                	jensFlowers = new Listing({
-                		userId: jonny._id,
-				        business_name: 'Jennys Flowers',
-                        slug: 'jennys-flowers',
-                        services: ['flowers', 'weddings'],
-				        address: {
-				        	line_one: '45 Hmmm Road',
-				        	line_two: 'Hmmmington',
-				        	town: 'Poole',
-				        	post_code: 'DFG 885'
-				        },
-				        contact: {
-				        	website: 'www.jennysflowers.com',
-				        	phone: '67867868',
-				        	email: 'jen@flowers.com'
-				        },
-				        industry: 'florists'
-                	});
-
-                	bobsBakers = new Listing({
-                		userId: bob._id,
-				        business_name: 'Bobs Bakers',
-                        slug: 'bobs-bakers',
-                        services: ['baking', 'weddings', 'bread', 'Cakes'],
-				        address: {
-				        	line_one: '67 Hmmm Road',
-				        	line_two: 'Hmmklington',
-				        	town: 'Bournemouth',
-				        	post_code: 'DFG 990'
-				        },
-				        contact: {
-				        	website: 'www.jennysflowers.com',
-				        	phone: '546456',
-				        	email: 'bob@bakers.com'
-				        },
-				        industry: 'bakers'
-                	});
-
-                	brucesBar = new Listing({
-                		business_name: 'Bruces Bar',
-                        slug: 'bruces-bar',
-                        services: ['Alcamohol'],
-				        address: {
-				        	line_one: '67 Hmmm Road',
-				        	line_two: 'Hmmklington',
-				        	town: 'Bournemouth',
-				        	post_code: 'DFG 990'
-				        },
-				        contact: {
-				        	website: 'www.bruces.com',
-				        	phone: '546456',
-				        	email: 'bruce@bar.com'
-				        },
-				        industry: 'bars'
-                	});
-
-                	Promise.all([johnsTattoos.save(), jensFlowers.save(), bobsBakers.save(), brucesBar.save()])
-                		.then(() => {
-
-                			jonny.update({listing: johnsTattoos._id})
-                				.then(() => {
-                					jenny.update({listing: jensFlowers._id})
-		                				.then(() => {
-		                					bob.update({listing: bobsBakers._id})
-		                						.then(() => {
-		                							done();
-		                						});
-
-		                				});
-                				});
-
-                		});
-
-                });
-
- 		});
+        });
 
     });
 
@@ -376,34 +266,10 @@ describe('Listing API Routes', () => {
 
     describe('GET /find/:industry/:town', () => {
 
-    	it('should return jonnystattoos and bobsBakers', (done) => {
-    		
-    		chai.request(server)
-                .get('/api/listings/find/tattooing/Bournemo')
-                .end((err, res) => {
-                	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
-                    res.body.listings.length.should.equal(1);
-                    done();
-                });
+        it('should return listings in the town searched for', (done) => {
 
-    	});
-
-    	it('should return correction and johns tattoos', (done) => {
-    		
-    		chai.request(server)
-                .get('/api/listings/find/tattooin/Bournemo')
-                .end((err, res) => {
-                	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
-                    res.body.listings.length.should.equal(1);
-                    done();
-                });
-
-    	});
-
-        it('should return correction and johns tattoos (missing characters)', (done) => {
-            
             chai.request(server)
-                .get('/api/listings/find/tattooin/Bournemoth')
+                .get('/api/listings/find/tattooing/Bournemouth')
                 .end((err, res) => {
                     res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
                     res.body.listings.length.should.equal(1);
@@ -412,30 +278,102 @@ describe('Listing API Routes', () => {
 
         });
 
-    	it('should return 404 not found', (done) => {
-    		
-    		chai.request(server)
-                .get('/api/listings/find/tattooing/thisisnotatown')
-                .end((err, res) => {
-                	res.body.message.should.equal('Listing not found');
-                    res.should.have.status(404);
-                    done();
-                });
+        it('should return listings in the suburb searched for', (done) => {
 
-    	});
-
-        // searching by services
-
-        it('should return pagination html', (done) => {
             
-            chai.request(server)
-                .get('/api/listings/find/weddings/Bournemouth')
-                .end((err, res) => {
-                    res.body.listings[0].business_name = 'Bobs Bakers';
-                    done();
-                });
 
         });
+
+        it('should return listings within 10 miles of the postcode searched for', (done) => {
+
+            
+
+        });
+
+        it('should return message as not found with a suggestion for similar search term', (done) => {
+
+
+
+        });
+
+        it('should return correct listings for industry searched', (done) => {
+
+
+
+        });
+
+        it('should return correct listings for service searched', (done) => {
+
+            
+            
+        });
+
+        it('should return correct listings for problem searched', (done) => {
+
+            
+            
+        });
+
+    	// it('should return jonnystattoos and bobsBakers', (done) => {
+    		
+    	// 	chai.request(server)
+     //            .get('/api/listings/find/tattooing/Bournemo')
+     //            .end((err, res) => {
+     //            	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
+     //                res.body.listings.length.should.equal(1);
+     //                done();
+     //            });
+
+    	// });
+
+    	// it('should return correction and johns tattoos', (done) => {
+    		
+    	// 	chai.request(server)
+     //            .get('/api/listings/find/tattooin/Bournemo')
+     //            .end((err, res) => {
+     //            	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
+     //                res.body.listings.length.should.equal(1);
+     //                done();
+     //            });
+
+    	// });
+
+     //    it('should return correction and johns tattoos (missing characters)', (done) => {
+            
+     //        chai.request(server)
+     //            .get('/api/listings/find/tattooin/Bournemoth')
+     //            .end((err, res) => {
+     //                res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
+     //                res.body.listings.length.should.equal(1);
+     //                done();
+     //            });
+
+     //    });
+
+    	// it('should return 404 not found', (done) => {
+    		
+    	// 	chai.request(server)
+     //            .get('/api/listings/find/tattooing/thisisnotatown')
+     //            .end((err, res) => {
+     //            	res.body.message.should.equal('Listing not found');
+     //                res.should.have.status(404);
+     //                done();
+     //            });
+
+    	// });
+
+     //    // searching by services
+
+     //    it('should return pagination html', (done) => {
+            
+     //        chai.request(server)
+     //            .get('/api/listings/find/weddings/Bournemouth')
+     //            .end((err, res) => {
+     //                res.body.listings[0].business_name = 'Bobs Bakers';
+     //                done();
+     //            });
+
+     //    });
 
     });
 

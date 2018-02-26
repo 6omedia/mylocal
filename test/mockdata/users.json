@@ -1,0 +1,40 @@
+[
+    {
+    	"name": "Franky",
+        "email": "frank@franky.com",
+        "password": "abc",
+        "user_role": "Subscriber"
+    },
+    {
+        "name": "Bobby",
+        "email": "bob@bobert.com",
+        "password": "abc",
+        "user_role": "Subscriber"
+    },
+    {
+    	"name": "John",
+        "email": "jon@jonny.com",
+        "password": "123",
+        "confirm_password": "123",
+        "user_role": "Subscriber"
+    },
+    {
+    	"name": "Jenny",
+        "email": "jen@jenny.com",
+        "password": "123",
+        "confirm_password": "123",
+        "user_role": "Subscriber"
+    },
+    {
+    	"name": "Sally",
+        "email": "sal@sally.com",
+        "password": "890",
+        "user_role": "Editor"
+    },
+    {
+    	"name": "Bill",
+        "email": "george@georgy.com",
+        "password": "456",
+        "user_role": "Admin"
+    }
+]

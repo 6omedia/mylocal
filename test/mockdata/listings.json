@@ -1,0 +1,66 @@
+[
+	{
+		"business_name": "Jonnys Tattoos",
+        "slug": "jonnys-tattoos",
+		"address": {
+        	"line_one": "134 Yeah Street",
+            "line_two": "Yearington",
+            "town": "Bournemouth",
+            "post_code": "ABC 123"
+        },
+        "loc": {
+        	"type": "Point",
+        	"coordinates": [-1.78654, 50.72542]
+        },
+        "services": ["tattooing", "bodyart"],
+        "industry": "tattooing"
+	},
+	{
+		"business_name": "Jennys Flowers",
+        "slug": "jennys-flowers",
+		"address": {
+        	"line_one": "45 Hmmm Road",
+            "line_two": "Hmmmington",
+            "town": "Poole",
+            "post_code": "DFG 885"
+        },
+        "loc": {
+        	"type": "Point",
+        	"coordinates": [-1.78654, 50.72542]
+        },
+        "services": ["flowers", "weddings"],
+        "industry": "florists"
+	},
+	{
+		"business_name": "Bobs Bakers",
+        "slug": "bobs-bakers",
+		"address": {
+        	"line_one": "67 Hmmm Road",
+        	"line_two": "Hmmklington",
+        	"town": "Bournemouth",
+        	"post_code": "DFG 990"
+        },
+        "loc": {
+        	"type": "Point",
+        	"coordinates": [-1.78654, 50.72542]
+        },
+        "services": ["baking", "weddings", "bread", "Cakes"],
+        "industry": "bakers"
+	},
+	{
+        "business_name": "Bruces Bar",
+        "slug": "bruces-bar",
+        "address": {
+            "line_one": "67 Hmmm Road",
+            "line_two": "Hmmklington",
+            "town": "Bournemouth",
+            "post_code": "DFG 990"
+        },
+        "loc": {
+            "type": "Point",
+            "coordinates": [-1.78654, 50.72542]
+        },
+        "services": ["Alcamohol"],
+        "industry": "bars"
+    }
+]

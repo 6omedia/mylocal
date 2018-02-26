@@ -1,40 +1,25 @@
+const each = require('sync-each');
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // const postcodeData = require('./data/postcodes.json');
 
 //book schema definition
-let PostcodeSchema = new Schema({
-    postcode: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    county: String,
-    town: String,
-    suburb: String,
-    latitude: Number,
-    longitude: Number
-});
-
-// Postcode.find({}).exec(function(err, postcodes){
-
-//     if(err){
-//         return next(err);
-//     }
-
-//     if(!postcodes || postcodes == ''){
-        
-//         Postcode.insertMany(postcodeData)
-//             .then(function(towns) {
-//                 console.log('Postcodes Added');
-//             })
-//             .catch(function(err) {
-//                 console.log('Err ', err);
-//             });
-
-//     }
-
-// });
+let PostcodeSchema = new Schema(
+    {
+        postcode: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        county: String,
+        town: String,
+        suburb: String,
+        suburb_town: String,
+        latitude: Number,
+        longitude: Number
+    }
+);
 
 PostcodeSchema.statics.uploadFromJSON = function(postcodeArray, callback){
 
@@ -80,6 +65,38 @@ PostcodeSchema.statics.uploadFromJSON = function(postcodeArray, callback){
 
             });
     
+    });
+
+};
+
+PostcodeSchema.statics.searchByTerm = function(term, callback){
+
+    const props = ['town', 'suburb_town', 'postcode'];
+    term = new RegExp('^' + term, 'i');
+    locations = [];
+
+    each(props, (prop, eNxt) => {
+
+        Postcode.find({[prop]: term}).distinct(prop).lean()
+        .then((locs) => {
+            
+            locs = locs.slice(0, (5 - locations.length));
+            locations = locations.concat(locs);
+
+            if(locations.length >= 5){
+                return callback(null, locations);
+            }
+            eNxt();
+
+        })
+        .catch(err => {
+            res.status(err.status || 500); 
+            return callback(err);
+        });
+
+    }, (err) => {
+        if(err){ return callback(err) }
+        return callback(null, locations);
     });
 
 };

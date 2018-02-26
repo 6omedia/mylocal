@@ -16,7 +16,7 @@ var YeahAutocomplete = (function(){
 	View.prototype.stopLoading = function(){
 		this.input.removeClass('yac_loading');
 	};
-	View.prototype.displayResults = function(results, property){
+	View.prototype.displayResults = function(results, query, property){
 
 		var thisView = this;
 		this.resultsList.empty();
@@ -26,6 +26,29 @@ var YeahAutocomplete = (function(){
 			if(property){
 				result = results[i][property];
 			}
+
+			// var resParts = results[i].split(query.toUpperCase());
+			// if(resParts.length < 1){
+			// 	resParts = results[i].split(query);
+			// }
+
+			// var resComplete = '';
+
+			// console.log(resParts);
+
+			// for(var j=0; j<resParts.length; j++){
+			// 	console.log('PARTS ', resParts[j]);
+			// 	if(resParts[j] == ''){
+			// 		if(j == 0){
+			// 			resComplete += '<b>' + query[0].toUpperCase() + '</b>';
+			// 		}else{
+			// 			resComplete += '<b>' + query + '</b>';
+			// 		}
+			// 	}else{
+			// 		resComplete += resParts[j];
+			// 	}
+			// }
+
 			var li = $('<li class="yac_li">' + result + '</li>');
 			li.data('listing', details);
 			li.on('click', function(){
@@ -73,8 +96,12 @@ var YeahAutocomplete = (function(){
 		if(query == ''){
 			query = 'noterm';
 		}
+
+		console.log('YEAHHHH');
 		
 		if(method == 'GET'){
+
+			console.log('AJAX');
 
 			$.ajax({
 				url: url + query,
@@ -82,7 +109,7 @@ var YeahAutocomplete = (function(){
 				success: function(data){
 
 					try {
-						thisYac.view.displayResults(data[arrName], property);
+						thisYac.view.displayResults(data[arrName], query, property);
 						thisYac.view.stopLoading();
 					}catch(e){
 						thisYac.view.stopLoading();
@@ -90,13 +117,13 @@ var YeahAutocomplete = (function(){
 
 				},
 				error: function(){
-
 					thisYac.view.stopLoading();
-
 				}
 			});
 
 		}else{
+
+			console.log('AJAX');
 
 			$.ajax({
 				url: url,
@@ -106,9 +133,7 @@ var YeahAutocomplete = (function(){
 					thisYac.view.stopLoading();
 				},
 				error: function(){
-
 					thisYac.view.stopLoading();
-					
 				}
 			});
 

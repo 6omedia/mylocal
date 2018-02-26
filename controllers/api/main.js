@@ -15,55 +15,97 @@ function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-// dashboard
-apiRoutes.get('/towns/search', function(req, res){
+apiRoutes.get('/locations/search', function(req, res, next){
 
 	let data = {};
 	data.success = 0;
 
-	const search = new RegExp(escapeRegex(req.query.term), 'gi');
+	if(!req.query.term || req.query.term == 'noterm'){
 
-	Postcode.aggregate([
-			{'$match': {town: {$regex: search}}},
-			{'$group': {"_id": "$town"}},
-			{'$limit': 8}
-		], function(err, towns){
+		data.locations = [];
+		return res.json(data);
 
-		if(err){
-			data.error = err.message || 'Internal Server Error';
-	    	res.status(err.status || 500);
-	    	return res.json(data);
-		}
+	}else{
 
-		if(towns.length > 0){
-			res.status(200);
-			data.results = towns;
-	    	return res.json(data);
-		}
-
-		Postcode.aggregate([
-			{'$match': {postcode: {$regex: search}}},
-			{'$group': {"_id": "$postcode"}},
-			{'$limit': 8}
-		], function(err, towns){
+		Postcode.searchByTerm(req.query.term, (err, locations) => {
 
 			if(err){
-				data.error = err.message || 'Internal Server Error';
-		    	res.status(err.status || 500);
-		    	return res.json(data);
+				res.status(err.status || 500); 
+				return res.json(data);
 			}
 
-			Postcode.aggregate([]);
+	 		data.locations = locations;
+	 		return res.json(data);
 
-			res.status(200);
-			data.results = towns;
-	    	return res.json(data);
+	 	});
 
-		});
-
-	});
+	}
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// dashboard
+// apiRoutes.get('/towns/search', function(req, res){
+
+// 	let data = {};
+// 	data.success = 0;
+
+// 	const search = new RegExp(escapeRegex(req.query.term), 'gi');
+
+// 	Postcode.aggregate([
+// 			{'$match': {town: {$regex: search}}},
+// 			{'$group': {"_id": "$town"}},
+// 			{'$limit': 8}
+// 		], function(err, towns){
+
+// 		if(err){
+// 			data.error = err.message || 'Internal Server Error';
+// 	    	res.status(err.status || 500);
+// 	    	return res.json(data);
+// 		}
+
+// 		if(towns.length > 0){
+// 			res.status(200);
+// 			data.results = towns;
+// 	    	return res.json(data);
+// 		}
+
+// 		Postcode.aggregate([
+// 			{'$match': {postcode: {$regex: search}}},
+// 			{'$group': {"_id": "$postcode"}},
+// 			{'$limit': 8}
+// 		], function(err, towns){
+
+// 			if(err){
+// 				data.error = err.message || 'Internal Server Error';
+// 		    	res.status(err.status || 500);
+// 		    	return res.json(data);
+// 			}
+
+// 			Postcode.aggregate([]);
+
+// 			res.status(200);
+// 			data.results = towns;
+// 	    	return res.json(data);
+
+// 		});
+
+// 	});
+
+// });
 
 apiRoutes.post('/postcodes/upload', mid.jsonLoginRequired, function(req, res){
 
