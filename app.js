@@ -3,6 +3,7 @@ var session = require('express-session');
 var app = express();
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+// mongoose.set('debug', true);
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
@@ -73,10 +74,11 @@ app.use('/api/tags', require('./controllers/api/tags.js'));
 
 app.use(function(err, req, res, next) {
 	res.status(err.status || 500);
-	res.render('error', {
-    	message: err.message,
-    	error: err
-	});
+	// res.render('error', {
+ //    	message: err.message,
+ //    	error: err
+	// });
+	res.send('Error: ' + err.message);
 });
 
 app.listen(20102, function () {

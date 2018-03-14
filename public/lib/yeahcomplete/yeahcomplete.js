@@ -70,6 +70,12 @@ var YeahAutocomplete = (function(){
 		this.view = new View(options.input);
 		this.model = new Model();
 	
+		this.onResults = null;
+
+		if(options.onResults){
+			this.onResults = options.onResults;
+		}
+
 		this.view.input.on('input', function(){
 			thisYac.getResults($(this).val(), options.dataUrl, options.method, {}, options.arrName, options.property);
 		});
@@ -97,22 +103,24 @@ var YeahAutocomplete = (function(){
 			query = 'noterm';
 		}
 
-		console.log('YEAHHHH');
-		
 		if(method == 'GET'){
-
-			console.log('AJAX');
 
 			$.ajax({
 				url: url + query,
 				method: 'GET',
 				success: function(data){
 
-					try {
-						thisYac.view.displayResults(data[arrName], query, property);
-						thisYac.view.stopLoading();
-					}catch(e){
-						thisYac.view.stopLoading();
+					if(!thisYac.onResults){
+						try {
+							thisYac.view.displayResults(data[arrName], query, property);
+							thisYac.view.stopLoading();
+						}catch(e){
+							thisYac.view.stopLoading();
+						}
+					}else{
+
+						thisYac.onResults(data[arrName]);
+
 					}
 
 				},

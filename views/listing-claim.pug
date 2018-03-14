@@ -11,19 +11,19 @@ block content
 				h1 Search for your business to see if your allready listed
 				.searchBox
 					input(type="text", placeholder="Start typeing the name of your business...")#inputListing
-					button#find Find Your Business
+					//- button#find Find Your Business
+				p.cfb Cant find your business? 
+					a(href="/listing/add") Add your listing here
 		section.bigWhite
 			.container
-				.row
-					.col-sm-4
-						#theError
-							p
-						.panel
-							p Do you own this business?
-							button#yes Yes
-							button#no Add Listing 
-					.col-sm-8
-						#searchResults
+				#searchResults
+				//- .row
+				//- 	.col-sm-4
+				//- 		#theError
+				//- 			p
+				//- 		.panel
+				//- 	.col-sm-8
+				//- 		#searchResults
 
 	script(src="http://code.jquery.com/jquery-latest.js")
 	script(src="/static/lib/yeahcomplete/yeahcomplete.js")

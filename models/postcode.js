@@ -86,7 +86,7 @@ PostcodeSchema.statics.searchByTerm = function(term, callback){
             if(locations.length >= 5){
                 return callback(null, locations);
             }
-            eNxt();
+            eNxt(); 
 
         })
         .catch(err => {

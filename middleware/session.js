@@ -56,6 +56,28 @@ function onlyAdmin(req, res, next) {
     }
 }
 
+function onlySubscriber(req, res, next) {
+    if(req.session && req.session.userId) {
+
+        User.findById(req.session.userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(user.user_role == 'Subscriber'){
+                req.session.user = user;
+                return next();
+            }else{
+                req.session.user = user;
+                return res.redirect('/admin');
+            }
+        });
+
+    }else{
+        res.status(401);
+        return res.redirect('/');
+    }
+}
+
 // json routes
 
 function jsonOnlyAdmin(req, res, next){
@@ -96,6 +118,7 @@ module.exports.loggedIn = loggedIn;
 
 module.exports.loginRequired = loginRequired;
 module.exports.onlyAdmin = onlyAdmin;
+module.exports.onlySubscriber = onlySubscriber;
 
 module.exports.jsonLoginRequired = jsonLoginRequired;
 module.exports.jsonOnlyAdmin = jsonOnlyAdmin;

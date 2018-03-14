@@ -8,7 +8,7 @@
     setInterval(function(){
 
         theSpan.innerHTML = words[index];
-        //$('body').css('background', 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(/static/img/' + imgs[index] + ') no-repeat 50%');
+        // $('body').css('background', 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(/static/img/' + imgs[index] + ') no-repeat 50%');
 
         if(index == words.length - 1){
             index = 0;
@@ -74,7 +74,7 @@
                         }
 
                         string += `
-                            <div class="col-sm-4">
+                            <div class="col-sm-6 col-md-4">
                                 <div class="listing">
                                     <div class="heading" style="background: url(${listing.branding.background}) no-repeat 50%/100%;">
                                         <h2>${listing.business_name}</h2>
@@ -88,6 +88,7 @@
                                 </div>
                             </div>
                         `;
+
                     });
 
                     string += '</div>' + data.pagination;

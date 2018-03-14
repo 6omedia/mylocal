@@ -1,0 +1,42 @@
+[
+	{
+		"name": "Mechanics",
+		"type": "Industry"
+	},
+	{
+		"name": "Bakeries",
+		"type": "Industry"
+	},
+	{
+		"name": "Bread",
+		"type": "Service"
+	},
+	{
+		"name": "Flat Tyre",
+		"type": "Problem"
+	},
+	{
+		"name": "Marketing",
+		"type": "Industry"
+	},
+	{
+		"name": "Pizza",
+		"type": "Service"
+	},
+	{
+		"name": "Holiday Parks",
+		"type": "Industry"
+	},
+	{
+		"name": "Bands",
+		"type": "Industry"
+	},
+	{
+		"name": "Wedding Bands",
+		"type": "Industry"
+	},
+	{
+		"name": "Restaurants",
+		"type": "Industry"
+	}
+]

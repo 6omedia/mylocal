@@ -1,0 +1,58 @@
+.listing {
+	position: relative;
+	margin-bottom: 20px;
+	.heading {
+		position: relative;
+	    width: 100%;
+	    height: 120px;
+	    background: green;
+		h2, h3 {
+			@include textoverlay;
+			border-radius: 0px;
+		}
+		h2 {
+			font-size: 28px;
+		}
+		@media (min-width: $xsmall){
+			height: 150px;
+		} 
+	}
+	.info {
+		background: #efefef;
+    	padding: 15px;
+    	img {
+    		display: none;
+    	    max-width: 40%;
+    		height: 80px;
+    		object-fit: contain;
+    		object-position: center;
+    		@media (min-width: $xsmall){
+				display: inline-block;
+			    position: absolute;
+			    // bottom: 15px;
+			    right: 15px;
+			    top: 10px;
+			} 
+    	}
+    	.phone {
+    		float: right;
+    		@media (min-width: $xsmall){
+			    float: none;
+			    display: block;
+			    margin-top: 10px;
+			} 
+    	}
+	}
+	.btn {
+	    border-radius: 0px;
+	    width: 100%;
+	    border-bottom: solid 3px desaturate(darken($color-primary, 5%), 10%);
+        margin-top: 15px;
+        @media (min-width: $xsmall){
+			width: 160px;
+		} 
+	}
+	@media (min-width: $medium){
+		margin-bottom: 30px;
+	} 
+}

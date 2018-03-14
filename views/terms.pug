@@ -1,0 +1,35 @@
+extends layout
+
+block content
+
+	header.full
+		include ./partials/header
+
+	.bigWhite
+		.container
+			.terms
+				if listing
+					h1 Claim Ownership of #{listing.business_name}
+					h2 Terms &amp; Conditions
+				else
+					h1 Terms &amp; Conditions
+				p Hella pinterest banh mi readymade fingerstache. Occupy flexitarian health goth hexagon mumblecore banjo schlitz cred cornhole raclette, stumptown trust fund. Taxidermy street art organic, bespoke taiyaki pok pok 90's banjo vinyl distillery succulents meh. Coloring book offal activated charcoal, 8-bit lomo you probably haven't heard of them four loko jean shorts hexagon glossier vinyl small batch trust fund put a bird on it. Migas flexitarian meh selvage glossier farm-to-table bitters. Tote bag godard air plant, trust fund affogato butcher scenester tumeric selvage etsy vexillologist kickstarter. Taxidermy twee edison bulb pok pok af aesthetic.
+
+				p Poke tousled umami bitters, tofu banh mi cold-pressed locavore aesthetic selfies pinterest shabby chic polaroid. VHS sartorial vaporware small batch green juice activated charcoal cred iceland. Vegan cliche jean shorts 3 wolf moon. Unicorn quinoa gluten-free butcher. Fingerstache seitan thundercats vexillologist migas tbh kickstarter iceland. Adaptogen migas disrupt, flexitarian banjo subway tile forage microdosing VHS roof party shabby chic tousled. Put a bird on it butcher gluten-free irony, fanny pack YOLO portland kickstarter prism bushwick.
+
+				p La croix photo booth hella chicharrones banh mi drinking vinegar vexillologist kinfolk. Direct trade bicycle rights gluten-free everyday carry sustainable pok pok letterpress fingerstache. Prism franzen celiac scenester heirloom, twee kickstarter poutine af tumblr unicorn next level. Snackwave quinoa master cleanse small batch. Pabst enamel pin VHS health goth semiotics try-hard affogato bespoke hell of, keytar 3 wolf moon cardigan occupy farm-to-table. Neutra fixie post-ironic enamel pin, hella sartorial la croix portland pour-over.
+
+				if listing && user
+					input(type="checkbox")#terms_check
+					label(for="terms_check") Confirm you have read the terms and that you are the owner of #{listing.business_name}
+					button(disabled="true" data-id=`${listing._id}` data-slug=`${listing.slug}`)#claim Claim Listing
+
+	#theError.slim
+		p
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/register.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/main.js")
+	script(src="/static/js/terms.js")

@@ -1,0 +1,44 @@
+.invalid {
+    border-bottom: solid 3px #d31c1c !important;
+    background: #ffefef !important;
+}
+
+.spinBtn {
+    position: relative;
+    &:before {
+	    content: '';
+	    position: absolute;
+	    width: 105%;
+	    height: 120%;
+	    background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%;
+	    top: -2px;
+	    left: -2px;
+	    background-size: 30px;
+	}
+}
+
+.editSpin:before {
+    background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%/20px !important;
+}
+
+.more {
+    text-align: center;
+    font-size: 22px;
+    border-bottom: solid 2px;
+    display: inline-block;
+    padding: 0px;
+    margin: 0px auto;
+}
+
+.phone {
+    font-weight: bold;
+    font-size: 16px;
+    background: url(/static/img/phone.png) no-repeat 0% 60%/20px;
+    padding-left: 25px;
+}
+
+.icon-search {
+    background: url(/static/img/search.png) no-repeat 50%/100%;
+    width: 30px;
+    height: 30px;
+}

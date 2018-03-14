@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const each = require('sync-each');
+const pagination = require('../helpers/pagination');
+
+const Postcode = require('./postcode');
+const Town = require('./town');
+const Suburb = require('./suburb');
 
 //book schema definition
 let ListingSchema = new Schema(
@@ -20,7 +26,10 @@ let ListingSchema = new Schema(
             type: String,
             unique: true
         },
-        description: String,
+        description: {
+            type: String,
+            text: true
+        },
         address: {
         	line_one: {
         		type: String,
@@ -29,23 +38,28 @@ let ListingSchema = new Schema(
         	line_two: String,
         	town: {
         		type: String,
-        		required: true
+        		required: true,
+                text: true
         	},
         	post_code: {
         		type: String,
-        		required: true
+        		required: true,
+                text: true
         	}
         },
         loc: { 
-            type: { type: String },
-            coordinates: [Number]
+            type: [Number],
+            index: '2d'
         },
         contact: {
         	website: String,
         	phone: String,
         	email: String
         },
-        industry: String,
+        industry: {
+            type: String,
+            text: true
+        },
         opening_hours: {
         	monday: {
         		open: {
@@ -140,7 +154,8 @@ let ListingSchema = new Schema(
         },
         services: {
             type: Array,
-            trim: true
+            trim: true,
+            text: true
         },
         social: {
         	style: {
@@ -169,31 +184,8 @@ let ListingSchema = new Schema(
             }
 	    },
 	    reviews: [{
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            rating: {
-                type: Number,
-                required: true,
-                validate: {
-                    validator: (rating) => rating > 0 && rating < 11,
-                    message: 'Must be a number between 1 and 10'
-                }
-            },
-            review: String,
-            approved: {
-                type: Boolean,
-                default: false
-            },
-            created_at: {
-                type: Date,
-                default: Date.now
-            },
-            curated: {
-                review: String,
-                img: String
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
         }],
 	    gallery: Array
     },
@@ -203,7 +195,7 @@ let ListingSchema = new Schema(
     }
 );
 
-ListingSchema.index({ "loc": "2dsphere" });
+// ListingSchema.index({ "loc": "2d" });
 
 ListingSchema.virtual('rating').get(function(){
 
@@ -276,9 +268,122 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
 };
 
-ListingSchema.statics.findNearest = function(postcode, callback){
+ListingSchema.statics.getLatLngsByTerm = function(term, callback){
+
+    this.locationType(term, (err, type) => {
+        if(err){ return callback(err); }
+        switch(type.name){
+            case 'postcode':
+                Postcode.findOne({postcode: term}, (err, postcode) => {
+                    if(err) return callback(err);
+                    if(!postcode) return callback({message: 'No Postcode found'});
+                    return callback(null, postcode.latitude, postcode.longitude);
+                });
+                break;
+            case 'town':
+                Town.findOne({name: term}, (err, town) => {
+                    if(err){ return callback(err); }
+                    if(!town){ return callback({message: 'No Town found'}); }
+                    return callback(null, town.latitude, town.longitude);
+                });
+                break;
+            case 'suburb':
+                Suburb.findOne({name: term}, (err, suburb) => {
+                    if(err){ return callback(err); }
+                    if(!suburb) return callback({message: 'No Suburb found'});
+                    return callback(null, suburb.latitude, suburb.longitude);
+                });
+                break;
+            default:
+                return callback({message: 'No LatLngs Found'});
+        }
+    });
 
 };
+
+ListingSchema.statics.locationType = function(term, callback){
+
+    if(term.split(',').length > 1){
+        return callback(null, {name: 'suburb', prop: 'address.line_two'});
+    }
+
+    Listing.count({'address.town': term})
+    .then((count) => {  
+        if(count > 0){
+            return callback(null, {name: 'town', prop: 'address.town'});
+        }else{
+            return callback(null, {name: 'postcode'});
+        }
+    })
+    .catch((err) => {
+        return callback(err);
+    });
+
+}
+
+ListingSchema.statics.getBySearchTerms = function(qService, qLocation, miles, page, callback){
+
+    const EARTH_RAIDIUS_MILES = 3963.2;
+
+    let searchForArr = [];
+    let query = {};
+    let docsPerPage = 15;
+
+    searchForArr.push({ industry: qService });
+    searchForArr.push({ services: qService });
+    searchForArr.push({ description: new RegExp(qService, 'i') });
+
+    this.getLatLngsByTerm(qLocation, (err, lat, lng) => {
+
+        if(err){ return callback(err); }
+
+        searchForArr.forEach((q) => {
+            q.loc = {
+                $geoWithin: { 
+                    $centerSphere: [ 
+                        [lng, lat],
+                        miles / 3963.2
+                    ] 
+                }      
+            };
+        });
+
+        this.count({$or: searchForArr})
+            .then((count) => {
+
+                const pageLinks = pagination.getLinks(count, docsPerPage, page, '/find/' + qService + '/' + qLocation);
+
+                this.find({$or: searchForArr})
+                    .limit(docsPerPage)
+                    .skip(pagination.getSkip(page, docsPerPage))
+                    .sort({loc: 'asc'}).exec((err, listings) => {
+
+                    if(err){ return callback(err); }
+
+                    if(!listings || listings.length == 0){
+                        return callback(null, [], pageLinks, 'Sorry, could not find any listings for ' + qService + ' in ' + qLocation);
+                    }
+
+                    return callback(null, listings, pageLinks);
+
+                });
+
+            })
+            .catch((e) => {
+                return callback(e);
+            });
+
+    });
+
+}
+
+// ListingSchema.statics.findSimilar = function(qService, qLocation, callback){
+
+//     this.find({}, (err, listings) => {
+//         callback(null, '');
+//     });
+
+// }
 
 var Listing = mongoose.model("Listing", ListingSchema);
 module.exports = Listing;

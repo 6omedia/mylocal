@@ -5,10 +5,19 @@ let User = require('../../../models/user');
 let Listing = require('../../../models/listing');
 let Industry = require('../../../models/industry');
 let Postcode = require('../../../models/postcode');
-let mockCollection = require('../../helpers.js').mockCollection;
-let mockJson = [require('../../mockdata/postcodes.json')]; //, require('../../mockdata/listings.json')];
+let Town = require('../../../models/town');
+let Term = require('../../../models/term');
+let Suburb = require('../../../models/suburb');
+let mockCollections = require('../../helpers.js').mockCollections;
+let mockJson = [
+	{ jsonArray: require('../../mockdata/postcodes.json'), Model: Postcode },
+	{ jsonArray: require('../../mockdata/towns.json'), Model: Town },
+	{ jsonArray: require('../../mockdata/suburbs.json'), Model: Suburb },
+	{ jsonArray: require('../../mockdata/terms.json'), Model: Term }
+];
+const pn = require('sync-node').createQueue();
 
-let each = require('async-each'); 
+let each = require('async-each');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../../app');
@@ -22,11 +31,7 @@ var agent = chai.request.agent(server);
 describe('Main API', () => {
 
 	before((done) => {
-		Postcode.remove({}, () => {
-			each(mockJson, (file, next) => {
-				mockCollection(file, Postcode, () => { next(); });
-			}, done() );
-		});
+		mockCollections(mockJson, () => { done(); });
 	});
 
 	describe('GET /api/locations/search', () => {
@@ -57,7 +62,7 @@ describe('Main API', () => {
 
             	chai.request(server).get('/api/locations/search?term=' + term)
             	.end((err, res) => {
-            		res.body.locations.length.should.equal(5);
+            		res.body.locations.length.should.equal(10);
             		res.body.locations.should.not.contains('Westbourne, Bournemouth');
 	                done();
             	});
@@ -78,16 +83,55 @@ describe('Main API', () => {
 
 		});
 
-		it('should return maximun of 5 results', (done) => {
+		it('should return maximun of 10 results', (done) => {
 			
 			term = 'b';
 
 			chai.request(server).get('/api/locations/search?term=' + term)
             .end((err, res) => {
-     			res.body.locations.length.should.equal(5);
+     			res.body.locations.length.should.equal(10);
                 done();
             });
 
+		});
+
+	});
+
+	describe('GET /api/terms/search', () => {
+
+		let term;
+
+		it('should return 200 and an array of services even if no term is given', (done) => {
+			chai.request(server).get('/api/terms/search')
+            .end((err, res) => {
+                res.body.should.have.property('terms');
+                res.should.have.status(200);
+                done();
+            });
+		});
+
+		it('should only return services, industries or problem that begin with the term', (done) => {
+			term = 'tr';
+
+			chai.request(server).get('/api/terms/search?term=' + term)
+            .end((err, res) => {
+                res.body.terms.length.should.equal(3);
+                res.body.terms.should.contains('Transportation'); // industry
+                res.body.terms.should.contains('Training, Fitness'); // service
+                res.body.terms.should.contains('Tripped fuse'); // problem
+                res.body.terms.should.not.contains('Timmy'); // problem
+				done();
+            });
+		});
+
+		it('should return maximun of 10 results', (done) => {
+			term = 'b';
+
+			chai.request(server).get('/api/terms/search?term=' + term)
+            .end((err, res) => {
+     			res.body.terms.length.should.equal(10);
+                done();
+            });
 		});
 
 	});

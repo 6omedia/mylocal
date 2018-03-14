@@ -1,0 +1,145 @@
+/* HERO SEARCH
+**********************************/
+
+.searchBox {
+	display: inline-block;
+    vertical-align: top;
+    position: relative;
+    input {
+        background: #ffffffb8;
+    	margin-right: 5px;
+    }
+}
+
+.heroSearch {
+    padding: 15px 0px 65px 0px;
+    text-align: center;
+    transition: 0.3s;
+	h1 {
+    	color: #fff;
+    	font-size: 28px;
+    	font-weight: bold;
+    	transition: 0.3s;
+    	span {
+    		color: $color-accent;
+    	}
+    }
+    .searchBox {
+    	margin-top: 40px;
+	    background: rgba(255, 255, 255, 0.26);
+	    padding: 10px;
+	    border-radius: 5px;
+    	button {
+		    padding: 8px 24px;
+		    font-size: $font-m;
+		    vertical-align: bottom;
+		    width: 100%;
+    	}
+    	input {
+		    font-size: 22px;
+		    padding: 10px 15px;
+		    color: #000;
+		    transition: 0.3s;
+	        width: 100%;
+	        margin-bottom: 10px;
+		    &:focus {
+		    	background: #fff;
+		    }
+    	}
+    }
+    @media(min-width: $medium){
+    	padding: 100px 0px 150px 0px;
+    	h1 {
+    		font-size: $font-xl;
+    	}
+    	.searchBox {
+    		input {
+    			margin-bottom: 0px;
+			    width: $search-width-m;
+    		}
+    		button {
+    			width: auto;
+    		}
+    	}
+    }
+    @media(min-width: $large){
+    	.searchBox {
+    		input {
+    			width: $search-width-l;
+    		}
+    	}
+    }
+    @media(min-width: $xlarge){
+    	.searchBox {
+    		input {
+    			width: $search-width-xl;
+    		}
+    	}
+    }
+}
+
+.heroSmall {
+    padding: 0px 0px 65px 0px !important;
+    h1 {
+        font-size: 38px !important;
+        margin: 0px !important;
+    }
+    .searchBox {
+        input {
+            font-size: 20px !important;
+            padding: 5px 10px !important;
+        }
+        button {
+            padding: 4px 15px !important;
+            font-size: 21px !important;
+        }
+    }
+    .YeahAutocomplete_list {
+        margin-top: 38px;
+    }
+}
+
+.YeahAutocomplete_list {
+    margin-top: 50px;
+    font-size: 20px;
+    width: calc(100% - 20px);
+    li {
+        padding: 5px 10px !important;
+        &:hover {
+            background: $color-primary;
+        }
+    }
+    @media(min-width: $medium){
+        width: $search-width-m;
+    }
+    @media(min-width: $large){
+        width: $search-width-l;
+    }
+    @media(min-width: $xlarge){
+        width: $search-width-xl;
+    }
+}
+
+#industry + .YeahAutocomplete_list {
+    margin-top: 50px;
+    font-size: 20px;
+    left: 10px;
+    @media(min-width: $small){
+        margin-top: 0px;
+        left: ($search-width-s + 15);
+    }
+    @media(min-width: $medium){
+        left: ($search-width-m + 15);
+    }
+    @media(min-width: $large){
+        left: ($search-width-l + 15);
+    }
+    @media(min-width: $xlarge){
+        left: ($search-width-xl + 15);
+    }
+}
+
+.yac_loading {
+    background: #f2f2f2 url(/static/img/useful/91.gif) no-repeat 95% 50% !important;
+    background-size: 20px !important;
+}

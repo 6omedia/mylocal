@@ -165,7 +165,7 @@ mainRoutes.post('/register', function(req, res){
 
 });
 
-mainRoutes.get('/listing', mid.loginRequired, function(req, res){
+mainRoutes.get('/listing', mid.onlySubscriber, function(req, res){
 
 	if(req.session.user.listing){
 		
@@ -181,6 +181,40 @@ mainRoutes.get('/listing', mid.loginRequired, function(req, res){
 	    });
 
 	}
+
+});
+
+mainRoutes.get('/terms', function(req, res, next){
+
+	if(!req.query.listing){
+
+		return res.render('terms', {
+	        error: '',
+	        user: req.session.user || false
+	    });
+
+	}
+
+	Listing.findOne({slug: req.query.listing})
+		.select({_id: true, business_name: true, slug: true, userId: true})
+		.lean()
+		.exec(function(err, listing){
+
+		if(err){
+			next(err);
+		}
+
+		if(listing.userId){
+			return res.redirect('/listing');
+		}
+
+		return res.render('terms', {
+	        error: '',
+	        user: req.session.user || false,
+	        listing: listing
+	    });
+
+	});
 
 });
 
@@ -267,83 +301,47 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 
 });
 
-mainRoutes.get('/find/:industry/:town', mid.loginRequired, function(req, res, next){
+mainRoutes.get('/listing/add', mid.onlySubscriber, function(req, res, next){
+
+	return res.render('listing-add', {
+        error: '',
+        user: req.session.user || false
+    });
+
+});
+
+mainRoutes.get('/find/:industry/:town', function(req, res, next){
 
  	let data = {};
 	data.success = 0;
 
-	var docsPerPage = 12;
 	var url = '/find/' + req.params.industry + '/' + req.params.town;
 
-	Listing.count({ 'address.town': req.params.town, industry: req.params.industry })
-		.then((count) => {
+	var page = req.query.page || 1;
 
-			Listing.find({
-				'address.town': req.params.town,
-				industry: req.params.industry
-			})
-			.limit(docsPerPage)
-			.skip(pagination.getSkip(req.query.page || 0, docsPerPage))
-			.exec(function(err, listings){
+	Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
+		(err, listings, pagination, message) => {
 
-				if(err){
-					return next(err);
-				}
+		if(err){
+			data.error = err;
+			return res.json(data);
+		}
 
-				if(listings.length > 0){
+		if(message){
+			data.message = message;
+		}
 
-			    	return res.render('home', {
-						home: true,
-						user: req.session.user,
-						listings: listings,
-						industry: req.params.industry,
-						town: req.params.town,
-						pagination: pagination.getLinks(count, docsPerPage, req.query.page || 0, url),
-						error: ''
-					});
-
-				}else{
-
-					// console.log('industry ', req.params.industry);
-
-					Listing.find({
-						'address.town': new RegExp(escapeRegex(req.params.town), 'gi'),
-						industry: new RegExp(escapeRegex(req.params.industry), 'gi')
-					}, function(err, listings){
-
-						if(err){
-							return next(err);
-						}
-
-						if(listings.length == 0){
-							data.message = 'Listing not found';
-							res.status(404);
-							return res.json(data);
-						}
-
-						return res.render('home', {
-							home: true,
-							listings: listings,
-							user: req.session.user,
-							industry: req.params.industry,
-							town: req.params.town,
-							pagination: pagination.getLinks(count, docsPerPage, req.query.page || 0, url),
-							correction: 'Did you mean ' + listings[0].industry + ' in ' + listings[0].address.town + '?',
-							error: ''
-						});
-
-					});
-
-				}
-
-			});
-
-		})
-		.catch((err) => {
-
-			return next(err);
-
+		return res.render('home', {
+			home: true,
+			user: req.session.user,
+			listings: listings,
+			industry: req.params.industry,
+			town: req.params.town,
+			pagination: pagination,
+			error: ''
 		});
+
+	});
 
 });
 

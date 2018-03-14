@@ -1,0 +1,51 @@
+/* COLORS */
+
+$color-primary:  	     #38c2dc;
+$color-secondary:        #227e8f;
+$color-accent:       	 #fc23ab;
+$color-accent-2: #fbc26a;
+$color-lightneutral:     #e4eeee;
+
+$color-text: 		#333; // #727272;
+$color-trans-white:  #ffffffb8;
+
+/* TYPOGRAPHY */
+
+$font-stack-primary: 	'Marcellus', serif;
+$font-stack-secondary:  'Didact Gothic', sans-serif;
+
+$search-width-s: calc(100% - 20px);
+$search-width-m: 295px;
+$search-width-l: 400px;
+$search-width-xl: 450px;
+
+$font-xs: 16px;
+$font-s: 18px;
+$font-m: 25px;
+$font-l: 30px;
+$font-xl: 46px;
+
+/* BREAK POINTS */
+
+$xsmall: 430px;
+$small:  576px;
+$medium: 768px;
+$large:  992px;
+$xlarge: 1200px;
+
+/* ZINDEXES */
+
+$zindex-dropdown-backdrop:  990 !default;
+$zindex-navbar:            1000 !default;
+$zindex-dropdown:          1000 !default;
+$zindex-fixed:             1030 !default;
+$zindex-sticky:            1030 !default;
+$zindex-modal-backdrop:    1040 !default;
+$zindex-modal:             1050 !default;
+$zindex-popover:           1060 !default;
+$zindex-tooltip:           1070 !default;
+
+/* Background Images */
+
+$business_one: '/static/img/bakery-1868925_1920.jpg';
+$business_two: '/static/img/596.jpg';

@@ -1,6 +1,12 @@
 [
 	{
-		"name": "Avacado",
-    	"industry": "Hmmm"
+		"name": "Mechanics",
+	    "industry": "Mechanics",
+	    "problems": [
+	    	{
+		        "name_short": "",
+		        "name_long": ""
+		    }
+		]
 	}
 ]

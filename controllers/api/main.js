@@ -5,10 +5,12 @@ const User = require('../../models/user');
 const Town = require('../../models/town');
 const Industry = require('../../models/industry');
 const Postcode = require('../../models/postcode');
+const Term = require('../../models/term');
 const path = require('path');
 const fs = require('fs');
 const mid = require('../../middleware/session');
 const backup = require('mongodb-backup');
+const searchLocation = require('../../helpers/dbhelpers').searchLocation;
 var csv = require('csvtojson');
 
 function escapeRegex(text){
@@ -27,19 +29,48 @@ apiRoutes.get('/locations/search', function(req, res, next){
 
 	}else{
 
-		Postcode.searchByTerm(req.query.term, (err, locations) => {
+		searchLocation(req.query.term, (err, locations) => {
 
 			if(err){
-				res.status(err.status || 500); 
+				res.status(err.status || 500);
 				return res.json(data);
 			}
 
 	 		data.locations = locations;
 	 		return res.json(data);
-
-	 	});
+			
+		});
 
 	}
+
+});
+
+apiRoutes.get('/terms/search', function(req, res, next){
+
+	let data = {};
+	data.success = 0;
+	data.terms = [];
+
+	if(!req.query.term || req.query.term == 'noterm'){
+		return res.json(data);
+	}
+
+	const term = new RegExp('^' + req.query.term, 'ig');
+
+	Term.find({name: term}).limit(10).exec((err, terms) => {
+
+		if(err){
+			res.status(err.status || 500); 
+			return res.json(data);
+		}
+
+		terms.forEach((term) => {
+			data.terms.push(term.name);
+		});
+
+ 		return res.json(data);
+
+ 	});
 
 });
 

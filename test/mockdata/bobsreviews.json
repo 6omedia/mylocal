@@ -1,0 +1,47 @@
+[
+	{
+        "rating": 2,
+        "review": "Was really bad",
+        "approved": false,
+        "curated": {
+            "review": "Yeahsnjsnas",
+            "img": "/static/img/kdls"
+        }
+    },
+    {
+        "rating": 6,
+        "review": "Was okish",
+        "approved": false,
+        "curated": {
+            "review": "Yeahsnjsnas",
+            "img": "/static/img/kdls"
+        }
+    },
+    {
+        "rating": 9,
+        "review": "Was really good",
+        "approved": true,
+        "curated": {
+            "review": "Yeahsnjsnas",
+            "img": "/static/img/kdls"
+        }
+    },
+    {
+        "rating": 8,
+        "review": "Was really good",
+        "approved": true,
+        "curated": {
+            "review": "Yeahsnjsnas",
+            "img": "/static/img/kdls"
+        }
+    },
+    {
+        "rating": 5,
+        "review": "Was okish",
+        "approved": true,
+        "curated": {
+            "review": "Yeahsnjsnas",
+            "img": "/static/img/kdls"
+        }
+    }
+]

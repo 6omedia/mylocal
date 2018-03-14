@@ -86,6 +86,11 @@ button:hover {
     background: #23dcff;
 }
 
+button:disabled {
+    background: #cfcfcf;
+    cursor: not-allowed;
+}
+
 .btn {
     color: #fff;
 }
@@ -132,6 +137,16 @@ button:hover {
 
 #theError p {
     margin: 0px;
+}
+
+#theError.slim {
+    position: fixed;
+    top: 95px;
+    width: 30%;
+    text-align: center;
+    margin: 0px auto;
+    left: 0px;
+    right: 0px;
 }
 
 .full {
@@ -1100,7 +1115,7 @@ h1 .edit-tool,
 }
 
 #page-claim .heroSearch {
-    padding: 0px 0px 150px 0px;
+    padding: 0px 0px 125px 0px;
 }
 
 #page-claim .heroSearch.heroSmall h1 {
@@ -1109,23 +1124,42 @@ h1 .edit-tool,
 }
 
 #page-claim .panel {
-    padding: 25px;
+    padding: 15px;
 }
 
 #page-claim .panel p {
-    font-size: 25px;
+    font-size: 18px;
 }
 
-#page-claim .panel button {
-    padding: 5px 25px;
+#page-claim .panel h2 {
+    font-size: 22px;
+    margin-top: 0px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#page-claim .panel a {
+    padding: 5px 18px;
     display: inline-block;
     margin-right: 5px;
+    font-size: 18px;
+    width: 100%;
+}
+
+#page-claim .panel address {
+    font-size: 16px;
+    height: 55px;
 }
 
 #page-claim #searchResults {
-    border-bottom: solid 1px #eee;
+    /*border-bottom: solid 1px #eee;
     padding: 5px 25px;
-    background: #f2f2f2;
+    background: #f2f2f2;*/
+}
+
+#page-claim #searchResults .panel {
+    margin-bottom: 30px;
 }
 
 /* EDIT PAGE
@@ -1669,4 +1703,162 @@ h1 .edit-tool,
     font-size: 18px;
     margin-right: 15px;
     color: #333;
+}
+
+.terms h1 {
+    margin-bottom: 40px;
+}
+
+.terms input {
+    display: inline-block;
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    vertical-align: sub;
+    margin-top: 20px;
+}
+
+.terms label {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.terms button {
+    transition: 0.3s;
+    display: block;
+    margin-top: 10px;
+}
+
+.cfb {
+    color: #fff;
+    margin-top: 15px;
+}
+
+.cfb a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* FORMS ================================*/
+
+.form {
+    max-width: 90%;
+    width: 640px;
+    background: #f2f2f2;
+    padding: 15px;
+}
+
+.form h2 {
+    margin-top: 0px;
+    color: #1ebbcb;
+    border-bottom: solid 1px #e7e7e7;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.form label,
+.form input,
+.form textarea {
+    width: 100%;
+}
+
+.form input:focus,
+.form textarea:focus {
+    border: solid 1px #38c2dc;
+    outline: none;
+}
+
+.form label {
+    font-size: 18px;
+    color: #397985;
+}
+
+.form input,
+.form textarea {
+    font-size: 20px;
+    padding: 5px 10px;
+    color: #555;
+    border: solid 1px #d7d7d7;
+}
+
+.form input[type="time"] {
+    border: none;
+    padding: 0px;
+    background: transparent;
+}
+
+.form ul,
+.form table {
+    margin-bottom: 25px;
+}
+
+.form ul li {
+    margin-bottom: 10px;
+}
+
+.form table td {
+    border: none;
+}
+
+.form table tr {
+    background: #f4fdff;
+}
+
+.form table tr:first-child {
+    background: #f2f2f2;
+}
+
+.form table tr:nth-child(even){
+    background: #ebf2f3;
+}
+
+.open_col,
+.close_col {
+    width: 15%;
+}
+
+.open_col.pad,
+.close_col.pad {
+    padding: 0px 0px 10px 5px;
+    text-align: left;
+}
+
+.thlabel {
+    width: 70%;
+    text-align: left;
+    padding-left: 15px;
+}
+
+/* LISTING ADD ================================*/
+
+#page-addlisting .form {
+    margin-top: 50px;
+}
+
+#services li {
+    margin-bottom: 10px;
+    display: inline-block;
+    background: #fff;
+    margin-right: 10px;
+}
+
+#services li span {
+    padding: 3px 10px;
+    float: left;
+    font-size: 16px;
+    border: solid 1px #e5e5e5;
+}
+
+#services li .x {
+    background: #d7d7d7;
+    width: 30px;
+    height: 30px;
+    float: right;
+}
+
+#page-addlisting .form button {
+    width: 60%;
+    margin: 15px 20% 0px 20%;
+    padding: 5px 0px;
+    font-size: 22px;
 }

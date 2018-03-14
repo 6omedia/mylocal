@@ -3,6 +3,9 @@ const listingRoutes = express.Router();
 const mongoose = require('mongoose');
 const User = require('../../models/user');
 const Listing = require('../../models/listing');
+const Postcode = require('../../models/postcode');
+const Town = require('../../models/town');
+const Suburb = require('../../models/suburb');
 const pagination = require('../../helpers/pagination');
 const bcrypt = require('bcrypt');
 const path = require('path');
@@ -35,6 +38,12 @@ listingRoutes.get('/', function(req, res){
 
 	if(req.query.search){
 		query.business_name = new RegExp(req.query.search, 'gi');
+	}
+
+	if(req.query.unowned){
+		if(req.query.unowned == 'true'){
+			query.userId = undefined;
+		}
 	}
 
 	Listing.count(query)
@@ -207,107 +216,44 @@ listingRoutes.get('/town/:town', function(req, res){
 
 // GET /find/:industry/:town
 
-listingRoutes.get('/find/:industry/:town', function(req, res){
+listingRoutes.get('/find/:industry/:town', function(req, res, next){
 
 	let data = {};
 	data.success = 0;
 
-	var docsPerPage = 12;
-	var url = '/find/' + req.params.industry + '/' + req.params.town;
+	let page = req.query.page || 1;
 
-	Listing.count({ 'address.town': req.params.town, industry: req.params.industry })
-		.then((count) => {
+	Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
+		(err, listings, pagination, message) => {
 
-			Listing.find({ $or: 
-					[
-						{
-							'address.town': req.params.town,
-							industry: req.params.industry
-						},
-						{
-							'address.town': req.params.town,
-							services: req.params.industry
-						},
-						{
-							'address.line_two': req.params.town,
-							industry: req.params.industry
-						},
-						{
-							'address.line_two': req.params.town,
-							services: req.params.industry
-						},
-						{
-							'address.post_code': req.params.town,
-							industry: req.params.industry
-						},
-						{
-							'address.post_code': req.params.town,
-							services: req.params.industry
-						}
-					]
-			})
-			.limit(docsPerPage)
-			.skip(pagination.getSkip(req.query.page || 0, docsPerPage))
-			.exec(function(err, listings){
+		if(err){
+			data.error = err;
+			return res.json(data);
+		}
 
-				if(err){
-					data.error = err.message || 'Internal Server Error';
-			    	res.status(err.status || 500);
-			    	return res.json(data);
-				}
+		if(message){
+			data.message = message;
+		}
 
-				if(listings.length > 0){
+		data.pagination = pagination;
+		data.listings = listings;
+		return res.json(data);
 
-					data.success = 1;
-					data.listings = listings;
-					data.pagination = pagination.getLinks(count, docsPerPage, req.query.page || 0, url);
-				    res.status(200);
-			    	return res.json(data);
+		// if(listings.length > 0){
+		// 	data.listings = listings;
+		// 	return res.json(data);
+		// }
 
-				}else{
+		// Listing.findSimilar(req.params.industry, req.params.town, (err, correction) => {
+		// 	if(err){
+		// 		data.error = err;
+		// 		return res.json(data);
+		// 	}
+		// 	data.correction = correction;
+		// 	return res.json(data);
+		// });
 
-					Listing.find({
-						'address.town': new RegExp(escapeRegex(req.params.town), 'gi'),
-						industry: new RegExp(escapeRegex(req.params.industry), 'gi')
-					}, function(err, listings){
-
-						if(err){
-							data.error = err.message || 'Internal Server Error';
-					    	res.status(err.status || 500);
-					    	return res.json(data);
-						}
-
-						// console.log('listinga ', listings);
-
-						if(listings.length == 0){
-							data.message = 'Listing not found';
-							res.status(404);
-							return res.json(data);
-						}
-
-						// console.log('DATA ', data);
-
-						data.success = 1;
-						data.listings = listings;
-						data.pagination = pagination.getLinks(count, docsPerPage, req.query.page || 0, url);
-						data.correction = 'Did you mean ' + listings[0].industry + ' in ' + listings[0].address.town + '?';
-					    res.status(200);
-				    	return res.json(data);
-
-					});
-
-				}
-
-			});
-
-		})
-		.catch((err) => {
-
-			data.error = err.message || 'Internal Server Error';
-			res.status(err.status || 500);
-			return res.send(data);
-
-		});
+	});
 
 });
 
@@ -541,8 +487,6 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 
 	let data = {};
 	data.success = 0;
-
-	console.log('body ', req.body);
 
 	if(!req.body.listingid){
 		res.status(400);

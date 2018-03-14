@@ -8,10 +8,7 @@
             "town": "Bournemouth",
             "post_code": "ABC 123"
         },
-        "loc": {
-        	"type": "Point",
-        	"coordinates": [-1.78654, 50.72542]
-        },
+        "loc": [-1.78654, 50.72542],
         "services": ["tattooing", "bodyart"],
         "industry": "tattooing"
 	},
@@ -24,10 +21,7 @@
             "town": "Poole",
             "post_code": "DFG 885"
         },
-        "loc": {
-        	"type": "Point",
-        	"coordinates": [-1.78654, 50.72542]
-        },
+        "loc": [-1.989046, 50.732080],
         "services": ["flowers", "weddings"],
         "industry": "florists"
 	},
@@ -35,18 +29,41 @@
 		"business_name": "Bobs Bakers",
         "slug": "bobs-bakers",
 		"address": {
-        	"line_one": "67 Hmmm Road",
-        	"line_two": "Hmmklington",
+        	"line_one": "1 Grand Ave",
+        	"line_two": "Southbourne",
         	"town": "Bournemouth",
-        	"post_code": "DFG 990"
+        	"post_code": "BH6 3SU"
         },
-        "loc": {
-        	"type": "Point",
-        	"coordinates": [-1.78654, 50.72542]
-        },
+        "loc": [-1.815657, 50.725999],
         "services": ["baking", "weddings", "bread", "Cakes"],
         "industry": "bakers"
 	},
+    {
+        "business_name": "Wildflour Bakery",
+        "slug": "wildflour-bakery",
+        "address": {
+            "line_one": "9 Penrith Rd",
+            "line_two": "Pokesdown",
+            "town": "Bournemouth",
+            "post_code": "BH5 1LT"
+        },
+        "loc": [-1.829215, 50.724048],
+        "services": ["baking", "weddings", "bread", "Cakes"],
+        "industry": "bakers"
+    },
+    {
+        "business_name": "Sweet Serenity",
+        "slug": "sweet-serenity",
+        "address": {
+            "line_one": "133 Commercial Rd",
+            "line_two": "Sterte",
+            "town": "Poole",
+            "post_code": "BH14 0JD"
+        },
+        "loc": [-1.951117, 50.723806],
+        "services": ["baking", "weddings", "bread", "Cakes"],
+        "industry": "bakers"
+    },
 	{
         "business_name": "Bruces Bar",
         "slug": "bruces-bar",
@@ -56,10 +73,8 @@
             "town": "Bournemouth",
             "post_code": "DFG 990"
         },
-        "loc": {
-            "type": "Point",
-            "coordinates": [-1.78654, 50.72542]
-        },
+        "loc": [-1.78654, 50.72542],
+        "description": "Awesome pub to get drunk in with beer garden and other things yeah",
         "services": ["Alcamohol"],
         "industry": "bars"
     }

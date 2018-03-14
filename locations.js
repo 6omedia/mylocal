@@ -14,6 +14,8 @@ var pn = SN.createQueue();
 
 var Listing = require('./models/listing');
 var Postcode = require('./models/postcode');
+var Town = require('./models/town');
+var Suburb = require('./models/suburb');
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
@@ -51,6 +53,10 @@ function geocodePostcode(postcode, callback){
 
 			const jsonData = JSON.parse(data);
 
+			// if(jsonData.error_message){
+			// 	return callback(jsonData.error_message);
+			// }
+
 			if(jsonData.results.length == 0){
 				return callback('No Results');
 			}else{
@@ -59,6 +65,8 @@ function geocodePostcode(postcode, callback){
 
 				const jsonLocation = jsonData.results[0].geometry.location;
 				const address = jsonData.results[0].address_components;
+
+			//	console.log(jsonData.results[0]);
 
 				const townFilter = address.filter(function( obj ) {
 					return obj.types.includes('postal_town');
@@ -69,6 +77,7 @@ function geocodePostcode(postcode, callback){
 				}
 
 				callback(null, jsonLocation.lng, jsonLocation.lat, town);	
+
 			}
 			
 		});
@@ -274,6 +283,123 @@ function updatesuburb_towns(callback){
 
 }
 
+function populateCollection(Model, distinctProp, callback){
+
+	Postcode.distinct(distinctProp, (err, docs) => {
+
+		console.log('found ' + docs.length);
+
+		var index = 0;
+
+		docs.forEach((doc) => {
+
+			pn.pushJob(function(){
+				return new Promise(function(resolve, reject){
+
+					geocodePostcode(doc, (err, lng, lat, town) => {
+
+						if(err){
+							console.log(err);
+							return reject();
+						}
+
+						if(!lat){
+							console.log('No latitude');
+							return reject();
+						}
+
+						var name = doc;
+						if(distinctProp == 'suburb'){
+							if(town == undefined){
+									
+								return resolve();
+
+							}else{
+								name = doc + ', ' + town;
+							}
+						}
+
+						var location = new Model({
+							name: name,
+						    county: '',
+						    latitude: lat,
+						    longitude: lng
+						});
+
+						location.save()
+							.then((err, item, saved) => {
+								index++;
+								if(saved > 0){
+									console.log(index + ' out of ' + count + ' updated');
+								}
+								resolve();
+							})
+							.catch((e) => {
+								console.log('Err');
+								reject(e);
+							});
+
+					});
+
+				});
+			});
+
+		});
+
+		pn.pushJob(function(){
+			return new Promise(function(resolve, reject){
+				callback();
+				resolve();
+			});
+		});	
+
+	});
+
+}
+
+function updateTownsLatLng(callback){
+
+	Town.find({latitude: null}, (err, towns) => {
+
+		console.log(towns);
+
+		towns.forEach((town) => {
+			pn.pushJob(function(){
+				return new Promise(function(resolve, reject){
+					console.log('TOWN ', town);
+					geocodePostcode(town.name, (err, lng, lat) => {
+
+						if(err){
+							console.log(err);
+							return reject();
+						}
+
+						town.update({ 
+							latitude: lat,
+							longitude: lng
+						}).then(() => {
+							return resolve();
+						}).catch((e) => {
+							console.log(e);
+							return reject();
+						});
+
+					});
+				});
+			});
+		});
+
+		pn.pushJob(function(){
+			return new Promise(function(resolve, reject){
+				resolve();
+				callback();
+			});
+		});
+
+	});
+
+}
+
 switch(process.argv[2]){
 
 	case undefined: 
@@ -316,6 +442,23 @@ switch(process.argv[2]){
 		break;
 	case 'suburbtowns':
 		updatesuburb_towns(() => {
+			process.exit();
+		});
+		break;
+	case 'poptowns':
+		populateCollection(eval(Town), 'town', (err) => {
+			if(err){console.log(err)}
+			process.exit();
+		});
+		break;
+	case 'popsuburbs':
+		populateCollection(eval(Suburb), 'suburb', (err) => {
+			if(err){console.log(err)}
+			process.exit();
+		});
+		break;
+	case 'townslatlng':
+		updateTownsLatLng(() => {
 			process.exit();
 		});
 		break;

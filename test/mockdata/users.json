@@ -3,6 +3,7 @@
     	"name": "Franky",
         "email": "frank@franky.com",
         "password": "abc",
+        "confirm_password": "abc",
         "user_role": "Subscriber"
     },
     {
@@ -29,12 +30,14 @@
     	"name": "Sally",
         "email": "sal@sally.com",
         "password": "890",
+        "confirm_password": "890",
         "user_role": "Editor"
     },
     {
     	"name": "Bill",
         "email": "george@georgy.com",
         "password": "456",
+        "confirm_password": "456",
         "user_role": "Admin"
     }
 ]

@@ -1,0 +1,182 @@
+/* HOME
+**********************************/
+
+.imgGrid {
+	img {
+		border-radius: 5px;
+	    @include coverimg;
+	    transition: 0.3s;
+	    height: 175px;
+	    width: 100%;
+	}
+	.post {
+	    position: relative;
+	    overflow: hidden;
+	    width: 50%;
+        float: left;
+    	border: solid 5px #fff;
+	    &:hover img {
+		    transform: rotate(3deg) scale(1.1);
+		}
+	}
+	h3 {
+	    @include textoverlay;
+	    font-size: 18px;
+	}
+	@media(min-width: $small){
+		h3 {
+			font-size: 20px;
+		}
+	}
+	@media(min-width: $medium){
+		.post {
+			width: auto;
+			height: auto;
+			float: none;
+		}
+		h3 {
+			font-size: 30px;
+		}
+		img {
+		    height: 490px;
+		}
+		.smallerImg {
+		    height: 225px;
+		    width: 100%;
+		    + h3 {
+			    font-size: 26px;
+			}
+		}
+		.evenSmallerImg {
+		    height: 225px;
+		    + h3 {
+			    font-size: 20px;
+			}
+		}
+		.evenSmallerPost {
+		    margin-bottom: 30px;
+		}
+	}
+}
+
+/* Call To Action Box ===================================*/
+
+.callToAction {
+    background: $color-lightneutral;
+    padding: 15px 5px 30px 5px;
+    margin: 0px 20px;
+    text-align: center;
+    h2 {
+    	margin-top: 0px;
+	    padding: 15px 15px 0px 15px;
+	    font-size: 38px;
+    }
+    p {
+    	font-size: 18px;
+    	padding: 0px 15px;
+		line-height: 1.5em !important;
+		@media(min-width: $medium){
+			font-size: 22px;
+		}
+    }
+    .button {
+	    display: inline-block;
+	    background: $color-accent-2;
+	    border-bottom: solid 5px desaturate(darken($color-accent-2, 5%), 10%);
+	    font-weight: bold;
+	    font-size: 24px;
+	    padding: 5px 15px;
+	    color: #196b9f;
+	    width: 115%;
+	    margin-left: -7.5%;
+	    text-align: center;
+	    margin-top: 15px;
+    }
+    @media(min-width: $small){
+    	padding: 25px 10px 40px 10px;
+    }
+}
+
+/* Social Icons ===================================*/
+
+.social {
+    padding: 0px;
+    margin: 0px;
+    li {
+    	display: inline-block;
+    	margin-right: 10px;
+    	a {
+    		width: 30px;
+		    height: 30px;
+		    display: inline-block;
+		    background-repeat: no-repeat;
+		    background-position: center;
+		    background-size: 30px;
+		    @media (min-width: $small){
+		    	width: 40px;
+			    height: 40px;
+			    background-size: 40px;
+		    }
+    	}
+    }
+}
+
+a.fb {
+	background-image: url(/static/img/Facebook.png);
+}
+
+a.ig {
+    background-image: url(/static/img/Instagram.png);
+}
+
+a.tw {
+    background-image: url(/static/img/Twitter.png);
+}
+
+a.gp {
+    background-image: url(/static/img/Google+.png);
+}
+
+/* Related =======================================*/
+
+.related {
+	margin-top: 40px;
+    border-top: solid 2px #f3f3f3;
+    padding-top: 20px;
+    h2 {
+    	margin-top: 0px;
+    }
+}
+
+/* Panel */
+
+.panel {
+	background: rgba(255, 255, 255, 0.93);
+    padding: 15px;
+    h2 {
+    	margin-top: 0px;
+    }
+    @media(min-width: $small){
+		width: 80%;
+	}
+	@media(min-width: $medium){
+		padding: 25px;
+	}
+}
+
+/* Map */
+
+#map {
+    width: 100%;
+    height: 445px;
+    background: #f2f2f2;
+    margin: 30px 0px;
+    p {
+	    text-align: center;
+	    margin-top: 37%;
+	    font-size: 22px;
+	}
+	@media(min-width: $medium){
+		margin: 0px;
+	}
+} 

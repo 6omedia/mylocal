@@ -6,12 +6,17 @@
 			input(type="text" placeholder="Find a...")#industry
 			input(type="text" placeholder="In...")#town
 			button#hFind Find
-
-	ul
+	.icon-search
+	.burger
+		div
+		div
+		div
+	ul.menu_main
 		if user
 			if !user.listing
-				li
-					a(href="/listing") Claim FREE Listing
+				if user.user_role != 'Admin' && user.user_role != 'Super Admin'
+					li
+						a(href="/listing") Claim FREE Listing
 			else
 				li
 					a(href="/listing") Edit Listing

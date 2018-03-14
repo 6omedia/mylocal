@@ -1,0 +1,143 @@
+extends layout
+
+block content
+
+	header.full
+		include ./partials/header
+
+	.bigWhite
+		.container#page-addlisting
+			h1 Add Listing
+
+			.form
+				h2 General
+				ul.list
+					li
+						label Business Name
+						input(type="text")
+					li
+						label About  
+						textarea
+					li
+						label Industry
+						input(type="text")
+				h2 Address
+				ul.list
+					li
+						label Line one
+						input(type="text")
+					li
+						label Line two
+							i - optional
+						input(type="text")
+					li
+						label City/Town
+						input(type="text")
+					li
+						label Postcode
+						input(type="text")
+				h2 Contact
+				ul.list
+					li
+						label Phone
+						input(type="text")
+					li
+						label Email
+						input(type="text")
+					li
+						label Website
+						input(type="text")
+				h2 Opening Hours
+				table
+					tr
+						th.thlabel
+						th.open_col.pad Open
+						th.close_col.pad Close
+					tr
+						th.thlabel Monday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Tuesday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Wednesday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Thursday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Friday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Saturday
+						td.open_col
+							input(type="time", value="00:00")
+						td
+							input(type="time", value="00:00")
+					tr
+						th.thlabel Sunday
+						td.open_col
+							input(type="time", value="00:00")
+						td.close_col
+							input(type="time", value="00:00")
+				h2 Services
+				ul.list
+					li
+						label Add Service
+						input(type="text")
+				ul#services
+					li 
+						span Something
+						.x
+					li 
+						span Otherthing
+						.x
+				h2 Social
+				ul.list
+					li
+						label Facebook
+						input(type="type").fb
+					li
+						label Twitter
+						input(type="type").tw
+					li
+						label Instagram
+						input(type="type").ig
+					li
+						label Google Plus
+						input(type="type").gp
+					li
+						label YouTube
+						input(type="type").yt
+					li
+						label Linked In
+						input(type="type").li
+					li
+						label Pinterest
+						input(type="type").pi
+
+				h2 Branding
+				ul.list
+					li
+						label Logo
+						input(type="file")
+					li
+						label Background Image
+						input(type="file")
+				h2 Gallary
+				button Add Listing

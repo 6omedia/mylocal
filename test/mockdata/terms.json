@@ -1,0 +1,78 @@
+[
+	{
+		"name": "Transportation",
+		"type": "Industry"
+	},
+	{
+		"name": "Bakeries",
+		"type": "Industry"
+	},
+	{
+		"name": "Training, Fitness",
+		"type": "Service"
+	},
+	{
+		"name": "Flat Tyre",
+		"type": "Problem"
+	},
+	{
+		"name": "Marketing",
+		"type": "Industry"
+	},
+	{
+		"name": "Pizza",
+		"type": "Service"
+	},
+	{
+		"name": "Tripped fuse",
+		"type": "Problem"
+	},
+	{
+		"name": "Timmy",
+		"type": "Problem"
+	},
+	{
+		"name": "Barney",
+		"type": "Industry"
+	},
+	{
+		"name": "Bellhop",
+		"type": "Service"
+	},
+	{
+		"name": "Bike Hire",
+		"type": "Service"
+	},
+	{
+		"name": "Bike Repair",
+		"type": "Service"
+	},
+	{
+		"name": "Bowling",
+		"type": "Industry"
+	},
+	{
+		"name": "Book Keeping",
+		"type": "Industry"
+	},
+	{
+		"name": "Buses",
+		"type": "Industry"
+	},
+	{
+		"name": "Ball Room",
+		"type": "Problem"
+	},
+	{
+		"name": "Bands",
+		"type": "Industry"
+	},
+	{
+		"name": "Brickys",
+		"type": "Industry"
+	},
+	{
+		"name": "Botox",
+		"type": "Service"
+	}
+]

@@ -10,7 +10,10 @@ let IndustrySchema = new Schema({
 		required: true
 	},
     category: String,
-    services: Array
+    services: [{
+        name: String,
+        problems: Array
+    }]
 });
 
 var Industry = mongoose.model("Industry", IndustrySchema);
@@ -25,10 +28,10 @@ Industry.find({}).exec(function(err, industies){
         
         Industry.insertMany(industryData)
             .then(function(industies) {
-                console.log('Industies Added');
+                // console.log('Industies Added');
             })
             .catch(function(err) {
-                console.log('Err ', err);
+                // console.log('Err ', err);
             });
 
     }

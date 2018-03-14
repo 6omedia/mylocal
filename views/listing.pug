@@ -6,19 +6,19 @@ block content
 		include ./partials/header
 
 	#page-listing(data-postcode=`${listing.address.post_code}` data-listingid=`${listing._id}`)
-		.theListing-bg(style=`background: linear-gradient(#0000, #${listing.branding.secondary_color}), url(${listing.branding.background}) no-repeat 50% 50%/100%` data-field="background").editable.editable-bg
+		.theListing-bg(style=`background: linear-gradient(#0000, #${listing.branding.secondary_color}), url(${listing.branding.background}) no-repeat 50% 50%/cover` data-field="background").editable.editable-bg
 			.container
 				.row
 					.col-sm-7
-						.colors.editable(data-field="colors")
-							.colorInputs
-								label Primary
-								input(type="text" class="jscolor {onFineChange:'update(this, 1)'}" value=`${listing.branding.primary_color}`)#q_color1
-								label Secondary
-								input(type="text" class="jscolor {onFineChange:'update(this, 2)'}" value=`${listing.branding.secondary_color}`)#q_color2
-								label Accent
-								input(type="text" class="jscolor {onFineChange:'update(this, 3)'}" value=`${listing.branding.accent}`)#q_color3
-								button(data-editing="colors")#update Save
+						//- .colors.editable(data-field="colors")
+						//- 	.colorInputs
+						//- 		label Primary
+						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 1)'}" value=`${listing.branding.primary_color}`)#q_color1
+						//- 		label Secondary
+						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 2)'}" value=`${listing.branding.secondary_color}`)#q_color2
+						//- 		label Accent
+						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 3)'}" value=`${listing.branding.accent}`)#q_color3
+						//- 		button(data-editing="colors")#update Save
 						h1(style=`color: ${listing.branding.primary_color}` data-field="business_name").editable #{listing.business_name}
 						ul.social(class=`${listing.social.style}` data-field="social" data-style=`${listing.social.style}`).editable
 							if listing.social.icons
@@ -59,14 +59,15 @@ block content
 							else
 								a(href="/login") Write a review 
 						br
-						a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone #{listing.contact.phone}
+						//- a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone #{listing.contact.phone}
+						a(href=`tel:${listing.contact.phone}`).phone.theListing-phone #{listing.contact.phone}
 					.col-sm-5
 						.logoBox(data-field="logo").theListing-logo.editable
 							img(src=`${listing.branding.logo}`)
 		.bigWhite
 			.container
 				.row
-					.col-sm-6
+					.col-sm-8.col-md-6
 						nav.tabs-listing
 							ul
 								li
@@ -183,16 +184,16 @@ block content
 								if more_reviews
 									a more reviews
 
-					.col-sm-6
+					.col-sm-4.col-md-6
 						#map
 
 				.related
 					h2 Other #{listing.industry} in #{listing.address.town}
 					.row
 						each listing in moreListings
-							.col-sm-3
+							.col-xs-6.col-sm-4.col-md-3
 								.listing
-									.heading(style=`background: url(${listing.branding.background}) no-repeat 50%/100%`)
+									.heading(style=`background: url(${listing.branding.background}) no-repeat 50%/cover`)
 										h3 #{listing.business_name}
 									.info
 										if listing.rating
@@ -251,8 +252,8 @@ block content
 
 				}
 
-			#editSide
-				h2 Edit
+			//- #editSide
+			//- 	h2 Edit
 
 			#image_library_modal
 				#image_library
@@ -309,8 +310,7 @@ block content
 					//- 		else
 					//- 			input(type="text").pi
 
-			#edit-listing Edit Listing
-
+			//- #edit-listing Edit Listing
 
 	script.
     

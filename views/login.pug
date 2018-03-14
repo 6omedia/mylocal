@@ -8,8 +8,8 @@ block content
 	#page-login
 		.bigBg
 			.container
-				h1.big_white_h1 Welcome, please login or if you dont have an account, 
-								a(href="/register") Sign Up Here
+				//- h1.big_white_h1 Welcome, please login or if you dont have an account, 
+				//- 				a(href="/register") Sign Up Here
 				.row
 					.col-sm-6
 						.panel
@@ -22,7 +22,8 @@ block content
 								span Don't have an Account?
 									a(href="/register")  Sign up Here
 								button(type="submit") Enter
-							#error #{error}
+							#error(class=error ? 'invalid' : '') #{error}
 
+	script(src="http://code.jquery.com/jquery-latest.js")
 	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
 	script(src="/static/js/main.js")

@@ -1,0 +1,119 @@
+.theListing-bg {
+	padding-top: 50px;
+    padding-bottom: 25px;
+    h1 {
+        font-weight: bold;
+        margin-top: 30px;
+        @media (min-width: $small) {
+            margin-top: 45px;
+        }
+        @media(min-width: $medium){
+            margin-top: 60px;
+        }
+        @media(min-width: $large){
+            margin-top: 115px;
+        }
+    }
+    @media (min-width: $medium){
+        height: 310px;
+        .social {
+            display: inline-block;
+        }
+    }
+    @media (min-width: $large){
+        height: auto;
+        padding-bottom: 40px;
+    }
+}
+
+.logoBox {
+    width: 120px;
+    height: 120px;
+    margin-top: 15px;
+    float: right;
+    @media (min-width: $small){
+        width: 145px;
+        height: 145px;
+        margin-top: -120px;
+    }
+    @media (min-width: $medium){
+        margin-top: 15px;
+    }
+    @media (min-width: $large){
+        max-width: 210px;
+        max-height: 175px;
+        object-fit: contain;
+        object-position: 50%;
+        width: auto;
+        height: auto;
+    }
+}
+
+.theListing-phone {
+    bottom: 0px;
+    background: #f7bc6a;
+    text-align: center;
+    padding: 10px 0px;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 4 !important;
+    @include fullwidthfixed;
+    @media (min-width: $small){
+        position: relative;
+        width: auto;
+        display: inline-block;
+        margin-top: 15px;
+        padding: 5px 10px;
+        background: transparent;
+        border: solid 2px #fff;
+        color: #fff;
+    }
+    &:hover {
+        color: #fff;
+    }
+}
+
+/* TABS ===============================*/
+
+.tabs-listing {
+	margin-bottom: 20px;
+    border-bottom: solid 2px;
+    ul {
+	    margin-bottom: -2px;
+    }
+    li {
+	    display: inline-block;
+	    a {
+    	    display: inline-block;
+		    font-size: 18px;
+		    padding: 10px 15px;
+		    background: #ececec;
+		    border-bottom: solid 2px;
+		    color: #5a5a5a;
+	    }
+    }
+    .currentTab {
+    	border: solid 2px;
+	    border-bottom: solid 2px #fff !important;
+	    background: #fff !important;
+    }
+}
+
+/* GALLERY *==============================*/
+
+.galleryBox {
+    .gallery {
+        li {
+            width: 48%;
+            display: inline-block;
+            margin-right: 2%;
+            margin-bottom: 2%;
+            img {
+                width: 100%;
+                height: 175px;
+                object-fit: cover;
+                cursor: pointer;
+            }
+        }
+    }
+}

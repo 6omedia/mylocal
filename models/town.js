@@ -2,13 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const townData = require('./data/towns.json');
 
-//book schema definition
 let TownSchema = new Schema({
 	name: {
 		type: String,
 		unique: true,
 		required: true
-	}
+	},
+    county: String,
+    latitude: Number,
+    longitude: Number
 });
 
 var Town = mongoose.model("Town", TownSchema);
@@ -23,10 +25,10 @@ Town.find({}).exec(function(err, towns){
         
         Town.insertMany(townData)
             .then(function(towns) {
-                console.log('Towns Added');
+                // console.log('Towns Added');
             })
             .catch(function(err) {
-                console.log('Err ', err);
+                // console.log('Err ', err);
             });
 
     }

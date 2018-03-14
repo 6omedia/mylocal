@@ -27,6 +27,7 @@ let UserSchema = new Schema(
           age: Number,
           website: String
         },
+        reviews: Array,
         created_at: Date,
         updated_at: Date  
     }

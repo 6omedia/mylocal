@@ -115,5 +115,14 @@
 	    "suburbTown": "",
 	    "latitude": "50.75146",
 	    "longitude": "-1.70058"
+	},
+	{
+		"postcode": "BH6 3SU",
+	    "county": "Dorset",
+	    "town": "Bournemouth",
+	    "suburb": "Southbourne",
+	    "suburbTown": "Southbourne, Bournemouth",
+	    "latitude": "50.725728", 
+	    "longitude": "-1.815036"
 	}
 ]

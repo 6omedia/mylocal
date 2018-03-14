@@ -1,0 +1,21 @@
+.rating {
+    display: inline-block;
+    vertical-align: top;
+    span {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(/static/img/star.png) no-repeat 50%/100%;
+        margin-right: 5px;
+        &.nostar {
+            background: url(/static/img/nostar.png) no-repeat 50%/100%;
+        }
+    }
+    a {
+        display: inline-block;
+        color: #fff;
+        margin-top: 3px;
+        vertical-align: bottom;
+        margin-left: 10px;
+    }
+}

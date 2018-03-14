@@ -42,7 +42,7 @@ var franky, bob, jonny, jenny, sally, george;
 var johnsTattoos, jensFlowers, bobsBakers, brucesBar;
 
 var users = {franky: "", bob: "", jonny: "", jenny: "", sally: "", george: ""};
-var listings = [johnsTattoos, jensFlowers, bobsBakers, brucesBar];
+var listings = {johnsTattoos: "", jensFlowers: "", bobsBakers: "", brucesBar: ""};
 
 /**************** TESTS ******************/
 
@@ -69,29 +69,41 @@ describe('Listing API Routes', () => {
                 }
                 index++;
             }
-
+ 
             index = 0;
 
-            for(var listing in listings) {
-                if(listings.hasOwnProperty(listing)) {
-                    var jsonListing = mockJsonListings[index];
-                    switch(jsonListing.business_name){
-                        case "Jonnys Tattoos":
-                            jsonListing.userId = users['jonny']._id;
-                            break;
-                        case "Jennys Flowers":
-                            jsonListing.userId = users['jenny']._id;
-                            break;
-                        case "Bobs Bakers":
-                            jsonListing.userId = users['bob']._id;
-                            break;
-                        default:
-                    }
-                    listings[listing] = new Listing(jsonListing);
-                    listingSaves.push(listings[listing].save());
+            mockJsonListings.forEach(function(listingObj){
+
+                var aListing = new Listing(listingObj);
+
+                switch(aListing.business_name){
+                    case "Jonnys Tattoos":
+                        aListing.userId = users['jonny']._id;
+                        users['jonny'].listing = aListing._id;
+                        listings.johnsTattoos = aListing;
+                        break;
+                    case "Jennys Flowers":
+                        aListing.userId = users['jenny']._id;
+                        users['jenny'].listing = aListing._id;
+                        listings.jensFlowers = aListing;
+                        break;
+                    case "Bobs Bakers":
+                        aListing.userId = users['bob']._id;
+                        users['bob'].listing = aListing._id;
+                        listings.bobsBakers = aListing;
+                        break;
+                    case "Bruces Bar":
+                        listings.brucesBar = aListing;
+                        break;
+                    default:
                 }
+
+                listingSaves.push(aListing.save());
                 index++;
-            }
+
+            });
+
+            var index = 0;
 
             Promise.all(userSaves.concat(listingSaves)).then(() => {
                 done();
@@ -110,7 +122,7 @@ describe('Listing API Routes', () => {
     		chai.request(server)
                 .get('/api/listings')
                 .end((err, res) => {
-                    res.body.listings.length.should.equal(4);
+                    res.body.listings.length.should.equal(6);
                     done();
                 });
 
@@ -160,7 +172,7 @@ describe('Listing API Routes', () => {
     	it('should return johnsTattoos', (done) => {
     		
     		chai.request(server)
-                .get('/api/listings/' + johnsTattoos._id)
+                .get('/api/listings/' + listings.johnsTattoos._id)
                 .end((err, res) => {
                     res.body.listing.business_name.should.equal('Jonnys Tattoos');
                     done();
@@ -231,7 +243,7 @@ describe('Listing API Routes', () => {
     		chai.request(server)
                 .get('/api/listings/town/Bournemouth')
                 .end((err, res) => {
-                    res.body.listings.length.should.equal(3);
+                    res.body.listings.length.should.equal(4);
                     done();
                 });
 
@@ -243,7 +255,7 @@ describe('Listing API Routes', () => {
                 .get('/api/listings/town/Bournemou')
                 .end((err, res) => {
                 	res.body.correction.should.equal('Did you mean Bournemouth?');
-                    res.body.listings.length.should.equal(3);
+                    res.body.listings.length.should.equal(4);
                     done();
                 });
 
@@ -266,114 +278,113 @@ describe('Listing API Routes', () => {
 
     describe('GET /find/:industry/:town', () => {
 
-        it('should return listings in the town searched for', (done) => {
+        it('should return listings in or near the town searched for', (done) => {
 
             chai.request(server)
                 .get('/api/listings/find/tattooing/Bournemouth')
                 .end((err, res) => {
-                    res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
                     res.body.listings.length.should.equal(1);
+                    res.body.listings[0].business_name.should.equal('Jonnys Tattoos');
                     done();
                 });
 
         });
 
-        it('should return listings in the suburb searched for', (done) => {
+        it('should return listings in or near the suburb searched for', (done) => {
 
-            
+            chai.request(server)
+                .get('/api/listings/find/bakers/Southbourne, Bournemouth')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(2);
+                    res.body.listings[0].business_name.should.equal('Wildflour Bakery');
+                    done();
+                });
 
         });
 
-        it('should return listings within 10 miles of the postcode searched for', (done) => {
+        it('should return listings within 5 miles of the postcode searched for', (done) => {
 
-            
+            chai.request(server)
+                .get('/api/listings/find/bakers/BH6 3SU')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(2);
+                    res.body.listings[0].business_name.should.equal('Wildflour Bakery'); // Wildflour Bakery
+                    done();
+                });
 
         });
 
-        it('should return message as not found with a suggestion for similar search term', (done) => {
+        it('should return 404 as nothing was found and nothing could be suggested', (done) => {
 
-
+            chai.request(server)
+                .get('/api/listings/find/knlkksj/Bournemouth')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(0);
+                    res.body.message.should.equal('Sorry, could not find any listings for knlkksj in Bournemouth');
+                    done();
+                });
 
         });
 
         it('should return correct listings for industry searched', (done) => {
 
-
+            chai.request(server)
+                .get('/api/listings/find/florists/Poole')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(1);
+                    res.body.listings[0].business_name.should.equal('Jennys Flowers');
+                    done();
+                });
 
         });
 
         it('should return correct listings for service searched', (done) => {
 
-            
+            chai.request(server)
+                .get('/api/listings/find/weddings/Poole')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(2);
+                    res.body.listings[0].business_name.should.equal('Jennys Flowers');
+                    done();
+                });
             
         });
 
         it('should return correct listings for problem searched', (done) => {
 
-            
+            chai.request(server)
+                .get('/api/listings/find/get drunk/Bournemouth')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(1);
+                    res.body.listings[0].business_name.should.equal('Bruces Bar');
+                    done();
+                });
             
         });
 
-    	// it('should return jonnystattoos and bobsBakers', (done) => {
-    		
-    	// 	chai.request(server)
-     //            .get('/api/listings/find/tattooing/Bournemo')
-     //            .end((err, res) => {
-     //            	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
-     //                res.body.listings.length.should.equal(1);
-     //                done();
-     //            });
+        it('should return correct listings for term searched in details', (done) => {
 
-    	// });
-
-    	// it('should return correction and johns tattoos', (done) => {
-    		
-    	// 	chai.request(server)
-     //            .get('/api/listings/find/tattooin/Bournemo')
-     //            .end((err, res) => {
-     //            	res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
-     //                res.body.listings.length.should.equal(1);
-     //                done();
-     //            });
-
-    	// });
-
-     //    it('should return correction and johns tattoos (missing characters)', (done) => {
+            chai.request(server)
+                .get('/api/listings/find/beer garden/Bournemouth')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(1);
+                    res.body.listings[0].business_name.should.equal('Bruces Bar');
+                    done();
+                });
             
-     //        chai.request(server)
-     //            .get('/api/listings/find/tattooin/Bournemoth')
-     //            .end((err, res) => {
-     //                res.body.correction.should.equal('Did you mean tattooing in Bournemouth?');
-     //                res.body.listings.length.should.equal(1);
-     //                done();
-     //            });
+        });
 
-     //    });
+        it('should return message with a suggestion for similar search term and return results for that term', (done) => {
 
-    	// it('should return 404 not found', (done) => {
-    		
-    	// 	chai.request(server)
-     //            .get('/api/listings/find/tattooing/thisisnotatown')
-     //            .end((err, res) => {
-     //            	res.body.message.should.equal('Listing not found');
-     //                res.should.have.status(404);
-     //                done();
-     //            });
+            chai.request(server)
+                .get('/api/listings/find/bakrs/Bournemouth')
+                .end((err, res) => {
+                    res.body.listings.length.should.equal(2);
+                    res.body.correction.should.equal('bakers');
+                    done();
+                });
 
-    	// });
-
-     //    // searching by services
-
-     //    it('should return pagination html', (done) => {
-            
-     //        chai.request(server)
-     //            .get('/api/listings/find/weddings/Bournemouth')
-     //            .end((err, res) => {
-     //                res.body.listings[0].business_name = 'Bobs Bakers';
-     //                done();
-     //            });
-
-     //    });
+        });
 
     });
 
@@ -401,7 +412,7 @@ describe('Listing API Routes', () => {
 
     	beforeEach((done) => {
 
-    		franky.update({listing: null})
+    		users.franky.update({listing: null})
     			.then(() => {
     				Listing.remove({business_name: 'Frankys Hotel'}, function(err){
 		    			done();
@@ -434,7 +445,7 @@ describe('Listing API Routes', () => {
     			agent.post('/api/listings/add')
     				.send(industryObj)
                     .end(function (err, res) {
-                    	User.findById(franky._id).populate('listing').exec(function(err, uFranky){
+                    	User.findById(users.franky._id).populate('listing').exec(function(err, uFranky){
                     		uFranky.listing.business_name.should.equal('Frankys Hotel');
                     		done();
                     	});
@@ -489,12 +500,12 @@ describe('Listing API Routes', () => {
 
     		logIn('george@georgy.com', '456', function(agent){
 
-    			industryObj.userId = franky._id;
+    			industryObj.userId = users.franky._id;
 
     			agent.post('/api/listings/add')
     				.send(industryObj)
                     .end(function (err, res) {
-                    	User.findById(franky._id).populate('listing').exec(function(err, uFranky){
+                    	User.findById(users.franky._id).populate('listing').exec(function(err, uFranky){
                     		uFranky.listing.business_name.should.equal('Frankys Hotel');
                     		done();
                     	});
@@ -513,7 +524,7 @@ describe('Listing API Routes', () => {
 
         beforeEach((done) => {
 
-            johnsTattoos.update({
+            listings.johnsTattoos.update({
                     business_name: 'Jonnys Tattoos',
                     address: {
                         line_one: '134 Yeah Street',
@@ -559,7 +570,7 @@ describe('Listing API Routes', () => {
     		chai.request(server)
                 .post('/api/listings/update')
                 .send({
-                    listingid: johnsTattoos._id,
+                    listingid: listings.johnsTattoos._id,
                     address: {
                         line_two: 'Somewhere Else'
                     },
@@ -626,7 +637,7 @@ describe('Listing API Routes', () => {
 
                 agent.post('/api/listings/update')
                     .send({
-                        listingid: johnsTattoos._id,
+                        listingid: listings.johnsTattoos._id,
                         address: {
                             line_one: '134 Yeah Street',
                             line_two: 'Somewhere Else'
@@ -635,7 +646,7 @@ describe('Listing API Routes', () => {
                     })
                     .end(function (err, res) {
 
-                        Listing.findById(johnsTattoos._id, function(err, jTattoos){
+                        Listing.findById(listings.johnsTattoos._id, function(err, jTattoos){
                             jTattoos.address.line_two.should.equal('Somewhere Else');
                             jTattoos.address.line_one.should.equal('134 Yeah Street');
                             jTattoos.business_name.should.equal('Jonnys Tattoos');
@@ -656,7 +667,7 @@ describe('Listing API Routes', () => {
 
                 agent.post('/api/listings/update')
                     .send({
-                        listingid: bobsBakers._id,
+                        listingid: listings.bobsBakers._id,
                         address: {
                             line_two: 'Somewhere Else'
                         },
@@ -681,7 +692,7 @@ describe('Listing API Routes', () => {
 
                 agent.post('/api/listings/update')
                     .send({
-                        listingid: bobsBakers._id,
+                        listingid: listings.bobsBakers._id,
                         address: {
                             line_two: 'Somewhere Else'
                         },
@@ -706,7 +717,7 @@ describe('Listing API Routes', () => {
 
                 agent.post('/api/listings/update')
                     .send({
-                        listingid: johnsTattoos._id,
+                        listingid: listings.johnsTattoos._id,
                         address: {
                             line_two: 'Somewhere Else'
                         },
@@ -715,7 +726,7 @@ describe('Listing API Routes', () => {
                     .end(function (err, res) {
                         
                         res.should.have.status(200);
-                        Listing.findById(johnsTattoos._id, function(err, jTattoos){
+                        Listing.findById(listings.johnsTattoos._id, function(err, jTattoos){
                             jTattoos.industry.should.equal('other things');
                             done();
                         });
@@ -749,11 +760,11 @@ describe('Listing API Routes', () => {
 
                     bruce.save().then(() => {
 
-    					brucesBar.update({userId: null})
+    					listings.brucesBar.update({userId: null})
     						.then(() => {
     							obj = {
 					    			userId: bruce._id,
-						    		listingid: brucesBar._id
+						    		listingid: listings.brucesBar._id
 						    	};
 		    					done();	
     						});
@@ -787,7 +798,7 @@ describe('Listing API Routes', () => {
             logIn('bruce@brucy.com', 'abc', function(agent){
 
                 agent.post('/api/listings/assign_owner')
-                    .send({ listingid: brucesBar._id })
+                    .send({ listingid: listings.brucesBar._id })
                     .end(function (err, res) {
                         
                         res.should.have.status(200);
@@ -836,7 +847,7 @@ describe('Listing API Routes', () => {
             logIn('bruce@brucy.com', 'abc', function(agent){
 
                 agent.post('/api/listings/assign_owner')
-                    .send({ listingid: bobsBakers._id })
+                    .send({ listingid: listings.bobsBakers._id })
                     .end(function (err, res) {
                         
                         res.should.have.status(403);
@@ -887,7 +898,7 @@ describe('Listing API Routes', () => {
     	it('should return 401 as no one is logged in', (done) => {
 
     		chai.request(server)
-                .delete('/api/listings/' + franky._id)
+                .delete('/api/listings/' + users.franky._id)
                 .end((err, res) => {
                 	res.body.error.should.equal('unauthenticated');
                     res.should.have.status(401);
@@ -902,7 +913,7 @@ describe('Listing API Routes', () => {
 
     		logIn('bob@bobert.com', 'abc', function(agent){
 
-    			agent.delete('/api/listings/' + bobsBakers._id)
+    			agent.delete('/api/listings/' + listings.bobsBakers._id)
                     .end(function (err, res) {
                         
                     	res.should.have.status(403);
@@ -920,7 +931,7 @@ describe('Listing API Routes', () => {
 
     		logIn('sal@sally.com', '890', function(agent){
 
-    			agent.delete('/api/listings/' + bobsBakers._id)
+    			agent.delete('/api/listings/' + listings.bobsBakers._id)
                     .end(function (err, res) {
                         
                     	res.should.have.status(403);
@@ -938,12 +949,12 @@ describe('Listing API Routes', () => {
 
     		logIn('george@georgy.com', '456', function(agent){
 
-    			agent.delete('/api/listings/' + bobsBakers._id)
+    			agent.delete('/api/listings/' + listings.bobsBakers._id)
                     .end(function (err, res) {
                         
                     	res.should.have.status(200);
 
-                    	Listing.findById(bobsBakers._id, function(err, listing){
+                    	Listing.findById(listings.bobsBakers._id, function(err, listing){
                     		expect(listing).to.not.exist;
                     		done();
                     	});

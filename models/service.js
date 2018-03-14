@@ -10,7 +10,10 @@ let ServiceSchema = new Schema({
 		required: true
 	},
     industry: String,
-    problems: Array
+    problems: [{
+        name_short: String,
+        name_long: String
+    }]
 });
 
 var Service = mongoose.model("Service", ServiceSchema);
@@ -25,10 +28,10 @@ Service.find({}).exec(function(err, services){
         
         Service.insertMany(serviceData)
             .then(function(industies) {
-                console.log('Services Added');
+                // console.log('Services Added');
             })
             .catch(function(err) {
-                console.log('Err ', err);
+                // console.log('Err ', err);
             });
 
     }

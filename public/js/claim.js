@@ -2,12 +2,23 @@
 
     var searchResults = $('#searchResults');
     var inputListing = $('#inputListing');
+    var findBtn = $('#find');
     var foundListing;
-   
+
+    //findBtn.prop('disabled', true);
+    searchResults.hide();
+
     function doError(err){
 
+        var errBox = $('#theError');
+
         $('#theError p').text(err);
-        $('#theError').show();
+        errBox.show();
+
+        setTimeout(
+        function(){
+            errBox.fadeOut(400);
+        }, 3000);
 
     }
 
@@ -16,77 +27,91 @@
     var listingAutocomplete = new YeahAutocomplete({
         input: 'inputListing',
         allowFreeType: true,
-        dataUrl: '/api/listings/?search=',
+        dataUrl: '/api/listings/?unowned=true&search=',
         method: 'GET',
         arrName: 'listings',
-        property: 'business_name'
+        property: 'business_name',
+        onResults: function(listings){
+
+            searchResults.empty();
+
+            $(listings).each(function(index, listing){
+
+                var contact = '';
+                var address = '';
+
+                if(listing.contact){ contact = listing.contact; }
+                if(listing.address){ address = listing.address; }
+
+                searchResults.append(`
+                    <div class="col-sm-4">
+                        <div class="panel">
+                            <h2>${listing.business_name}</h2>
+                            <p><b>Industry:</b> ${listing.industry || 'Unknown'}</p>
+                            <p><b>Phone:</b> ${contact.phone || 'Unknown'}</p>
+                            <p><b>Email:</b> ${contact.email || 'Unknown'}</p>
+                            <p>Address: </p>
+                            <address>
+                                ${address.line_one || ''}
+                                ${address.town || ''}
+                                ${address.post_code || ''}
+                            </address>
+                            <a href="/terms?listing=${listing.slug}" class="btn">Claim</a>
+                        </div>
+                    </div>
+                `);
+            });
+
+            searchResults.show();
+            listingAutocomplete.view.stopLoading();
+        }
     });
 
     inputListing.on('resultSelected', function(listing){
-       // console.log(inputListing.data('listing'));
-        foundListing = inputListing.data('listing');
+       // foundListing = inputListing.data('listing');
+       // findBtn.prop('disabled', false);
     });
 
-    $('#find').on('click', function(){
+    // findBtn.on('click', function(){
 
-        $('.heroSearch').addClass('heroSmall');
+    //     $('.heroSearch').addClass('heroSmall');
 
-        searchResults.append(`
-                <h2>${foundListing.business_name}</h2>
-                <h3>Industry: ${foundListing.industry}</h3>
-                <h3>Phone: ${foundListing.contact.phone}</h3>
-                <h3>Email: ${foundListing.contact.email}</h3>
-                <h3>Address: </h3>
-                <address>
-                    ${foundListing.address.line_one}
-                    ${foundListing.address.town}
-                    ${foundListing.address.post_code}
-                </address>
-                <h3>Details</h3>
-                <p> 
-                    ${foundListing.description}
-                </p>
-            `);
+    //     searchResults.empty();
 
-        $('.bigWhite .panel').show();
+    //     if(foundListing){
 
-    });
-	
-    $('#yes').on('click', function(){
+    //         searchResults.append(`
+    //             <h2>${foundListing.business_name}</h2>
+    //             <h3>Industry: ${foundListing.industry || 'Unknown'}</h3>
+    //             <h3>Phone: ${foundListing.contact.phone || 'Unknown'}</h3>
+    //             <h3>Email: ${foundListing.contact.email || 'Unknown'}</h3>
+    //             <h3>Address: </h3>
+    //             <address>
+    //                 ${foundListing.address.line_one || ''}
+    //                 ${foundListing.address.town || ''}
+    //                 ${foundListing.address.post_code || ''}
+    //             </address>
+    //             <h3>Details</h3>
+    //             <p> 
+    //                 ${foundListing.description || 'Unknown'}
+    //             </p>
+    //         `).show();
 
-        var btn = $(this); 
+    //         $('.panel').empty().append(`
+    //             <p>Do you own this business?</p>
+    //             <a href="/terms?listing=${foundListing.slug}" class="btn">Yes</a>
+    //             <a href="/listings/add" class="btn">Add Your Business</a>
+    //         `).show();
 
-        btn.addClass('spinBtn');
+    //     }else{
 
-        $.ajax({
-            url: '/api/listings/assign_owner',
-            method: 'POST',
-            data: {
-                listingid: foundListing._id
-            },
-            success: function(data){
+    //         searchResults.append(`
+    //             <p class="noresults">We don\'t have that listing, 
+    //             <a href="/listing/add?business_name=${inputListing.val()}">add it here</a></p>`
+    //         );
 
-                if(!data.error){
-                    window.location.replace('/listing/' + foundListing.slug);
-                }else{
-                    doError(data.error);
-                }
+    //     }
 
-                btn.removeClass('spinBtn');
-
-            },
-            error: function(a, b, c){
-                doError(a.responseJSON.error);
-                btn.removeClass('spinBtn');
-            }
-        });
-
-    });
-
-    $('#no').on('click', function(){
-
-        $(this).addClass('spinBtn');
-        
-    });
+    // });
 
 })(YeahAutocomplete);

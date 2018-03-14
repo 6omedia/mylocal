@@ -1,0 +1,20 @@
+[
+	{
+		"name": "Southampton",
+	    "county": "",
+	    "latitude": 50.922798,
+	    "longitude": -1.395515
+	},
+	{
+		"name": "Bournemouth",
+	    "county": "",
+	    "latitude": 50.719385, 
+	    "longitude": -1.880333
+	},
+	{
+		"name": "Poole",
+	    "county": "",
+	    "latitude": 50.713286, 
+	    "longitude": -1.986270
+	}
+]
