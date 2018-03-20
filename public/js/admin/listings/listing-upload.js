@@ -1,6 +1,11 @@
 (function(){
 
-	$('#jsonUpload').on('change', function(){
+	var uploadbtn = $('#jsonUpload');
+	var uploadBox = $('#upload_box');
+
+	uploadbtn.on('change', function(){
+
+		uploadBox.addClass('spinBtn');
 
 		var jsonFile = $(this).get(0).files[0];
 		var formData = new FormData();
@@ -40,10 +45,13 @@
 				msg.display(false);
 	    	}
 
+	    	uploadBox.removeClass('spinBtn');
+
 	    }).fail(function(xhr, status, hmm) {
 	       	console.log(xhr, status, hmm);
-	       	var msg = new Message(xhr, true, $('#msg'));
+	       	var msg = new Message(hmm, true, $('#msg'));
 			msg.display(false);
+			uploadBox.removeClass('spinBtn');
 	    });
 
 	});
