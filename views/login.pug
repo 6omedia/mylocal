@@ -12,13 +12,14 @@ block content
 				//- 				a(href="/register") Sign Up Here
 				.row
 					.col-sm-6
-						.panel
+						.panel.panel-only
 							h2 Login
 							form(action="/login" method="post")
 								label Email
 								input(type="text" name="email" class=yeah ? theUser.name : '')
 								label Password
 								input(type="password" name="password")
+								input(type="hidden", name="url", value=`${redirect_url}`)
 								span Don't have an Account?
 									a(href="/register")  Sign up Here
 								button(type="submit") Enter

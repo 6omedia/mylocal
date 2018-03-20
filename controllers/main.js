@@ -3,6 +3,7 @@ const mainRoutes = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Listing = require('../models/listing');
+const Review = require('../models/review');
 const Post = require('../models/post');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
@@ -36,7 +37,8 @@ mainRoutes.get('/', function(req, res){
 mainRoutes.get('/login', mid.loggedIn, function(req, res){
 
 	res.render('login', {
-		error: ''
+		error: '',
+		redirect_url: req.query.redirect || '/'
 	});
 
 });
@@ -66,7 +68,10 @@ mainRoutes.post('/login', function(req, res){
 			if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
 				return res.redirect('/admin');
 			}else{
-				return res.redirect('/profile');
+
+				let url = req.body.url || '/';
+				return res.redirect(url);
+
 			}
 
 		});
@@ -220,10 +225,20 @@ mainRoutes.get('/terms', function(req, res, next){
 
 mainRoutes.get('/listing/:slug', function(req, res, next){
 
-	var userOwnsListing = false;
+	var canWriteReview = true;
 
 	Listing.findOne({slug: req.params.slug})
-		.populate('reviews.user')
+		.populate({
+			path: 'reviews',
+			match: { approved: true},
+			options: { 
+				sort: { 'created_at': -1 },
+				limit: 20
+			},
+			populate: {
+				path: 'user'
+			}
+		})
 		.exec(function(err, listing){
 
 		if(err || !listing){
@@ -232,11 +247,11 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 
 		var more_reviews = false;
 
-		if(listing.reviews.length > 3){
+		if(listing.reviews.length > 20){
 			more_reviews = listing.reviews.length;
 		}
 
-		listing.reviews = listing.reviews.sort().splice(0, 10);
+		// listing.reviews = listing.reviews.sort().splice(0, 10);
 
 		try {
 	        listing.description = JSON.parse(listing.description);
@@ -265,17 +280,26 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 
 						if(user.listing && listing){
 							if(user.listing.equals(listing._id)){
-								userOwnsListing = true;
+								canWriteReview = false;
 							}
+						}
+
+						const userReview = listing.reviews.find(function(element) {
+							return element.user.equals(user._id);
+						});
+
+						if(userReview != undefined){
+							canWriteReview = false;
 						}
 
 						return res.render('listing', {
 							listing: listing,
+							//reviews: reviews,
 					        error: '',
 					        tab: req.query.tab || 'general',
 					        moreListings: moreListings,
 					        more_reviews: more_reviews,
-					    	userOwnsListing: userOwnsListing,
+					    	canWriteReview: canWriteReview,
 					        user: user || false
 					    });
 
@@ -285,11 +309,12 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 
 					return res.render('listing', {
 						listing: listing,
+						//reviews: reviews,
 				        error: '',
 				        tab: req.query.tab || 'general',
 				        moreListings: moreListings,
 				        more_reviews: more_reviews,
-				    	userOwnsListing: userOwnsListing,
+				    	canWriteReview: canWriteReview,
 				        user: req.session.user || false
 				    });
 
@@ -302,6 +327,10 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 });
 
 mainRoutes.get('/listing/add', mid.onlySubscriber, function(req, res, next){
+
+	if(req.session.user.listing){
+		return res.redirect('/');
+	}
 
 	return res.render('listing-add', {
         error: '',

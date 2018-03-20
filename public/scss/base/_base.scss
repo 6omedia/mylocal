@@ -58,16 +58,23 @@ a:hover, a:active, a:visited {
 /* Form Elements */
 
 button, .btn {
-	background: $color-primary;
 	border: none;
+	border-bottom: solid 3px #34b2ca;
+	border-radius: 0px;
+	background: $color-primary;
     color: #fff;
     &:hover {
     	background: lighten($color-primary, 10%);
 	    color: #fff;
 	}
+	&:disabled {
+	    background: #cfcfcf;
+	    cursor: not-allowed;
+	    border: none;
+	}
 }
 
-input {
+input, textarea {
 	border: none;
 	padding: 5px 10px;
 	&:focus {
@@ -85,22 +92,45 @@ ul {
 	list-style: none;
 }
 
-form {
+form, .form {
 	margin-bottom: 0px;
+	ul {
+		margin-bottom: 30px;
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+	li {
+		margin-bottom: 10px;
+	}
+	li:last-child {
+		margin-bottom: 0px;
+	}
 	label, input {
 		width: 100%;
 	}
-	input {
+	input, textarea {
 		font-size: 20px;
 	    margin-bottom: 10px;
-	    color: #ffffff;
+	    color: #000000;
 	    border: solid 1px #e2e2e2;
 	    box-shadow: 1px 1px 0px #c1c1c1;
+	    width: 100%;
+	   /* @media(min-width: $small){
+	    	width: auto;
+	    }*/
+	}
+	textarea {
+		height: 200px;
 	}
 	button {
 		font-size: 20px;
 	    padding: 5px 45px;
+	    width: 100%;
 	    margin: 10px auto 0px auto;
+	    @media(min-width: $small){
+	    	width: auto;
+	    }
 	}
 	span {
 		display: block;
@@ -108,6 +138,27 @@ form {
 			color: darken($color-primary, 15%);
 			&:hover {
 				color: $color-primary;
+			}
+		}
+	}
+	table {
+	    margin-bottom: 25px;
+	    tr {
+		    background: #f4fdff;
+		    &:first-child {
+			    background: #fff;
+			}
+			&:nth-child(even){
+			    background: #ebf2f3;
+			}
+		}
+		td {
+		    border: none;
+		}
+		input {
+			margin-bottom: 0px;
+			&[type="time"] {
+				line-height: 0.6;
 			}
 		}
 	}

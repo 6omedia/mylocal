@@ -23,6 +23,41 @@ let ReviewSchema = new Schema({
         type: Boolean,
         default: false
     },
+    messages: [{
+        created_at: {
+            type: Date,
+            default: Date.now
+        },
+        from: {
+            side: {
+                type: String,
+                validate: function(value){
+                    if(value == 'owner' || value == 'author'){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            },
+            name: String,
+            email: String
+        },
+        to: {
+            side: {
+                type: String,
+                validate: function(value){
+                    if(value == 'owner' || value == 'author'){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            },
+            name: String,
+            email: String
+        },
+        message: String
+    }],
     created_at: {
         type: Date,
         default: Date.now
@@ -33,9 +68,10 @@ let ReviewSchema = new Schema({
     }
 });
 
-ReviewSchema.statics.addReview = function(){
+ReviewSchema.methods.sendMessage = function(){
 
-
+    // send email
+        // once sent push message to review
 
 };
 

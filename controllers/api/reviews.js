@@ -6,6 +6,51 @@ const User = require('../../models/user');
 const Listing = require('../../models/listing');
 const Review = require('../../models/review');
 const mid = require('../../middleware/session');
+const pagination = require('../../helpers/pagination');
+
+reviewRoutes.get('/', function(req, res){
+
+	let data = {};
+	let query = {
+		approved: true
+	};
+
+	if(req.session.user){
+		
+		const role = req.session.user.user_role;
+
+		if(role == 'Editor' || role == 'Admin' || role == 'Super Admin'){
+
+			if(req.query.approved){
+				switch(req.query.approved){
+					case '1':
+						query.approved = true;
+						break;
+					case '0':
+						query.approved = false;
+						break;
+					default:
+				}
+			}else{
+
+				delete query.approved;
+
+			}
+
+		}
+	}
+
+	Review.find(query)
+		.then((reviews) => {
+			data.reviews = reviews;
+			return res.json(data);
+		})
+		.catch((e) => {
+			data.error = e.message || 'Internal Server Error';
+			res.status = e.status || 500;
+			return res.json(data);
+		});
+});
 
 reviewRoutes.get('/:listingid', function(req, res){
 
@@ -108,14 +153,15 @@ reviewRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 
 			Promise.all(
 				[
-					req.session.user.update({$push: {reviews: review._id}}),
-					Listing.update({_id: req.body.listingid}, {$push: {reviews: review._id}})
+					req.session.user.update({$push: {reviews: review}}),
+					Listing.findOneAndUpdate({_id: req.body.listingid}, {$push: {reviews: review}}, {new: true})
 				])
 				.then((yeah) => {
 					data.review = review;
 					data.success = 'Review Saved';
 					res.status(200);
 					return res.json(data);
+
 				})	
 				.catch((e) => {
 					console.log(e);

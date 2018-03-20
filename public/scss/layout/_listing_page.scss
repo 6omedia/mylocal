@@ -14,6 +14,11 @@
             margin-top: 115px;
         }
     }
+    .wrtieReview {
+        color: #fff;
+        display: inline-block;
+        vertical-align: top;
+    }
     @media (min-width: $medium){
         height: 310px;
         .social {
@@ -114,6 +119,48 @@
                 object-fit: cover;
                 cursor: pointer;
             }
+        }
+    }
+}
+
+.theReviews {
+    .wrtieReview {
+        margin-bottom: 20px;
+    }
+}
+
+.review {
+    margin-bottom: 15px;
+    overflow: auto;
+    padding-bottom: 10px;
+    p {
+        line-height: 1em !important;
+        font-size: 16px;
+    }
+    .rating {
+        margin-bottom: 10px;
+        span {
+            width: 16px;
+            height: 16px;
+        }
+    }
+    .box {
+        width: 395px;
+        max-width: 90%;
+        text-align: left;
+        padding: 15px;
+        margin: 95px auto;
+        h2 {
+            margin-top: -10px;
+        }
+        textarea, button {
+            width: 100%;
+        }
+        textarea {
+            font-size: 18px;
+        }
+        @media(min-width: $medium){
+
         }
     }
 }

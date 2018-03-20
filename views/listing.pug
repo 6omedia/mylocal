@@ -54,10 +54,11 @@ block content
 									else
 										span.nostar
 									- n++;
-							if user
-								.wrtieReview Write a review
-							else
-								a(href="/login") Write a review 
+							if canWriteReview
+								if user
+									.wrtieReview Write a review
+								else
+									a(href="/login") Write a review 
 						br
 						//- a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone #{listing.contact.phone}
 						a(href=`tel:${listing.contact.phone}`).phone.theListing-phone #{listing.contact.phone}
@@ -159,6 +160,13 @@ block content
 						else if tab == 'reviews'
 							h2 Reviews
 							.theReviews.shorter
+								if !listing.reviews
+									p No reviews yet, be the first to leave one.
+								if canWriteReview
+									if user
+										.wrtieReview.black Write a review
+									else
+										a(href=`/login?redirect=/listing/${listing.slug}?tab=reviews`) Write a review
 								each review in listing.reviews
 									.row
 										.review
@@ -175,12 +183,7 @@ block content
 														- n++;
 												.content
 													p #{review.review}
-								if !listing.rating
-									p No reviews yet, be the first to leave one.
-									if user
-										.wrtieReview.black Write a review
-									else
-										a(href="/login") Write a review
+								
 								if more_reviews
 									a more reviews
 
@@ -214,6 +217,8 @@ block content
 
 	if user
 		if userOwnsListing || user.user_role == 'Admin' || user.user_role == 'Super Admin'
+
+			a(href="/").floating_action.edit-listing_link Edit Listing
 
 			script.
 				function update(jscolor, color) {

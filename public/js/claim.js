@@ -44,7 +44,7 @@
                 if(listing.address){ address = listing.address; }
 
                 searchResults.append(`
-                    <div class="col-sm-4">
+                    <div class="col-sm-6 col-md-4">
                         <div class="panel">
                             <h2>${listing.business_name}</h2>
                             <p><b>Industry:</b> ${listing.industry || 'Unknown'}</p>

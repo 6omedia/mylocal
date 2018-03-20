@@ -10,6 +10,7 @@ const pagination = require('../../helpers/pagination');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
+const csv = require('csvtojson');
 const mid = require('../../middleware/session');
 const fileUpload = require('express-fileupload');
 
@@ -878,8 +879,8 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 
 	var ext = req.files.listings.name.substr(req.files.listings.name.lastIndexOf('.') + 1);
 
-	if(ext != 'json'){
-		body.error = 'file type is not supported please upload a json file';
+	if(ext != 'json' && ext != 'csv'){
+		body.error = 'file type is not supported please upload a json or csv file';
     	return res.status(400).json(body);
 	}
 
@@ -898,16 +899,76 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 			return res.json(body);
 	    }
 
-		let rawdata = fs.readFileSync(filePath);  
-		let listingArray = JSON.parse(rawdata);  
+		let rawdata = fs.readFileSync(filePath);
 
-		Listing.uploadFromJSON(listingArray, function(message){
+		if(ext == 'csv'){
 
-			body.success = message;
-			res.status(200);
-			return res.json(body);
+			let listingArray = [];
 
-		});
+			csv()
+			.fromString(rawdata)
+			.on('csv',(csvRow)=>{ // this func will be called 3 times
+			    listingArray.push({
+			    	business_name: csvRow[0],
+			    	address: {
+			    		line_one: csvRow[1],
+			    		line_two: csvRow[5],
+			    		town: csvRow[4],
+			    		post_code: csvRow[3]
+			    	},
+			    	contact: {
+			        	website: csvRow[9],
+			        	phone: csvRow[7],
+			        	email: csvRow[11]
+			        },
+			        social: {
+			        	icons: {
+			                facebook: {
+			                	platform: 'facebook',
+			                	link: csvRow[12]
+			                },
+			                twitter: {
+			                	platform: 'twitter',
+			                	link: csvRow[13]
+			                },
+			                googleplus: {
+			                	platform: 'googleplus',
+			                	link: csvRow[14]
+			                },
+			                linkedin: {
+			                	platform: 'linkedin',
+			                	link: csvRow[15]
+			                }
+			            }
+				    },
+			        industry: csvRow[17]
+			    });
+			})
+			.on('done',()=>{
+
+				Listing.uploadFromJSON(listingArray, function(message){
+
+					body.success = message;
+					res.status(200);
+					return res.json(body);
+
+				});
+
+			});
+
+		}else{
+
+			let listingArray = JSON.parse(rawdata);  
+
+			Listing.uploadFromJSON(listingArray, function(message){
+
+				body.success = message;
+				res.status(200);
+				return res.json(body);
+
+			});
+
+		}
 
 	});
 

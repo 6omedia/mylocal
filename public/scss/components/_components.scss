@@ -129,12 +129,20 @@ a.ig {
     background-image: url(/static/img/Instagram.png);
 }
 
+a.yt {
+    background-image: url(/static/img/YouTube.png);
+}
+
 a.tw {
     background-image: url(/static/img/Twitter.png);
 }
 
 a.gp {
     background-image: url(/static/img/Google+.png);
+}
+
+a.li {
+    background-image: url(/static/img/LinkedIn.png);
 }
 
 /* Related =======================================*/
@@ -151,8 +159,13 @@ a.gp {
 /* Panel */
 
 .panel {
-	background: rgba(255, 255, 255, 0.93);
-    padding: 15px;
+	/*background: rgba(255, 255, 255, 0.93);
+    padding: 15px;*/
+    background: #fff;
+    border: solid 10px #2d305012;
+    padding: 25px 40px;
+    box-shadow: 10px 10px 0px #ffffff69;
+    overflow: hidden;
     h2 {
     	margin-top: 0px;
     }
@@ -161,7 +174,18 @@ a.gp {
 	}
 	@media(min-width: $medium){
 		padding: 25px;
+		width: 100%;
 	}
+	&-only {
+        margin: 40px 0px;
+        .invalid {
+            margin-top: 15px;
+            text-align: center;
+        }
+        @media(min-width: $medium){
+            margin: 80px 0px;
+        }
+    }
 }
 
 /* Map */
@@ -179,4 +203,46 @@ a.gp {
 	@media(min-width: $medium){
 		margin: 0px;
 	}
-} 
+}
+
+/* Text Only Page */
+
+.textPage {
+	h1 {
+	    font-size: 36px;
+	    margin-bottom: 40px;
+	}
+	input[type="checkbox"] {
+		display: inline-block;
+	    margin-right: 10px;
+	    width: 15px;
+	    height: 15px;
+	    vertical-align: sub;
+	    margin-top: 20px;
+	    & + label {
+	    	font-size: 16px;
+   	 		vertical-align: middle;
+	    }
+	}
+	button {
+	    transition: 0.3s;
+	    display: block;
+	    margin-top: 10px;
+	    border: none;
+	    font-size: 20px;
+	    padding: 5px 10px;
+	}
+}
+
+/* Terms Box */
+
+.termsBox {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    @include indentbox;
+    margin-bottom: 20px;
+	p {
+		font-size: 16px;
+	}
+}

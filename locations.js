@@ -53,10 +53,6 @@ function geocodePostcode(postcode, callback){
 
 			const jsonData = JSON.parse(data);
 
-			// if(jsonData.error_message){
-			// 	return callback(jsonData.error_message);
-			// }
-
 			if(jsonData.results.length == 0){
 				return callback('No Results');
 			}else{
@@ -65,8 +61,6 @@ function geocodePostcode(postcode, callback){
 
 				const jsonLocation = jsonData.results[0].geometry.location;
 				const address = jsonData.results[0].address_components;
-
-			//	console.log(jsonData.results[0]);
 
 				const townFilter = address.filter(function( obj ) {
 					return obj.types.includes('postal_town');

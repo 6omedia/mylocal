@@ -3,11 +3,12 @@
 $color-primary:  	     #38c2dc;
 $color-secondary:        #227e8f;
 $color-accent:       	 #fc23ab;
-$color-accent-2: #fbc26a;
+$color-accent-2:         #fbc26a;
 $color-lightneutral:     #e4eeee;
 
 $color-text: 		#333; // #727272;
 $color-trans-white:  #ffffffb8;
+$color-trans-black:  rgba(0, 0, 0, 0.39);
 
 /* TYPOGRAPHY */
 
@@ -49,3 +50,7 @@ $zindex-tooltip:           1070 !default;
 
 $business_one: '/static/img/bakery-1868925_1920.jpg';
 $business_two: '/static/img/596.jpg';
+
+/* Other */
+
+$label-height: 195px;

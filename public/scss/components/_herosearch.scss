@@ -31,7 +31,7 @@
 	    border-radius: 5px;
     	button {
 		    padding: 8px 24px;
-		    font-size: $font-m;
+	        font-size: 23px;
 		    vertical-align: bottom;
 		    width: 100%;
     	}
@@ -91,7 +91,7 @@
         }
         button {
             padding: 4px 15px !important;
-            font-size: 21px !important;
+            font-size: 19px !important;
         }
     }
     .YeahAutocomplete_list {
@@ -104,6 +104,7 @@
     font-size: 20px;
     width: calc(100% - 20px);
     li {
+        margin-bottom: 0px;
         padding: 5px 10px !important;
         &:hover {
             background: $color-primary;

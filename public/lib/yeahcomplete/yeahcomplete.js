@@ -70,6 +70,7 @@ var YeahAutocomplete = (function(){
 		this.view = new View(options.input);
 		this.model = new Model();
 	
+		this.dataUrl = options.dataUrl;
 		this.onResults = null;
 
 		if(options.onResults){
@@ -77,7 +78,7 @@ var YeahAutocomplete = (function(){
 		}
 
 		this.view.input.on('input', function(){
-			thisYac.getResults($(this).val(), options.dataUrl, options.method, {}, options.arrName, options.property);
+			thisYac.getResults($(this).val(), thisYac.dataUrl, options.method, {}, options.arrName, options.property);
 		});
 
 		if(!options.allowFreeType){
@@ -131,8 +132,6 @@ var YeahAutocomplete = (function(){
 
 		}else{
 
-			console.log('AJAX');
-
 			$.ajax({
 				url: url,
 				method: 'POST',
@@ -147,6 +146,10 @@ var YeahAutocomplete = (function(){
 
 		}
 
+	};
+
+	YeahAutocomplete.prototype.updateUrl = function(url){
+		this.dataUrl = url;
 	};
 
 	return YeahAutocomplete;

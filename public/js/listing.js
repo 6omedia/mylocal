@@ -13,7 +13,7 @@
 	$('.wrtieReview').on('click', function(){
 
 		ratingPopUp.popUp('', `
-			<h1>Leave a Review</h1>
+			<h2>Leave a Review</h2>
 			<div class="form">
 				<ul>
 					<li>

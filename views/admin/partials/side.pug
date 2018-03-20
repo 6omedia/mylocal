@@ -25,6 +25,13 @@
 					a(href="/admin/listings/add") New Listing
 				li
 					a(href="/admin/listings/upload") Upload Listings
+		li(class=section === "reviews" ? "active" : "")
+			span(class=section === "reviews" ? "open noclickaway" : "") Reviews
+			ul.list.sub
+				li
+					a(href="/admin/reviews/search") Search Reviews
+				li
+					a(href="/admin/reviews/pending") Pending Reviews
 		li(class=section === "settings" ? "active" : "")
 			span(class=section === "settings" ? "open noclickaway" : "") Settings
 			ul.list.sub

@@ -35,12 +35,12 @@ h1 {
 }
 
 h2 {
-
+    color: var(--off-black);
 }
 
 h3 {
-
-}
+    color: var(--off-black);
+}   
 
 h4 {
     color: var(--off-black);
@@ -291,6 +291,21 @@ table tr:first-child {
     width: 105%;
     height: 120%;
     background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%;
+    top: -2px;
+    left: -2px;
+    background-size: 30px;
+}
+
+.spinFull {
+    position: relative;
+}
+
+.spinFull:before {
+    content: '';
+    position: fixed;
+    width: 101%;
+    height: 101%;
+    background: #ffffffd9 url(../img/useful/giphy.gif) no-repeat 50%;
     top: -2px;
     left: -2px;
     background-size: 30px;

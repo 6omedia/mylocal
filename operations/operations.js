@@ -12,17 +12,21 @@ var fs = require('fs');
 var SN = require('sync-node');
 var pn = SN.createQueue();
 
-var Listing = require('./models/listing');
-var Postcode = require('./models/postcode');
+// var Listing = require('../models/listing');
+// var Postcode = require('../models/postcode');
+
+// const geocodePostcode = require('./functions.js').geocodePostcode;
+const updateAllLocs = require('./functions.js').updateAllLocs;
+const countUnknownLocs = require('./functions.js').countUnknownLocs;
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var config = '';
 
 if(process.env.NODE_ENV == 'test'){
-	config = require('./config/test.json');
+	config = require('../config/test.json');
 }else{
-	config = require('./config/dev.json');
+	config = require('../config/dev.json');
 }
 
 let options = { 
@@ -35,15 +39,39 @@ mongoose.connect(config.db, options);
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
+function commandrequires(args, num){
+	if(args.length < num){
+		console.log('Requires ' + num + ' arguments'); 
+		process.exit();
+	}
+}
+
 switch(process.argv[2]){
 	case 'upload-csv':
+
+		
 
 		break;
 	case 'upload-json':
 		
+
+
 		break;
-	case 'unknown':
+	case 'unknown-locs':
 		
+		countUnknownLocs((count) => {
+			console.log(count + ' unknown location listings');
+			process.exit();
+		});
+
+		break;
+	case 'update-listing-locs':
+		
+		updateAllLocs((updated) => {
+			console.log(updated, ' listings were updated');
+			process.exit();
+		});
+
 		break;
 	default:
 }

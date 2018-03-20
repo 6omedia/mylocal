@@ -1,21 +1,19 @@
 [
 	{
-		"name": "Acoustic Engineers",
+		"name": "Restaurants",
 		"services": [
-			{
-				"name": "Sound Proofing",
-				"problems": [
-					"Room sounds wrong",
-					"make room sound better"
-				]
-			},
-			{
-				"name": "Bakeries",
-				"problems": [
-					"Room sounds wrong",
-					""
-				]
-			}
+			"Pizza",
+			"Fast Food",
+			"Salad Bar",
+			"All You Can Eat"
+		]
+	},
+	{
+		"name": "Barbers",
+		"services": [
+			"Mens Hair",
+			"Short Hair",
+			"Long Hair"
 		]
 	}
 ]

@@ -195,8 +195,6 @@ let ListingSchema = new Schema(
     }
 );
 
-// ListingSchema.index({ "loc": "2d" });
-
 ListingSchema.virtual('rating').get(function(){
 
     if(!this.reviews || this.reviews.length == 0){
@@ -241,7 +239,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
     listingArray.forEach(function(listing){
 
-        listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
+        // listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
 
         var listing = new Listing(listing);
         listing.save()
@@ -255,7 +253,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
             })
             .catch((err) => {
-                // console.log('err: ', err.errmsg);
+                // console.log('err: ', err);
                 failed++;
 
                 if(--tasksToGo === 0) {

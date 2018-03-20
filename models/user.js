@@ -27,7 +27,10 @@ let UserSchema = new Schema(
           age: Number,
           website: String
         },
-        reviews: Array,
+        reviews: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }],
         created_at: Date,
         updated_at: Date  
     }
