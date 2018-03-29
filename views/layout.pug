@@ -1,8 +1,10 @@
 include ./partials/_head
 	
-body
-	block content
+body(class=home == true ? 'home' : '')
+	.main_wrapper
+		block content
 
+	//-	.push
 	footer
 		if user
 			if user.user_role == 'Admin' || user.user_role == 'Super Admin'

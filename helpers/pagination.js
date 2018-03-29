@@ -13,18 +13,76 @@ function getSkip(page, docsPerPage) {
 function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 
 	let links = '<ul class="pagination">';
-	const pages = totalDocs / docsPerPage;
+	const pages = Math.round(totalDocs / docsPerPage);
 
-	for(let i=0; i<pages; i++){
-		const page = i+1;
-		let current = '';
-		if(page == currentPage)
-			current = 'active';
-		links += `
-			<li class="page-item ${current}">
-				<a class="page-link" href="${url}?page=${page}">${page}</a>
-			</li>
-		`;
+	if(pages > 10){
+
+		// const lastpage = pages; 
+		// const middlePage = Math.round((currentPage / 2) - 3);
+
+		// console.log('lastpage ', lastpage);
+		// console.log('middlePage ', middlePage);
+
+		// let current = '';
+		// if(currentPage == 1){
+		// 	current = 'active';
+		// }
+		// links += `
+		// 	<li class="page-item ${current}">
+		// 		<a class="page-link" href="${url}?page=1">1</a>
+		// 	</li>
+		// 	<li>...</li>
+		// `;
+
+		// for(let i=middlePage; i<6; i++){
+		// 	const page = i+1;
+		// 	current = '';
+		// 	if(page == currentPage)
+		// 		current = 'active';
+		// 	links += `
+		// 		<li class="page-item ${current}">
+		// 			<a class="page-link" href="${url}?page=${page}">${page}</a>
+		// 		</li>
+		// 	`;
+		// }
+
+		// current = '';
+		// if(currentPage == lastpage){
+		// 	current = 'active';
+		// }
+		// links += `
+		// 	<li>...</li>
+		// 	<li class="page-item ${current}">
+		// 		<a class="page-link" href="${url}?page=${lastpage}">${lastpage}</a>
+		// 	</li>
+		// `;
+
+		for(let i=0; i<pages; i++){
+			const page = i+1;
+			let current = '';
+			if(page == currentPage)
+				current = 'active';
+			links += `
+				<li class="page-item ${current}">
+					<a class="page-link" href="${url}?page=${page}">${page}</a>
+				</li>
+			`;
+		}
+
+	}else{
+
+		for(let i=0; i<pages; i++){
+			const page = i+1;
+			let current = '';
+			if(page == currentPage)
+				current = 'active';
+			links += `
+				<li class="page-item ${current}">
+					<a class="page-link" href="${url}?page=${page}">${page}</a>
+				</li>
+			`;
+		}
+
 	}
 
 	links += '</ul>';

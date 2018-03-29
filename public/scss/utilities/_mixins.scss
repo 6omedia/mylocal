@@ -40,3 +40,31 @@
     box-shadow: inset 2px 2px 10px #3333330f;
     border: solid 1px #e1e1e1;
 }
+
+@mixin beforeoverlay {
+    background: rgba(0,0,0,0.8);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+$checkered-size: 30px;
+
+@mixin checkered {
+    background-image:
+        -moz-linear-gradient(45deg, #000 25%, #fff 25%), 
+        -moz-linear-gradient(-45deg, #000 25%, #fff 25%),
+        -moz-linear-gradient(45deg, #fff 75%, #000 75%),
+        -moz-linear-gradient(-45deg, #fff 75%, #000 75%);
+    background-image:
+        -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, $color-grey-light), color-stop(.25, transparent)), 
+        -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, $color-grey-light), color-stop(.25, transparent)),
+        -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.75, transparent), color-stop(.75, $color-grey-light)),
+        -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.75, #fff), color-stop(.75, $color-grey-light));
+    -moz-background-size: $checkered-size $checkered-size;
+    background-size: $checkered-size $checkered-size;
+    -webkit-background-size: $checkered-size $checkered-size + 1; /* override value for shitty webkit */
+    background-position:0 0, ($checkered-size / 2) 0, ($checkered-size / 2) ($checkered-size - ($checkered-size / 2)), 0px ($checkered-size / 2);
+}

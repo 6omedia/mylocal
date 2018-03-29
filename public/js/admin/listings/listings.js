@@ -53,10 +53,10 @@
 		$('.galleryUl').empty();
 		for(i=0; i<gallery.length; i++){
 			$('.galleryUl').append(`
-					<li>
-						<img src="${gallery[i]}" />
-					</li>
-				`);
+				<li>
+					<img src="${gallery[i]}" />
+				</li>
+			`);
 		}
 	}
 
@@ -74,11 +74,19 @@
 		dataUrl: '/api/industries/search?term=',
 		method: 'GET',
 		arrName: 'results',
-		property: 'name'
+		property: '',
+		alter_results: function(result){
+			var related = '';
+			for(i=0; i<result.aliases.length; i++){
+				related += result.aliases[i];
+				if(i != result.aliases.length - 1){ related += ', ' }
+			}
+			return result.name + ' <i>' + related + '</i>';
+		}
 	});
 
 	input_industries.on('resultSelected', function(hmm){
-		
+
 		input_services.attr('disabled', false);
 
 		var servicesAutocomplete = new YeahAutocomplete({
@@ -367,14 +375,13 @@
 			};
 
 			addListingForm.send(dataObj, function(data){
-				
-				addListingForm.resetForm();
 
 				if(data.success){
 					var msg = new Message(data.success, false, $('#msg'));
 					msg.display(true);
+					addListingForm.resetForm();
 				}else{
-					var msg = new Message(data.responseJSON.error, true, $('#msg'));
+					var msg = new Message(data.error, true, $('#msg'));
 					msg.display(true);
 				}
 			

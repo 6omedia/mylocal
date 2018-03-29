@@ -18,6 +18,13 @@ var adminArea = (function(Accordian){
 
 		this.sideMenu = new Accordian('#side_menu');
 
+		$('.accordian').find('span').click(function(){
+			//Expand or collapse this panel
+			$(this).next().slideToggle('fast');
+			//Hide the other panels
+			$(".a_content").not($(this).next()).slideUp('fast');
+	    });
+
 	}
 
 	AdminArea.prototype.updateModelFromView = function(ideaBoxes) {

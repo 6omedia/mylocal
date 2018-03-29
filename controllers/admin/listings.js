@@ -18,9 +18,9 @@ listingRoutes.get('/', mid.onlyAdmin, function(req, res){
 		}
 
 		Listing.find({})
-			.sort({created_at: 1})
+			.sort({created_at: -1})
 			.limit(docsPerPage)
-			.skip(pagination.getSkip(req.query.page || 1, docsPerPage))
+		//	.skip(pagination.getSkip(req.query.page || 1, docsPerPage))
 			.populate('userId')
 			.exec(function(err, listings){
 
@@ -31,7 +31,7 @@ listingRoutes.get('/', mid.onlyAdmin, function(req, res){
 			res.render('admin/listings/all', {
 				section: 'listings',
 				listings: listings,
-				paginationLinks: pagination.getLinks(count, docsPerPage, req.query.page || 1),
+	//			paginationLinks: pagination.getLinks(count, docsPerPage, req.query.page || 1),
 				error: ''
 			});
 
@@ -40,6 +40,40 @@ listingRoutes.get('/', mid.onlyAdmin, function(req, res){
 	});
 
 });
+
+// listingRoutes.get('/', mid.onlyAdmin, function(req, res){
+
+// 	const docsPerPage = 20;
+
+// 	Listing.count({}, function(err, count){
+
+// 		if(err){
+// 			next(err);
+// 		}
+
+// 		Listing.find({})
+// 			.sort({created_at: 1})
+// 			.limit(docsPerPage)
+// 			.skip(pagination.getSkip(req.query.page || 1, docsPerPage))
+// 			.populate('userId')
+// 			.exec(function(err, listings){
+
+// 			if(err){
+// 				next(err);
+// 			}
+
+// 			res.render('admin/listings/all', {
+// 				section: 'listings',
+// 				listings: listings,
+// 				paginationLinks: pagination.getLinks(count, docsPerPage, req.query.page || 1),
+// 				error: ''
+// 			});
+
+// 		});
+
+// 	});
+
+// });
 
 listingRoutes.get('/add', mid.onlyAdmin, function(req, res){
 
@@ -66,7 +100,7 @@ listingRoutes.get('/edit/:listingid', mid.onlyAdmin, function(req, res, next){
 			next(err);
 		}
 
-		console.log('listing ', listing);								 			
+		// console.log('listing ', listing);								 			
 
 		var openingtimes = {};
 

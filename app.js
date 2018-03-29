@@ -25,6 +25,8 @@ var config = '';
 var cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 
+var attachTitleAndMeta = require('./middleware/seo.js').attachTitleAndMeta;
+
 if(process.env.NODE_ENV == 'test'){
 	config = require('./config/test.json');
 }else{
@@ -68,14 +70,16 @@ app.use(fileUpload());
 app.use('/static', express.static('public'));
 
 // main routes
-app.use('/', require('./controllers/main.js'));
+app.use('/', attachTitleAndMeta, require('./controllers/main.js'));
 app.use('/articles', require('./controllers/blog.js'));
+app.use('/dashboard', require('./controllers/dashboard.js'));
 
 // admin routes
 app.use('/admin', require('./controllers/admin/admin.js'));
 app.use('/admin/listings', require('./controllers/admin/listings.js'));
 app.use('/admin/blog', require('./controllers/admin/blog.js'));
 app.use('/admin/reviews', require('./controllers/admin/reviews.js'));
+app.use('/admin/settings', require('./controllers/admin/settings.js'));
 
 // api routes
 app.use('/api', require('./controllers/api/main.js'));
@@ -86,6 +90,11 @@ app.use('/api/industries', require('./controllers/api/industries.js'));
 app.use('/api/image_library', require('./controllers/api/image_library.js'));
 app.use('/api/blog', require('./controllers/api/blog.js'));
 app.use('/api/tags', require('./controllers/api/tags.js'));
+app.use('/api/settings', require('./controllers/api/settings.js'));
+
+app.get('*', function(req, res){
+	return res.render('404');
+});
 
 app.use(function(err, req, res, next) {
 	res.status(err.status || 500);

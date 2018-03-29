@@ -1,6 +1,9 @@
 [
 	{
 		"name": "Restaurants",
+		"aliases": [
+			"Restaurant", "Dining"
+		],
 		"services": [
 			"Pizza",
 			"Fast Food",
@@ -10,10 +13,25 @@
 	},
 	{
 		"name": "Barbers",
+		"aliases": [
+			"Hair Dressers",
+			"Hair Stylists"
+		],
 		"services": [
 			"Mens Hair",
 			"Short Hair",
 			"Long Hair"
+		]
+	},
+	{
+		"name": "Mechanic",
+		"aliases": [
+			"Car Garage", "Mechanics"
+		],
+		"services": [
+			"MOT",
+			"Servicing",
+			"Repair flat tyre"
 		]
 	}
 ]

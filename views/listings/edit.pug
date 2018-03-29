@@ -1,9 +1,9 @@
-extends layout
+extends ../layout
 
 block content
 
 	header.full
-		include ./partials/header
+		include ../partials/header
 
 	.pictureHeader
 		.container
@@ -18,10 +18,10 @@ block content
 						ul.list
 							li
 								label Business Name
-								input(type="text")
+								input(type="text")#q_business_name
 							li
 								label About  
-								textarea
+								textarea#q_description
 							li
 								label Industry
 								input(type="text")#q_industry
@@ -36,11 +36,11 @@ block content
 						ul.list
 							li
 								label Line one
-								input(type="text")
+								input(type="text")#q_address_lineone
 							li
 								label Line two
 									i - optional
-								input(type="text")
+								input(type="text")#q_address_linetwo
 							li
 								label City/Town
 								input(type="text")#q_town
@@ -51,13 +51,13 @@ block content
 						ul.list
 							li
 								label Phone
-								input(type="text")
+								input(type="text")#q_phone
 							li
 								label Email
-								input(type="text")
+								input(type="text")#q_email
 							li
 								label Website
-								input(type="text")
+								input(type="text")#q_website
 						h2 Opening Hours
 						table
 							tr
@@ -67,83 +67,85 @@ block content
 							tr
 								th.thlabel Monday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_mon_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_mon_close
 							tr
 								th.thlabel Tuesday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_tues_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_tues_close
 							tr
 								th.thlabel Wednesday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_wed_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_wed_close
 							tr
 								th.thlabel Thursday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_thurs_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_thurs_close
 							tr
 								th.thlabel Friday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_fri_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_fri_close
 							tr
 								th.thlabel Saturday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_sat_open
 								td
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_sat_close
 							tr
 								th.thlabel Sunday
 								td.open_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_sun_open
 								td.close_col
-									input(type="time", value="00:00")
+									input(type="time", value="00:00")#q_sun_close
 						h2 Social
 						ul.list
 							li
 								label Facebook
-								input(type="type").fb
+								input(type="type")#q_fb.fb
 							li
 								label Twitter
-								input(type="type").tw
+								input(type="type")#q_tw.tw
 							li
 								label Instagram
-								input(type="type").ig
+								input(type="type")#q_ig.ig
 							li
 								label Google Plus
-								input(type="type").gp
+								input(type="type")#q_gp.gp
 							li
 								label YouTube
-								input(type="type").yt
+								input(type="type")#q_yt.yt
 							li
 								label Linked In
-								input(type="type").li
+								input(type="type")#q_li.li
 							li
 								label Pinterest
-								input(type="type").pi
+								input(type="type")#q_pi.pi
 
 						h2 Branding
 						ul.list.branding_edit
 							li
-								label(for="logoupload").logo_upload
-									input(type="file")#logoupload
+								label#logo_upload
 									p Upload Logo
-									img(src="/static/img/596.jpg")
+									img(src="/static/img/raster.png")#q_logo
 							li
-								label.bg_upload
-									input(type="file")
+								label#bg_upload
 									p Upload Background
-									img(src="/static/img/596.jpg")
+									img(src="/static/img/raster.png")#q_bgimage
 						h2 Gallery
-						ul#gallery
+						.galleryBox
+							.btn-icon#addGalleryImgBtn
+								span.icon.icon-plus
+								span Add Gallery Image
+							ul#gallery.gallery.gallery-edit
 
 						h2 Terms &amp; Conditions
 
@@ -162,10 +164,23 @@ block content
 	#theError.slim
 		p
 
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn Upload Image
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
 	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/utils.js")
 	script(src="/static/js/helpers/form.js")
 	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
 	script(src="/static/lib/image_library/image_library.js")
 	script(src="/static/js/main.js")
-	script(src="/static/js/listings/formdata.js")
+	script(src="/static/js/listings/model.js")
 	script(src="/static/js/listings/listing.js")

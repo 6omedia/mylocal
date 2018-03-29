@@ -10,6 +10,15 @@ $color-text: 		#333; // #727272;
 $color-trans-white:  #ffffffb8;
 $color-trans-black:  rgba(0, 0, 0, 0.39);
 
+$color-grey-light: #f0f0f0;
+$color-grey-medium: #e1e1e1;
+$color-grey-dark: #cfcfcf;
+
+$color-success-light: #d1f2ce;
+$color-success-dark: darken($color-success-light, 45%);
+$color-error-light: #f2cece;
+$color-error-dark: darken($color-error-light, 45%); 
+
 /* TYPOGRAPHY */
 
 $font-stack-primary: 	'Marcellus', serif;

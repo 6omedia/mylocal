@@ -73,17 +73,23 @@
                             }
                         }
 
+                        var theLogo = '';
+
+                        if(listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined){
+                            theLogo = `<img src="${listing.branding.logo}" class="logo">`;
+                        }
+
                         string += `
                             <div class="col-sm-6 col-md-4">
                                 <div class="listing">
-                                    <div class="heading" style="background: url(${listing.branding.background}) no-repeat 50%/100%;">
+                                    <div class="heading" style="background: url(${listing.bgimage}) no-repeat 50%/100%;">
                                         <h2>${listing.business_name}</h2>
                                     </div>
                                     <div class="info">
                                         <div class="rating">${rating}</div>
                                         <a href="tel:${listing.contact.phone}" class="phone">${listing.contact.phone}</a>
                                         <a href="/listing/${listing.slug}" class="btn">View</a>
-                                        <img src="${listing.branding.logo}" class="logo">
+                                        ${theLogo}
                                     </div>
                                 </div>
                             </div>

@@ -17,11 +17,19 @@
 				if user.user_role != 'Admin' && user.user_role != 'Super Admin'
 					li
 						a(href="/listing") Claim FREE Listing
+					li
+						a(href="/dashboard") Dashboard
 			else
 				li
-					a(href="/listing") Edit Listing
+					a(href="/listing") Your Listing
+				li
+					a(href="/dashboard") Dashboard
 			li
 				a(href="/logout") Logout
+			li
+				a(href="/dashboard/notifications").icon.icon-bell
+					if user.notifications
+						.num user.notifications.length
 		else
 			li
 				a(href="/login") Login

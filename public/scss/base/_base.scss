@@ -4,10 +4,24 @@
 	box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main_wrapper {
+	min-height: calc(100vh - 280px);
+	@media(min-width: $medium){
+		min-height: calc(100vh - 280px);
+	}
+}
+
 body {
-	background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(../img/town1.jpeg) no-repeat 50%;
-	background-size: cover;
-	background-attachment: fixed;
+	&.home {
+		background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(../img/town1.jpeg) no-repeat 50%;
+		background-size: cover;
+		background-attachment: fixed;
+	}
 }
 
 /* Text */
@@ -82,6 +96,10 @@ input, textarea {
 	}
 }
 
+input[type="checkbox"] {
+	width: auto;
+}
+
 img {
 	max-width: 100%;
 }
@@ -90,6 +108,9 @@ ul {
 	padding: 0px;
 	margin: 0px;
 	list-style: none;
+	li.passwordli {
+		display: none;
+	}
 }
 
 form, .form {
@@ -162,6 +183,65 @@ form, .form {
 			}
 		}
 	}
+	.branding_edit {
+        li {
+            background: $color-lightneutral;
+            height: 160px;
+            overflow: hidden;
+            @media(min-width: $small){
+                height: $label-height;
+            }
+        }
+        p {
+            font-size: 16px;
+            text-align: center;
+            margin: 10px;
+            @media(min-width: $small){
+                width: 26%;
+                float: left;
+                height: $label-height - 20;
+                line-height: $label-height - 20 !important;
+            }
+        }
+        img {
+            object-fit: contain;
+            object-position: 50%;
+            /*background: #f7f7f7;*/
+            @include checkered;
+            @media(min-width: $small){
+                width: 68%;
+                height: 100%;
+                float: right;
+            }
+            @media(min-width: $large){
+                width: 70%;
+            }
+        }
+        label {
+            position: relative;
+            cursor: pointer;
+        }
+        label:before {
+            content: 'Upload';
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: $color-trans-black;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            text-align: center;
+            font-size: 22px;
+            padding-top: 80px;
+        }
+        label:hover:before {
+            display: inline-block;
+        }
+        label:hover > p {
+            border: dashed 2px #98c9c9;
+        }
+    }
 }
 
 /* Tables */
@@ -183,3 +263,4 @@ table {
 		}
 	}
 }
+

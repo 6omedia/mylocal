@@ -38,7 +38,7 @@ mainRoutes.get('/login', mid.loggedIn, function(req, res){
 
 	res.render('login', {
 		error: '',
-		redirect_url: req.query.redirect || '/'
+		redirect_url: req.query.redirect || null
 	});
 
 });
@@ -69,7 +69,8 @@ mainRoutes.post('/login', function(req, res){
 				return res.redirect('/admin');
 			}else{
 
-				let url = req.body.url || '/';
+				console.log(req.body.url);
+				let url = (req.body.url == undefined || req.body.url == 'null' ? '/dashboard' : req.body.url );
 				return res.redirect(url);
 
 			}
@@ -100,20 +101,6 @@ mainRoutes.get('/logout', function(req, res){
 			}
 		});
 	}
-
-});
-
-mainRoutes.get('/profile', mid.loginRequired, function(req, res){
-
-	var user = req.session.user;
-
-    return res.render('profile', {
-    	id: req.session.user._id,
-        name: user.name,
-        age: user.meta.age,
-        website: user.meta.website,
-       	user: user
-    });
 
 });
 
@@ -164,7 +151,7 @@ mainRoutes.post('/register', function(req, res){
         // login and start session
         req.session.userId = user._id;
         req.session.user = user;
-        return res.redirect('/profile');
+        return res.redirect('/dashboard');
 
     });
 
@@ -180,8 +167,10 @@ mainRoutes.get('/listing', mid.onlySubscriber, function(req, res){
 
 	}else{
 
-		return res.render('listing-claim', {
+		return res.render('listings/claim', {
 	        error: '',
+	        home: true,
+	        title: 'Claim Listing | MyLocal',
 	        user: req.session.user || false
 	    });
 
@@ -292,7 +281,10 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 							canWriteReview = false;
 						}
 
-						return res.render('listing', {
+						res.locals.title = res.locals.title.replace('%placeholder%', listing.business_name);
+						res.locals.meta = res.locals.meta.replace('%placeholder%', listing.business_name);
+
+						return res.render('listings/listing', {
 							listing: listing,
 							//reviews: reviews,
 					        error: '',
@@ -307,7 +299,7 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 
 				}else{
 
-					return res.render('listing', {
+					return res.render('listings/listing', {
 						listing: listing,
 						//reviews: reviews,
 				        error: '',
@@ -332,8 +324,12 @@ mainRoutes.get('/listing/add', mid.onlySubscriber, function(req, res, next){
 		return res.redirect('/');
 	}
 
-	return res.render('listing-add', {
+	res.locals.title = res.locals.title.replace('%placeholder%', '');
+	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
+
+	return res.render('listings/edit', {
         error: '',
+        home: true,
         user: req.session.user || false
     });
 
@@ -352,13 +348,23 @@ mainRoutes.get('/find/:industry/:town', function(req, res, next){
 		(err, listings, pagination, message) => {
 
 		if(err){
-			data.error = err;
-			return res.json(data);
+			return res.render('home', {
+				home: true,
+				user: req.session.user,
+				listings: [],
+				industry: req.params.industry,
+				town: req.params.town,
+				pagination: pagination,
+				error: 'No Listings Found'
+			});
 		}
 
 		if(message){
 			data.message = message;
 		}
+
+		res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
+		res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
 
 		return res.render('home', {
 			home: true,

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 const Schema = mongoose.Schema;
 const each = require('sync-each');
 const pagination = require('../helpers/pagination');
@@ -212,6 +214,22 @@ ListingSchema.virtual('rating').get(function(){
 
 });
 
+ListingSchema.virtual('bgimage').get(function(){
+
+    const bg = this.branding.background;
+
+    if(bg != undefined && bg != '' && bg != '/static/img/admin/placeholder-bg.png'){
+        return this.branding.background;
+    }
+
+    if(fs.existsSync(path.join(__dirname, '..', '/public/img/backgrounds/' + this.industry.toLowerCase() + '.jpg'))) {
+        return '/static/img/backgrounds/' + this.industry.toLowerCase() + '.jpg';       
+    }
+
+    return '/static/img/backgrounds/default.jpg';
+
+});
+
 /*
 
     membership...
@@ -223,7 +241,9 @@ ListingSchema.virtual('rating').get(function(){
 
 ListingSchema.pre('save', function(next){
 
-    this.slug = this.business_name.toString().toLowerCase().replace(/\s+/g, '-')
+    var strg = this.business_name + '-' + this.address.town + '-' + this._id;
+
+    this.slug = strg.toString().toLowerCase().replace(/\s+/g, '-')
         .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
         .replace(/^-+/, '').replace(/-+$/, '');
 
@@ -238,8 +258,6 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
     let tasksToGo = listingArray.length;
 
     listingArray.forEach(function(listing){
-
-        // listing.business_name = listing.business_name.substring(0, listing.business_name.indexOf('('));
 
         var listing = new Listing(listing);
         listing.save()
@@ -272,7 +290,7 @@ ListingSchema.statics.getLatLngsByTerm = function(term, callback){
         if(err){ return callback(err); }
         switch(type.name){
             case 'postcode':
-                Postcode.findOne({postcode: term}, (err, postcode) => {
+                Postcode.findOne({postcode: term.toUpperCase()}, (err, postcode) => {
                     if(err) return callback(err);
                     if(!postcode) return callback({message: 'No Postcode found'});
                     return callback(null, postcode.latitude, postcode.longitude);
@@ -327,8 +345,8 @@ ListingSchema.statics.getBySearchTerms = function(qService, qLocation, miles, pa
     let query = {};
     let docsPerPage = 15;
 
-    searchForArr.push({ industry: qService });
-    searchForArr.push({ services: qService });
+    searchForArr.push({ industry: new RegExp(qService, "i") });
+    searchForArr.push({ services: new RegExp(qService, "i") });
     searchForArr.push({ description: new RegExp(qService, 'i') });
 
     this.getLatLngsByTerm(qLocation, (err, lat, lng) => {

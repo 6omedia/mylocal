@@ -1,0 +1,180 @@
+extends ../layout
+
+block content
+
+	header.full.fixed
+		include ../partials/header
+
+	.bigWhite
+		.container
+			h1.spaced Listing Details
+
+			include _nav
+			
+			.row
+				.col-sm-8
+					.form
+						a(href=`/listing/${listing.slug}`) View Listing
+						h2 General
+						ul.list
+							li
+								label Business Name
+								input(type="text", value=`${listing.business_name}`)#q_business_name
+							li
+								label About  
+								textarea#q_description #{listing.description}
+							li
+								label Industry
+								input(type="text", value=`${listing.industry}`)#q_industry
+						h2 Services
+						ul.list
+							li
+								label Add Service
+								input(type="text").inline_btn#q_services
+								.btn +
+						ul#services
+							each service in listing.services
+								li
+									span #{service}
+									.icon.icon-cross
+						h2 Address
+						ul.list
+							li
+								label Line one
+								input(type="text", value=`${listing.address.line_one}`)#q_address_lineone
+							li
+								label Line two
+									i - optional
+								input(type="text", value=`${listing.address.line_two}`)#q_address_linetwo
+							li
+								label City/Town
+								input(type="text", value=`${listing.address.town}`)#q_town
+							li
+								label Postcode
+								input(type="text", value=`${listing.address.post_code}`)#q_postcode
+						h2 Contact
+						ul.list
+							li
+								label Phone
+								input(type="text", value=`${listing.contact.phone}`)#q_phone
+							li
+								label Email
+								input(type="text", value=`${listing.contact.email}`)#q_email
+							li
+								label Website
+								input(type="text", value=`${listing.contact.website}`)#q_website
+						h2 Opening Hours
+						table
+							tr
+								th.thlabel
+								th.open_col.pad Open
+								th.close_col.pad Close
+							tr
+								th.thlabel Monday
+								td.open_col
+									input(type="time", value=hours.mon.o)#q_mon_open
+								td.close_col
+									input(type="time", value=hours.mon.c)#q_mon_close
+							tr
+								th.thlabel Tuesday
+								td.open_col
+									input(type="time", value=hours.tues.o)#q_tues_open
+								td.close_col
+									input(type="time", value=hours.tues.c)#q_tues_close
+							tr
+								th.thlabel Wednesday
+								td.open_col
+									input(type="time", value=hours.wed.o)#q_wed_open
+								td.close_col
+									input(type="time", value=hours.wed.c)#q_wed_close
+							tr
+								th.thlabel Thursday
+								td.open_col
+									input(type="time", value=hours.thurs.o)#q_thurs_open
+								td.close_col
+									input(type="time", value=hours.thurs.c)#q_thurs_close
+							tr
+								th.thlabel Friday
+								td.open_col
+									input(type="time", value=hours.fri.o)#q_fri_open
+								td.close_col
+									input(type="time", value=hours.fri.c)#q_fri_close
+							tr
+								th.thlabel Saturday
+								td.open_col
+									input(type="time", value=hours.sat.o)#q_sat_open
+								td
+									input(type="time", value=hours.sat.c)#q_sat_close
+							tr
+								th.thlabel Sunday
+								td.open_col
+									input(type="time", value=hours.sun.o)#q_sun_open
+								td.close_col
+									input(type="time", value=hours.sun.c)#q_sun_close
+						h2 Social
+						ul.list
+							li
+								label Facebook
+								input(type="type", value=`${social.facebook}`)#q_fb.fb
+							li
+								label Twitter
+								input(type="type", value=`${social.twitter}`)#q_tw.tw
+							li
+								label Instagram
+								input(type="type", value=`${social.instagram}`)#q_ig.ig
+							li
+								label Google Plus
+								input(type="type", value=`${social.googleplus}`)#q_gp.gp
+							li
+								label YouTube
+								input(type="type", value=`${social.youtube}`)#q_yt.yt
+							li
+								label Linked In
+								input(type="type", value=`${social.linkedin}`)#q_li.li
+							li
+								label Pinterest
+								input(type="type", value=`${social.pinterest}`)#q_pi.pi
+
+						h2 Branding
+						ul.list.branding_edit
+							li
+								label#logo_upload
+									p Upload Logo
+									img(src=`${logo}`)#q_logo
+							li
+								label#bg_upload
+									p Upload Background
+									img(src=`${background}`)#q_bgimage
+						h2 Gallery
+						.galleryBox
+							.btn-icon#addGalleryImgBtn
+								span.icon.icon-plus
+								span Add Gallery Image
+							ul#gallery.gallery.gallery-edit
+								each img in listing.gallery
+									li
+										img(src=`${img}`)
+				.col-sm-4
+					button#edit-listing-btn.side_submit(data-listingid=`${listing._id}`) Update Listing
+
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn Upload Image
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/listings/model.js")
+	script(src="/static/js/listings/listing.js")
+	script(src="/static/js/dashboard/dashboard.js")
+	script(src="/static/js/main.js")

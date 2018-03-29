@@ -23,11 +23,11 @@
 	HTML
 
 	<div class="accordian" id="navAccordian">
-		<div class="a_title">Heading One</div>
+		<span class="a_title">Heading One</span>
 		<div class="a_content">
 			...content...
 		</div>
-		<div class="a_title">Heading Two</div>
+		<span class="a_title">Heading Two</span>
 		<div class="a_content">
 			...content...
 		</div>
@@ -42,7 +42,7 @@ var accordian = (function(){
 	// pass in a jquery object of the accordian container
 
 	function Accordian(a, opening){
-		
+
 		var thisAccordian = this;
 		this.headings = $(a).find('span');
 		this.expandedContent = $(a).find('.sub');
@@ -92,6 +92,8 @@ var accordian = (function(){
 
 		}else{
 
+			console.log('opening');
+
 			$(heading).addClass('open');
 			$(heading).next('.sub').slideDown(300);
 
@@ -100,7 +102,7 @@ var accordian = (function(){
 	};
 
 	Accordian.prototype.closeContent = function(){
-		this.headings.removeClass('open');
+		this.headings.removeClass('open'); // not working
 		this.expandedContent.slideUp(300);
 	}
 

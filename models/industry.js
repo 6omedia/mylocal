@@ -10,6 +10,7 @@ let IndustrySchema = new Schema({
 		required: true
 	},
     category: String,
+    aliases: [String],
     services: [String]
 });
 

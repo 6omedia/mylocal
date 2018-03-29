@@ -7,6 +7,16 @@ footer {
     padding: 30px 0px;
 }
 
+/*footer, .push {
+	height: 505px;
+	@media(min-width: $medium){
+		height: 275px;
+	}
+	@media(min-width: $large){
+		height: 300px;
+	}
+}*/
+
 .quickLinks {
 	a {
 		font-size: 16px;

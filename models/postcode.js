@@ -1,4 +1,5 @@
 const each = require('sync-each');
+const geocodePostcode = require('../operations/functions').geocodePostcode;
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -98,6 +99,34 @@ PostcodeSchema.statics.searchByTerm = function(term, callback){
         if(err){ return callback(err) }
         return callback(null, locations);
     });
+
+};
+
+PostcodeSchema.statics.getLatlngs = function(postcode, callback){
+
+    Postcode.findOne({postcode: postcode})
+        .then((foundPostcode) => {
+
+            if(foundPostcode && foundPostcode != undefined){
+                return callback(null, foundPostcode.longitude, foundPostcode.latitude);
+            }
+
+            geocodePostcode(postcode, function(err, lng, lat, town){
+                    
+                if(err){
+                    let pcError = new Error('Not a valid Postcode');
+                    pcError.status = 400;
+                    return callback(pcError);
+                }
+
+                return callback(null, lng, lat);
+
+            });
+
+        })
+        .catch((err) => {
+            return callback(err);
+        });
 
 };
 

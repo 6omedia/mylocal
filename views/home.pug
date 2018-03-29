@@ -26,7 +26,7 @@ block content
 						each listing in listings
 							.col-sm-4
 								.listing
-									.heading(style=`background: url(${listing.branding.background}) no-repeat 50%/100%;`)
+									.heading(style=`background: url(${listing.bgimage}) no-repeat 50%/100%;`)
 										h2 #{listing.business_name}
 									.info
 										.rating
@@ -37,7 +37,8 @@ block content
 											span.nostar
 										a(href=`tel:${listing.contact.phone}`).phone #{listing.contact.phone}
 										a(href=`/listing/${listing.slug}`).btn View
-										img(src=`${listing.branding.logo}`).logo
+										if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+											img(src=`${listing.branding.logo}`).logo
 				div !{pagination}
 
 			if !listings

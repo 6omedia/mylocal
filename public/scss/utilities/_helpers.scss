@@ -21,6 +21,13 @@
     background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%/20px !important;
 }
 
+.spaced {
+    margin: 60px 0px 20px 0px;
+    @media(min-width: $medium){
+        margin: 60px 0px 35px 0px;
+    }
+}
+
 .more {
     text-align: center;
     font-size: 22px;
@@ -34,29 +41,6 @@
     position: fixed;
     bottom: 10px;
     left: 10px;
-}
-
-#theError {
-    display: none;
-    width: 100%;
-    background: #ffdcdc;
-    padding: 10px 15px;
-    color: #ba2727;
-    font-weight: bold;
-    margin-bottom: 20px;
-    border: solid 5px #e29090;
-    p {
-        margin: 0px;
-    }
-    &.slim {
-        position: fixed;
-        top: 95px;
-        width: 30%;
-        text-align: center;
-        margin: 0px auto;
-        left: 0px;
-        right: 0px;
-    }
 }
 
 input.inline_btn {
@@ -83,10 +67,94 @@ input.inline_btn {
     background-size: 100%;
     width: 30px;
     height: 30px;
+    display: inline-block;
     &-search {
-        background-image: url(/static/img/search.png);
+        background-image: url(/static/img/icons/search.png);
     }
     &-cross {
-        background-image: url(/static/img/cross.png);
+        background-image: url(/static/img/icons/cross.png);
+    }
+    &-plus {
+        background-image: url(/static/img/icons/plus.png);
+    }
+    &-prev {
+        background-image: url(/static/img/prev.png);   
+    }
+    &-bell {
+        background-image: url(/static/img/icons/bell.png);
+        & .num {
+            background: #dc2a2a;
+            width: 16px;
+            height: 16px;
+            border-radius: 100%;
+            color: #fff;
+            font-size: 11px;
+            text-align: center;
+        }
+    }
+}
+
+.btn-icon {
+    background: $color-grey-light;
+    display: inline-block;
+    margin-bottom: 20px;
+    cursor: pointer;
+    span {
+        display: inline-block !important;
+        vertical-align: middle;
+        padding: 0px 10px;
+        font-size: 17px;
+    }
+    .icon {
+        background-color: $color-primary;
+        background-size: 20px;
+        display: inline-block;
+    }
+    &:hover {
+        background: $color-grey-medium;
+        .icon {
+            background-color: lighten($color-primary, 5%);
+        }
+    }
+}
+
+#theError, .theError {
+    display: none;
+    width: 100%;
+    background: $color-success-light;
+    padding: 10px 15px;
+    color: $color-success-dark;
+    font-weight: bold;
+    margin-bottom: 20px;
+    p {
+        margin: 0px;
+    }
+    .icon-cross {
+        background-size: 16px;
+        float: right;
+        width: 19px;
+        height: 19px;
+        background-color: $color-success-dark;
+        border-radius: 100%;
+        padding: 14px;
+        cursor: pointer;
+    }
+    &.slim {
+        position: fixed;
+        top: 0px;
+        text-align: left;
+        margin: 0px auto;
+        left: 0px;
+        right: 0px;
+        z-index: $zindex-popover;
+        font-size: 19px;
+    }
+    &.error {
+        background: $color-error-light;
+        color: $color-error-dark;
+        /*border: solid 5px $color-error-dark;*/
+        .icon-cross {
+            background-color: $color-error-dark;
+        }
     }
 }

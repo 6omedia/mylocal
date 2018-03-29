@@ -38,7 +38,7 @@ function geocodePostcode(postcode, callback){
 			const jsonData = JSON.parse(data);
 
 			if(jsonData.results.length == 0){
-				return callback('No Results');
+				return callback(new Error('No Results'));
 			}else{
 
 				let town;

@@ -31,6 +31,10 @@ let UserSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }],
+        message_chains: [{
+            type: Schema.Types.ObjectId,
+            ref: 'MessageChain'
+        }],
         created_at: Date,
         updated_at: Date  
     }

@@ -7,6 +7,7 @@ const Postcode = require('../../models/postcode');
 const Town = require('../../models/town');
 const Suburb = require('../../models/suburb');
 const pagination = require('../../helpers/pagination');
+const slugifyListing = require('../../helpers/utilities').slugifyListing;
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
@@ -16,14 +17,6 @@ const fileUpload = require('express-fileupload');
 
 function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
-
-function slugify(text){
-
-	return text.toString().toLowerCase().replace(/\s+/g, '-')
-        .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')
-        .replace(/^-+/, '').replace(/-+$/, '');
-
 }
 
 // GET / 	(use query string to serach ?search=name);
@@ -215,6 +208,41 @@ listingRoutes.get('/town/:town', function(req, res){
 
 });
 
+listingRoutes.get('/find/search', function(req, res, next){
+
+	let data = {};
+	data.success = 0;
+
+	let query = {};
+
+	if(req.query.name && req.query.name != ''){
+		query.business_name = new RegExp('^' + req.query.name, 'i');
+	}
+
+	if(req.query.industry && req.query.industry != ''){
+		query.industry = new RegExp('^' + req.query.industry, 'i');
+	}
+
+	if(req.query.town && req.query.town != ''){
+		const town = new RegExp('^' + req.query.town, 'ig');
+		query['address.town'] = town;
+	}
+
+	Listing.find(query).limit(20).sort({created_at: -1})
+		.populate('userId')
+		.then((listings) => {
+			data.listings = listings;
+			res.status(200);
+			return res.send(data);
+		})
+		.catch((err) => {
+			data.error = err.message || 'Internal Server Error';
+			res.status(err.status || 500);
+			return res.send(data);
+		});	
+
+});
+
 // GET /find/:industry/:town
 
 listingRoutes.get('/find/:industry/:town', function(req, res, next){
@@ -291,7 +319,7 @@ listingRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 
 	let listingObj = { 
         business_name: req.body.business_name,
-        slug: slugify(req.body.business_name),
+       	slug: slugifyListing(req.body.business_name),
         industry: req.body.industry || '',
         services: req.body.services || [],
         gallery: req.body.gallery || [],
@@ -399,86 +427,98 @@ listingRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 
 	const listing = new Listing(listingObj);
 
-	switch(req.session.user.user_role) {
-		case 'Subscriber':
-		case 'Editor':
+	Postcode.getLatlngs(req.body.address.post_code, (err, lng, lat) => {
 
-			if(req.session.user.listing){
-				data.error = 'You allready own a listing';
-				res.status(409);
-				return res.send(data);
-			}
-
-			listing.save({})
-				.then(() => {
-
-					req.session.user.update({listing: listing})
-						.then(() => {
-
-							data.success = 'Listing added and assigned to ' + req.session.user.name;
-							res.status(200);
-							return res.send(data);
-
-						})
-						.catch((err) => {
-							data.error = err.message || 'Internal Server Error';
-							res.status(err.status || 500);
-							return res.send(data);
-						});
-
-				})
-				.catch((err) => {
-					data.error = err.message || 'Internal Server Error';
-					res.status(err.status || 500);
-					return res.send(data);
-				});
-
-			break;
-		case 'Admin':
-		case 'Super Admin':
-
-			listing.save({})
-				.then(() => {
-
-					if(req.body.userId){
-
-						User.update({_id: req.body.userId}, {listing: listing})
-						.then((user) => {
-
-							data.success = 'Listing added and assigned to ' + user.name;
-							res.status(200);
-							return res.send(data);
-
-						})
-						.catch((err) => {
-							console.error('Err ', err);
-							data.error = err.message || 'Internal Server Error';
-							res.status(err.status || 500);
-							return res.send(data);
-						});
-
-					}else{
-
-						data.success = 'Listing added';
-						res.status(200);
-						return res.send(data);
-
-					}
-
-				})
-				.catch((err) => {
-					console.error('Err ', err);
-					data.error = err.message || 'Internal Server Error';
-					res.status(err.status || 500);
-					return res.send(data);
-				});
-
-			break;
-		default:
-			data.error = 'User has no permissions';
-			res.status(403);
+		if(err){		
+			data.error = err.message || 'Internal Server Error';
+			res.status(err.status || 500);
 			return res.send(data);
-	}
+		}
+
+		listing.loc = [lng, lat];
+
+		switch(req.session.user.user_role) {
+			case 'Subscriber':
+			case 'Editor':
+
+				if(req.session.user.listing){
+					data.error = 'You allready own a listing';
+					res.status(409);
+					return res.send(data);
+				}
+
+				listing.save({})
+					.then(() => {
+
+						req.session.user.update({listing: listing})
+							.then(() => {
+
+								data.success = 'Listing added and assigned to ' + req.session.user.name;
+								res.status(200);
+								return res.send(data);
+
+							})
+							.catch((err) => {
+								data.error = err.message || 'Internal Server Error';
+								res.status(err.status || 500);
+								return res.send(data);
+							});
+
+					})
+					.catch((err) => {
+						data.error = err.message || 'Internal Server Error';
+						res.status(err.status || 500);
+						return res.send(data);
+					});
+
+				break;
+			case 'Admin':
+			case 'Super Admin':
+
+				listing.save({})
+					.then(() => {
+
+						if(req.body.userId){
+
+							User.update({_id: req.body.userId}, {listing: listing})
+							.then((user) => {
+
+								data.success = 'Listing added and assigned to ' + user.name;
+								res.status(200);
+								return res.send(data);
+
+							})
+							.catch((err) => {
+								console.error('Err ', err);
+								data.error = err.message || 'Internal Server Error';
+								res.status(err.status || 500);
+								return res.send(data);
+							});
+
+						}else{
+
+							data.success = 'Listing added';
+							res.status(200);
+							return res.send(data);
+
+						}
+
+					})
+					.catch((err) => {
+						console.error('Err ', err);
+						data.error = err.message || 'Internal Server Error';
+						res.status(err.status || 500);
+						return res.send(data);
+					});
+
+				break;
+			default:
+				data.error = 'User has no permissions';
+				res.status(403);
+				return res.send(data);
+		}
+
+	});
 
 });
 
@@ -521,7 +561,7 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 
 		if(req.body.business_name){
 			updateObj.business_name = req.body.business_name; 
-			updateObj.slug = slugify(req.body.business_name);
+			updateObj.slug = slugifyListing(req.body.business_name, req.body.address.town, listing._id);
 		}
 
 		if(req.body.industry)
@@ -859,7 +899,6 @@ listingRoutes.delete('/:id', mid.jsonLoginRequired, function(req, res){
 
 });
 
-
 listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 
 	let body = {};
@@ -978,8 +1017,6 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 
 // 	let body = {};
 // 	body.success = 0;
-
-	
 
 // });
 

@@ -17,6 +17,7 @@ header {
 		float: right;
     	li {
 			display: inline-block;
+			vertical-align: middle;
 			a {
 			    font-size: 18px;
 			    padding-left: 15px;
@@ -33,6 +34,10 @@ header {
     .searchBox {
 	    margin-top: 2px;
 	    background: #e8e8e8;
+    }
+    .icon-bell {
+    	vertical-align: middle;
+   	 	margin-left: 10px;
     }
     @media(min-width: $medium){
     	padding: 20px 25px;

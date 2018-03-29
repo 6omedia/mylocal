@@ -1,0 +1,112 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-settings
+		include ../partials/side
+
+		.main
+			h1 Settings - Emails
+			ul.bread-crumb
+				li
+					span Emails
+			.form
+				ul.list
+					li
+						label From Email
+						input(type="text" value=from_email.value)#q_email
+					li
+						label Password
+						input(type="text" value=email_password.value)#q_password
+				h4 Subscriber Templates
+				.accordian.full#emailTemplatesOne
+					span.a_title Registered
+						.dd
+					.a_content.sub
+						p Sent to a user when they register with MyLocal
+						label Active
+						if sub_emails.register.send == true
+							input(type="checkbox" checked="checked")#registered_active
+						else
+							input(type="checkbox")#registered_active
+						.yeahEditor
+							include ../partials/_toolbar
+							if sub_emails
+								.editor(contenteditable='')#q_email1_msg !{sub_emails.register.message}
+							else
+								.editor(contenteditable='')#q_email1_msg
+									h1 Post Content Editor
+									p Try making some changes here. Add your own text or maybe an image.
+					span.a_title Reviewed
+						.dd
+					.a_content.sub
+						p Sent to a user when they review a business
+						label Active
+						if sub_emails.reviewed.send == true
+							input(type="checkbox" checked="checked")#review_active
+						else
+							input(type="checkbox")#review_active
+						.yeahEditor
+							include ../partials/_toolbar
+							if sub_emails
+								.editor(contenteditable='')#q_email2_msg !{sub_emails.reviewed.message}
+							else
+								.editor(contenteditable='')#q_email2_msg
+									h1 Post Content Editor
+									p Try making some changes here. Add your own text or maybe an image.
+				h4 Business Owner Templates
+				.accordian.full#emailTemplatesTwo
+					span.a_title Positive Review
+						.dd
+					.a_content.sub
+						p Sent to the owner when they receive a good review
+						label Active
+						if owner_emails.goodreview.send == true
+							input(type="checkbox" checked="checked")#posrev_active
+						else
+							input(type="checkbox")#posrev_active
+						.yeahEditor
+							include ../partials/_toolbar
+							if owner_emails
+								.editor(contenteditable='')#q_email3_msg !{owner_emails.goodreview.message}
+							else
+								.editor(contenteditable='')#q_email3_msg
+									h1 Post Content Editor
+									p Try making some changes here. Add your own text or maybe an image.
+					span.a_title Negative Review
+						.dd
+					.a_content.sub
+						p Sent to the owner when they receive a bad review
+						label Active
+						if owner_emails.badreview.send == true
+							input(type="checkbox" checked="checked")#negrev_active
+						else
+							input(type="checkbox")#negrev_active
+						.yeahEditor
+							include ../partials/_toolbar
+							if owner_emails
+								.editor(contenteditable='')#q_email4_msg !{owner_emails.badreview.message}
+							else
+								.editor(contenteditable='')#q_email4_msg
+									h1 Post Content Editor
+									p Try making some changes here. Add your own text or maybe an image.
+
+				.btn#updateBtn Update Settings
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/yeahtexteditor.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	//- script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/admin/settings/email.js")

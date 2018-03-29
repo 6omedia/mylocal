@@ -106,7 +106,15 @@
     li {
         margin-bottom: 0px;
         padding: 5px 10px !important;
+        i {
+            font-weight: bold;
+            font-size: 15px;
+            color: #bcbcbc;
+        }
         &:hover {
+            i {
+                color: #fff;
+            }
             background: $color-primary;
         }
     }

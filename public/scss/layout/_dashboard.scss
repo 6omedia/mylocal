@@ -1,0 +1,56 @@
+
+.tabs-mob {
+    background: #ececec;
+    padding: 0px 10px;
+    margin-bottom: 20px;
+    span {
+        font-size: 20px;
+        margin-bottom: 10px;
+        display: inline-block;
+        margin: 4px;
+    }
+    .icon-prev {
+        float: right;
+        width: 35px;
+        background-size: 80%;
+        height: 35px;
+        transform: rotate(-90deg);
+        transition: 0.3s;
+        filter: invert(25%);
+    }
+    &.open {
+        margin-bottom: 0px;
+        .icon-prev {
+           transform: rotate(90deg);
+        }
+    }
+    @media(min-width: $medium){
+    	display: none;
+    }
+}
+
+.side_submit {
+    font-size: 20px;
+    padding: 5px 20px;
+    margin-top: 28px;
+    width: 100%;
+    &.fixed {
+    	position: fixed;
+        top: 50px;
+        @media(max-width: $medium){
+            bottom: 0px;
+            z-index: 2;
+            left: 0px;
+            top: auto;
+        }
+        @media(min-width: $medium){
+            width: 220px;
+        }
+        @media(min-width: $large){
+            width: 293px;
+        }
+        @media(min-width: $xlarge){
+            width: 360px;
+        }
+    }
+}

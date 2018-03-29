@@ -138,16 +138,22 @@ section {
 
 table {
     background: #f3f3f3;
+    max-width: 1020px;
 }
 
 table th,
 table td {
     padding: 5px 15px;
+    min-width: 145px;
 }
 
 table tr:first-child {
     border-bottom: solid 2px #e2e2e2;
 }
+
+/*td.actions {
+    width: 135px;
+}*/
 
 /* DRY Classes */
 
@@ -253,6 +259,16 @@ table tr:first-child {
     display: inline-block;
     margin-right: 20px;
     vertical-align: top;
+}
+
+.form.stacked label {
+    display: block;
+}
+
+.form.stacked input,
+.form.stacked textarea {
+    display: block;
+    max-width: 100%;
 }
 
 .btn {
@@ -387,6 +403,29 @@ table tr:first-child {
     bottom: 0px !important;
 }
 
+.theError {
+    background: #f2f2f2;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border-top: solid 5px #b2e1b2;
+}
+
+.theError .icon-cross {
+    background: #d5d5d5 url(/static/img/icons/cross.png) no-repeat 50%/13px;
+    width: 27px;
+    height: 27px;
+    display: inline-block;
+    float: right;
+    border-radius: 100%;
+}
+
+.theError.error {
+    border-top: solid 5px #f88b8b;
+}
+
 /* PopUp */
 
 .c_modal {
@@ -442,6 +481,10 @@ table tr:first-child {
     cursor: pointer;
 }
 
+.YeahAutocomplete_list li:hover i {
+    color: #fff;
+}
+
 .yac_loading {
     background: #f2f3f6 url(/static/img/useful/91.gif) no-repeat 95% 50% !important;
     background-size: 20px !important;
@@ -449,6 +492,12 @@ table tr:first-child {
 
 .yac_li {
     margin-bottom: 0px !important;
+}
+
+.yac_li i {
+    font-size: 14px;
+    color: #b6b6b6;
+    font-weight: bold;
 }
 
 /* LAYOUT
@@ -1120,4 +1169,83 @@ button.palette-item:hover {
     height: 100%;
     background: linear-gradient(to left, #224ea7, #247e9b);
     border-radius: 3px;
+}
+
+/* Settings */
+
+
+/* Filter */
+
+.filter {
+    margin-bottom: 40px;
+}
+
+.filter li {
+    display: inline-block;
+    width: 250px;
+    position: relative;
+}
+
+.filter .btn {
+    box-shadow: none;
+    margin-bottom: 5px;
+    vertical-align: middle;
+    font-size: 20px;
+    padding: 5px 20px;
+}
+
+.filter .YeahAutocomplete_list {
+    left: 0px;
+}
+
+.accordian.full {
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.accordian.full span {
+    border-bottom: solid 2px #cccccc;
+    display: block;
+    padding: 5px 0px;
+}
+
+.accordian.full span .dd {
+    background: url(/static/img/admin/dropdown.png) no-repeat 100%/15px;
+    width: 15px;
+    height: 10px;
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.accordian.full span.open .dd {
+    transform: rotate(180deg);
+}
+
+.accordian.full .sub {
+    padding: 15px 0px;
+    background: #ffffff;
+    margin-bottom: 20px;
+}
+
+.accordian.full .sub .yeahEditor {
+    box-shadow: none;
+    padding: 0px;
+    background: #fff;
+    margin-bottom: 5px;
+}
+
+.accordian.full .sub {
+    display: none;
+    padding: 10px;
+    border: solid 3px #ccc;
+    border-top: solid 1px #ccc;
+    background: #f7f7f7;
+}
+
+.accordian.full .sub label {
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
 }

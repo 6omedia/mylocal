@@ -1,0 +1,73 @@
+[
+	{
+		"name": "Site Name",
+	    "group": "General",
+	    "value": "MyLocal"
+	},
+	{
+		"name": "SEO",
+	    "group": "SEO",
+	    "value": {
+	    	"pages": {
+	    		"home": {
+	    			"title": "MyLocal | Tagline of somesort",
+	    			"meta": "hjkl"
+	    		},
+	    		"listing": {
+	    			"title": "%placeholder% | MyLocal",
+	    			"meta": "hjkl"
+	    		},
+	    		"blog": {
+	    			"title": "MyLocal | Articles",
+	    			"meta": "hjkl"
+	    		},
+	    		"post": {
+	    			"title": "%placeholder% | MyLocal",
+	    			"meta": "hjkl"
+	    		},
+	    		"default": {
+	    			"title": "%url-title% | MyLocal",
+	    			"meta": "hjkl"
+	    		}
+	    	}
+	    }
+	},
+	{
+		"name": "From Email",
+	    "group": "Email",
+	    "value": "info@mylocal.co"
+	},
+	{
+		"name": "Password",
+	    "group": "Email",
+	    "value": "123"
+	},
+	{
+		"name": "Subscriber Templates",
+	    "group": "Email",
+	    "value": {
+	    	"register": {
+	    		"message": "Thanks for registering with MyLocal",
+	    		"send": false
+	    	},
+	    	"reviewed": {
+	    		"message": "Thanks for reviewing ${listing} with MyLocal",
+	    		"send": false
+	    	}
+	    }
+	},
+	{
+		"name": "Business Owner Templates",
+	    "group": "Email",
+	    "value": {
+	    	"goodreview": {
+	    		"message": "${name} has given you a ${rating} star",
+	    		"send": false
+	    	},
+	    	"badreview": {
+	    		"message": "${name} has given you a ${rating} star, do better yeah?",
+	    		"send": false
+	    	}
+	    }
+	}
+]

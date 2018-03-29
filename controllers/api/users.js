@@ -148,12 +148,12 @@ userRoutes.post('/edit', mid.jsonLoginRequired, function(req, res){
 
 	const userRole = req.session.user.user_role;
 
-	// console.log('fvfbv ', req.body);
-
 	if(userRole == '' || userRole == 'Subscriber' || userRole == 'Editor'){
-		res.status(403);
-		data.error = 'Permission Denied';
-		return res.send(data);
+		if(req.session.userId.toString() != req.body.userId.toString()){
+			res.status(403);
+			data.error = 'Permission Denied';
+			return res.send(data);
+		}
 	}
 
 	if(userRole != 'Super Admin'){
@@ -170,22 +170,23 @@ userRoutes.post('/edit', mid.jsonLoginRequired, function(req, res){
     	return res.json(data);
     }
 
-  //  User.findById(req.session.userId, function(err, user){
-
-	if(userRole != 'Admin' && userRole != 'Super Admin'){
-		if(req.session.userId != req.body.userId){
-			data.error = 'unauthorized';
-	    	res.status(403);
-	    	return res.json(data);
-		}
-	}
-
-	var userObj = {
+    var userObj = {
         name: req.body.name,
         updated_at: new Date(),
-        email: req.body.email,
-        user_role: req.body.user_role
+        email: req.body.email
     };
+
+    if(userRole == 'Admin' || userRole == 'Super Admin'){
+		userObj.user_role = req.body.user_role || 'Subscriber';
+	}
+
+	// if(userRole != 'Admin' && userRole != 'Super Admin'){
+	// 	if(req.session.userId != req.body.userId){
+	// 		data.error = 'unauthorized';
+	//     	res.status(403);
+	//     	return res.json(data);
+	// 	}
+	// }
 
     if(req.body.password){
     	bcrypt.hash(req.body.password, 10, function(err, hash){
@@ -258,8 +259,6 @@ userRoutes.post('/edit', mid.jsonLoginRequired, function(req, res){
 		});
 
     }
-
-    // });
 
 });
 

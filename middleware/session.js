@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Setting = require('../models/setting');
 
 // redered rounte
 
@@ -10,7 +11,7 @@ function loggedIn(req, res, next) {
             if(user.user_role === 'Admin'){
                 return res.redirect('/admin');
             }else{
-                return res.redirect('/profile');
+                return res.redirect('/dashboard');
             }
             return next();
         });

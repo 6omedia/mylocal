@@ -39,10 +39,10 @@
 
 	    	if(data.error){
 	    		var msg = new Message(data.error, true, $('#msg'));
-				msg.display(false);
+				msg.display(true);
 	    	}else{
 	    		var msg = new Message(data.success, false, $('#msg'));
-				msg.display(false);
+				msg.display(true);
 	    	}
 
 	    	uploadBox.removeClass('spinBtn');
@@ -50,7 +50,7 @@
 	    }).fail(function(xhr, status, hmm) {
 	       	console.log(xhr, status, hmm);
 	       	var msg = new Message(hmm, true, $('#msg'));
-			msg.display(false);
+			msg.display(true);
 			uploadBox.removeClass('spinBtn');
 	    });
 

@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+
+	header.full.fixed
+		include ../partials/header
+
+	.bigWhite
+		.container
+			h1.spaced Notifications
+
+			include _nav
+			
+			.row
+				.col-sm-3
+					ul.notifications
+						li
+							h4 From
+							p Troys Barbars
+							span.date 12/4/1972
+						li
+							h4 From
+							p Bobs Bakers
+							span.date 12/4/1972
+						li
+							h4 From
+							p Troys Barbars
+							span.date 12/4/1972
+						li
+							h4 From
+							p Franks Pies
+							span.date 12/4/1972
+				.col-sm-9
+					.notification
+						.from Troys Barbers
+						.date 12/4/1972
+						.message snjkd jkhb s dj bhjsdkbhjcsd hj hjb dshj bhjds bhjsdk hjsd
+						
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/listings/model.js")
+	script(src="/static/js/listings/listing.js")
+	script(src="/static/js/dashboard/dashboard.js")
+	script(src="/static/js/main.js")

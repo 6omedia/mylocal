@@ -16,13 +16,18 @@ var YeahAutocomplete = (function(){
 	View.prototype.stopLoading = function(){
 		this.input.removeClass('yac_loading');
 	};
-	View.prototype.displayResults = function(results, query, property){
+	View.prototype.displayResults = function(results, query, property, alterResults){
 
 		var thisView = this;
 		this.resultsList.empty();
 		for(i=0; i<results.length; i++){
 			var result = results[i];
 			var details = results[i];
+			
+			if(alterResults){
+				result = alterResults(result);
+			}
+
 			if(property){
 				result = results[i][property];
 			}
@@ -52,7 +57,13 @@ var YeahAutocomplete = (function(){
 			var li = $('<li class="yac_li">' + result + '</li>');
 			li.data('listing', details);
 			li.on('click', function(){
-				thisView.input.val($(this).text());
+				var selectedHtml = $(this).html();
+				var endIndex = selectedHtml.indexOf('<');
+				if(endIndex == -1){
+					endIndex = selectedHtml.length;
+				}
+				var selected = selectedHtml.substr(0, endIndex).trim();
+				thisView.input.val(selected);
 				thisView.input.data('listing', $(this).data('listing'));
 				thisView.input.trigger("resultSelected");
 				thisView.resultsList.hide();
@@ -71,6 +82,7 @@ var YeahAutocomplete = (function(){
 		this.model = new Model();
 	
 		this.dataUrl = options.dataUrl;
+		this.alter_results = options.alter_results || null;
 		this.onResults = null;
 
 		if(options.onResults){
@@ -113,7 +125,7 @@ var YeahAutocomplete = (function(){
 
 					if(!thisYac.onResults){
 						try {
-							thisYac.view.displayResults(data[arrName], query, property);
+							thisYac.view.displayResults(data[arrName], query, property, thisYac.alter_results);
 							thisYac.view.stopLoading();
 						}catch(e){
 							thisYac.view.stopLoading();

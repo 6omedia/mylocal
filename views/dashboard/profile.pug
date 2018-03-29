@@ -1,0 +1,44 @@
+extends ../layout
+
+block content
+
+	header.full.fixed
+		include ../partials/header
+
+	.bigWhite
+		.container
+			h1.spaced Profile
+
+			include _nav
+
+			.row
+				.col-sm-8
+					form(action="/profile", method="post")
+						input(type="hidden", name="userId", value=`${id}`)
+						h2 Update Profile
+						ul
+							li
+								label Name
+								input(type="text", id="q_name", value=`${name}`)
+							li
+								label Email
+								input(type="text", id="q_email", value=`${user.email}`)
+							li
+								label(for="cbox_new_password") Change Password
+								input(type="checkbox")#cbox_new_password
+							li.passwordli
+								label New Password
+								input(type="password", id="q_password")
+							li.passwordli
+								label Confirm Password
+								input(type="password", id="q_password_confirm")
+				.col-sm-4
+					button(type="submit" data-userid=`${user._id}`).side_submit Update Profile
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/dashboard/dashboard.js")
+	script(src="/static/js/dashboard/profile.js")
+	script(src="/static/js/main.js")

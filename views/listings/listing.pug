@@ -1,25 +1,16 @@
-extends layout
+extends ../layout
 
 block content
 
 	header.full.fixed
-		include ./partials/header
+		include ../partials/header
 
 	#page-listing(data-postcode=`${listing.address.post_code}` data-listingid=`${listing._id}`)
-		.theListing-bg(style=`background: linear-gradient(#0000, #${listing.branding.secondary_color}), url(${listing.branding.background}) no-repeat 50% 50%/cover` data-field="background").editable.editable-bg
+		.theListing-bg(style=`background: linear-gradient(#0000, #000000cf), url(${listing.bgimage}) no-repeat 50% 50%/cover` data-field="background").editable.editable-bg
 			.container
 				.row
 					.col-sm-7
-						//- .colors.editable(data-field="colors")
-						//- 	.colorInputs
-						//- 		label Primary
-						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 1)'}" value=`${listing.branding.primary_color}`)#q_color1
-						//- 		label Secondary
-						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 2)'}" value=`${listing.branding.secondary_color}`)#q_color2
-						//- 		label Accent
-						//- 		input(type="text" class="jscolor {onFineChange:'update(this, 3)'}" value=`${listing.branding.accent}`)#q_color3
-						//- 		button(data-editing="colors")#update Save
-						h1(style=`color: ${listing.branding.primary_color}` data-field="business_name").editable #{listing.business_name}
+						h1(data-field="business_name").editable #{listing.business_name}
 						ul.social(class=`${listing.social.style}` data-field="social" data-style=`${listing.social.style}`).editable
 							if listing.social.icons
 								if listing.social.icons.facebook
@@ -64,7 +55,8 @@ block content
 						a(href=`tel:${listing.contact.phone}`).phone.theListing-phone #{listing.contact.phone}
 					.col-sm-5
 						.logoBox(data-field="logo").theListing-logo.editable
-							img(src=`${listing.branding.logo}`)
+							if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+								img(src=`${listing.branding.logo}`).logo
 		.bigWhite
 			.container
 				.row
@@ -196,7 +188,7 @@ block content
 						each listing in moreListings
 							.col-xs-6.col-sm-4.col-md-3
 								.listing
-									.heading(style=`background: url(${listing.branding.background}) no-repeat 50%/cover`)
+									.heading(style=`background: url(${listing.bgimage}) no-repeat 50%/cover`)
 										h3 #{listing.business_name}
 									.info
 										if listing.rating
@@ -210,7 +202,8 @@ block content
 													- n++;
 										a(href=`tel:${listing.contact.phone}`).phone #{listing.contact.phone}
 										a(href=`/listing/${listing.slug}`).btn View
-										img(src=`${listing.branding.logo}`).logo
+										if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+											img(src=`${listing.branding.logo}`).logo
 
 	#yeahMsg
 		p fbdb df

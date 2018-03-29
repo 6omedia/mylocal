@@ -27,6 +27,11 @@ blogRoutes.get('/', function(req, res, next){
 					return next(err);
 				}
 
+				console.log(res.locals.title);
+
+				res.locals.title = res.locals.title.replace('%placeholder%', '');
+				res.locals.meta = res.locals.meta.replace('%placeholder%', '');
+
 				return res.render('blog/blog', {
 			        error: '',
 			        user: req.session.user || false,
@@ -45,6 +50,9 @@ blogRoutes.get('/', function(req, res, next){
 });
 
 blogRoutes.get('/category/:cat', function(req, res){
+
+	res.locals.title = res.locals.title.replace('%placeholder%', '');
+	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
 
 	return res.render('blog/blog', {
         error: '',
@@ -66,6 +74,9 @@ blogRoutes.get('/:id', function(req, res, next){
 	    } catch(e) {
 	        post.body = post.body;
 	    }
+
+	    res.locals.title = res.locals.title.replace('%placeholder%', post.title);
+		res.locals.meta = res.locals.meta.replace('%placeholder%', post.title);
 
 		return res.render('blog/single', {
 			post: post,

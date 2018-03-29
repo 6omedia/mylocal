@@ -20,8 +20,10 @@ industryRoutes.get('/search', function(req, res){
 
 	let query = {};
 
+	const reg = new RegExp('^' + escapeRegex(req.query.term), 'gi');
+
 	if(req.query.term){
-		query.name = new RegExp('^' + escapeRegex(req.query.term), 'gi');
+		query.$or = [{aliases: reg}, {name: reg}];
 	}
 
 	Industry.find(query).limit(10).exec(function(err, industries){
@@ -128,6 +130,12 @@ industryRoutes.get('/services/search', function(req, res){
 	    	res.status(err.status || 500);
 	    	return res.json(data);
 		}		
+
+		if(!industry){
+			data.services = [];
+			res.status(200);
+    		return res.json(data);
+		}
 
 		var regex = new RegExp('^' + escapeRegex(req.query.term), 'gi');
 

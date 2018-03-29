@@ -11,6 +11,7 @@ const fs = require('fs');
 const mid = require('../../middleware/session');
 const backup = require('mongodb-backup');
 const searchLocation = require('../../helpers/dbhelpers').searchLocation;
+const nodemailer = require('nodemailer');
 var csv = require('csvtojson');
 
 function escapeRegex(text){
@@ -126,7 +127,47 @@ apiRoutes.get('/postcodes/search', function(req, res, next){
 
 });
 
+apiRoutes.post('/sendmail', function(req, res, next){
 
+	let transporter = nodemailer.createTransport({
+		host: 'mail.mylocal.co',
+		port: 25, // 465,
+		secure: false, // true for 465, false for other ports
+		auth: {
+			user: 'mail@mylocal.co', // generated ethereal user
+			pass: 'jv{:*/G)83mp' // generated ethereal password
+		},
+		tls: {
+			rejectUnauthorized: false
+		}
+	});
+
+	console.log('transporter all good');
+
+	// setup email data with unicode symbols
+	let mailOptions = {
+	    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+	    to: 'mike@6omedia.co.uk', // list of receivers
+	    subject: 'Hello ✔', // Subject line
+	    text: 'Yeah man', // plain text body
+	    html: '<b>Hello world?</b>' // html body
+	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, (error, info) => {
+
+	    if(error){
+	        return console.log(error);
+	    }
+
+	    console.log('nlslsdksdkmlsd');
+	    console.log(info);
+	    // console.log('Message sent: %s', info.messageId);
+	    // // Preview only available when sending through an Ethereal account
+	    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+	});
+
+});
 
 
 
