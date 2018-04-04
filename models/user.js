@@ -6,8 +6,8 @@ const bcrypt = require('bcrypt');
 let UserSchema = new Schema(
     {
         name: {
-          type: String,
-          required: true
+            type: String,
+            required: true
         },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
@@ -24,8 +24,8 @@ let UserSchema = new Schema(
             default: 'free'
         },
         meta: {
-          age: Number,
-          website: String
+            age: Number,
+            website: String
         },
         reviews: [{
             type: Schema.Types.ObjectId,
@@ -134,8 +134,8 @@ User.find({}).exec(function(err, users){
 
     if(!users || users == ''){
         User.registerUser({
-            name: 'bob',
-            email: 'bob@bob.com',
+            name: 'mylocal',
+            email: 'mail@mylocal.co',
             password: '123',
             confirm_password: '123',
             user_role: 'Super Admin'

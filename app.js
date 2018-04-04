@@ -1,19 +1,7 @@
 var express = require('express');
 var session = require('express-session');
-var app = express(),
-	mailer = require('express-mailer');
-
-// mailer.extend(app, {
-// 		from: 'no-reply@example.com',
-// 		host: 'smtp.gmail.com', // hostname 
-// 		secureConnection: true, // use SSL 
-// 		port: 465, // port for secure SMTP 
-// 		transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts 
-// 		auth: {
-// 		user: 'gmail.user@gmail.com',
-// 		pass: 'userpass'
-// 	}
-// });
+var app = express();
+//	mailer = require('express-mailer');
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -91,6 +79,7 @@ app.use('/api/image_library', require('./controllers/api/image_library.js'));
 app.use('/api/blog', require('./controllers/api/blog.js'));
 app.use('/api/tags', require('./controllers/api/tags.js'));
 app.use('/api/settings', require('./controllers/api/settings.js'));
+app.use('/api/mail', require('./controllers/api/mail.js'));
 
 app.get('*', function(req, res){
 	return res.render('404');

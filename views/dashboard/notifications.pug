@@ -14,22 +14,11 @@ block content
 			.row
 				.col-sm-3
 					ul.notifications
-						li
-							h4 From
-							p Troys Barbars
-							span.date 12/4/1972
-						li
-							h4 From
-							p Bobs Bakers
-							span.date 12/4/1972
-						li
-							h4 From
-							p Troys Barbars
-							span.date 12/4/1972
-						li
-							h4 From
-							p Franks Pies
-							span.date 12/4/1972
+						each msgChain in user.message_chains
+							li
+								h4 From
+								p #{msgChain.user_two.name}
+								span.date 12/4/1972
 				.col-sm-9
 					.notification
 						.from Troys Barbers

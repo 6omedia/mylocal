@@ -12,6 +12,8 @@ const mid = require('../../middleware/session');
 const backup = require('mongodb-backup');
 const searchLocation = require('../../helpers/dbhelpers').searchLocation;
 const nodemailer = require('nodemailer');
+const sendEmail = require('../../helpers/dbhelpers').sendEmail;
+const utils = require('../../helpers/utilities');
 var csv = require('csvtojson');
 
 function escapeRegex(text){
@@ -127,106 +129,41 @@ apiRoutes.get('/postcodes/search', function(req, res, next){
 
 });
 
-apiRoutes.post('/sendmail', function(req, res, next){
+apiRoutes.post('/sendmail', mid.jsonLoginRequired, function(req, res, next){
 
-	let transporter = nodemailer.createTransport({
-		host: 'mail.mylocal.co',
-		port: 25, // 465,
-		secure: false, // true for 465, false for other ports
-		auth: {
-			user: 'mail@mylocal.co', // generated ethereal user
-			pass: 'jv{:*/G)83mp' // generated ethereal password
-		},
-		tls: {
-			rejectUnauthorized: false
+	let data = {};
+
+	const valid = utils.requiredPostProps(['type', 'template', 'emailto', 'emailfrom'], req.body);
+
+	if(valid != true){
+		data.error = valid;
+		res.status(400);
+		return res.json(data);
+	}
+
+	console.log(req.body);
+
+	sendEmail(
+		req.body.type,
+		req.body.template,
+		req.body.emailto,
+		req.body.emailfrom,
+		req.body.emailbody || null,
+		null,
+		(err) => {
+
+			if(err){
+				data.error = err;
+				return res.json(data);
+			}
+
+			data.success = 'All good lets go';
+		    return res.json(data);
+
 		}
-	});
-
-	console.log('transporter all good');
-
-	// setup email data with unicode symbols
-	let mailOptions = {
-	    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-	    to: 'mike@6omedia.co.uk', // list of receivers
-	    subject: 'Hello ✔', // Subject line
-	    text: 'Yeah man', // plain text body
-	    html: '<b>Hello world?</b>' // html body
-	};
-
-	// send mail with defined transport object
-	transporter.sendMail(mailOptions, (error, info) => {
-
-	    if(error){
-	        return console.log(error);
-	    }
-
-	    console.log('nlslsdksdkmlsd');
-	    console.log(info);
-	    // console.log('Message sent: %s', info.messageId);
-	    // // Preview only available when sending through an Ethereal account
-	    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-	});
+	);
 
 });
-
-
-
-
-
-
-
-
-
-
-// dashboard
-// apiRoutes.get('/towns/search', function(req, res){
-
-// 	let data = {};
-// 	data.success = 0;
-
-// 	const search = new RegExp(escapeRegex(req.query.term), 'gi');
-
-// 	Postcode.aggregate([
-// 			{'$match': {town: {$regex: search}}},
-// 			{'$group': {"_id": "$town"}},
-// 			{'$limit': 8}
-// 		], function(err, towns){
-
-// 		if(err){
-// 			data.error = err.message || 'Internal Server Error';
-// 	    	res.status(err.status || 500);
-// 	    	return res.json(data);
-// 		}
-
-// 		if(towns.length > 0){
-// 			res.status(200);
-// 			data.results = towns;
-// 	    	return res.json(data);
-// 		}
-
-// 		Postcode.aggregate([
-// 			{'$match': {postcode: {$regex: search}}},
-// 			{'$group': {"_id": "$postcode"}},
-// 			{'$limit': 8}
-// 		], function(err, towns){
-
-// 			if(err){
-// 				data.error = err.message || 'Internal Server Error';
-// 		    	res.status(err.status || 500);
-// 		    	return res.json(data);
-// 			}
-
-// 			Postcode.aggregate([]);
-
-// 			res.status(200);
-// 			data.results = towns;
-// 	    	return res.json(data);
-
-// 		});
-
-// 	});
-
-// });
 
 apiRoutes.post('/postcodes/upload', mid.jsonLoginRequired, function(req, res){
 

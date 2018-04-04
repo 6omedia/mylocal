@@ -7,6 +7,8 @@ const Review = require('../models/review');
 const Post = require('../models/post');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
+const sendEmail = require('../helpers/dbhelpers').sendEmail;
+const nodemailer = require('nodemailer');
 
 function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -146,12 +148,38 @@ mainRoutes.post('/register', function(req, res){
             	},
                 error: err
             });
+
         }
 
-        // login and start session
-        req.session.userId = user._id;
-        req.session.user = user;
-        return res.redirect('/dashboard');
+        sendEmail(
+			'Subscriber Templates', 
+			'register', 
+			user.email, 
+			'mail@mylocal.co',
+			null,
+			(msg) => {
+				return msg.replace('%name%', user.name);
+			},
+			(err) => {
+
+				if(err){
+					return res.render('register', {
+						submitted: {
+							name: req.body.name,
+							email: req.body.email,
+							password: pwSubmitted
+						},
+						error: err
+					});
+				}
+
+				// login and start session
+			    req.session.userId = user._id;
+			    req.session.user = user;
+			    return res.redirect('/dashboard');
+
+			}
+		);
 
     });
 

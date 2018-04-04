@@ -51,19 +51,39 @@ dashboardRoutes.get('/reviews', mid.loginRequired, function(req, res){
 
 });
 
-dashboardRoutes.get('/notifications', mid.loginRequired, function(req, res){
+dashboardRoutes.get('/notifications', mid.loginRequired, function(req, res, next){
 
 	res.locals.title = res.locals.title.replace('%placeholder%', 'Notifications');
 	res.locals.meta = res.locals.meta.replace('%placeholder%', 'Notifications');
 
 	var user = req.session.user;
 
-    return res.render('dashboard/notifications', {
-    	id: req.session.user._id,
-        name: user.name,
-       	user: user,
-       	tab: 'notifications'
-    });
+	User.findById(req.session.user._id)
+		.populate({
+			path: 'message_chains',
+			model: 'MessageChain',
+			populate: {
+				path: 'user_one',
+				model: 'User'
+			},
+			populate: {
+				path: 'user_two',
+				model: 'User'
+			}
+		})
+		.then((user) => {
+
+			console.log('user ', user);
+
+			return res.render('dashboard/notifications', {
+				id: req.session.user._id,
+			    name: user.name,
+			   	user: user,
+			   	tab: 'notifications'
+			});
+
+		})
+		.catch((e) => { next(e); });		
 
 });
 

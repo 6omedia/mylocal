@@ -28,7 +28,9 @@ var utils = (function(){
 
     	if(isError){
     		this.msgBox.addClass('error');
-    	}
+    	}else{
+            this.msgBox.removeClass('error');
+        }
 
         this.msgBox.show();
 
