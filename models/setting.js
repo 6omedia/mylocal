@@ -11,6 +11,40 @@ let SettingSchema = new Schema({
     value: Schema.Types.Mixed
 });
 
+SettingSchema.statics.getEmailSettings = function(template_type, template_name, callback){
+
+    let settingsObj = {};
+
+    Setting.find({group: 'Email'}, (err, settings) => {
+
+        if(err){
+            callback(err.message || 'Finding settings error');
+        }
+
+        settingsObj.email = settings.find(function(setting){
+            return setting.name == 'From Email';
+        }).value;
+
+        settingsObj.password = settings.find(function(setting){
+            return setting.name == 'Password';
+        }).value;
+
+        if(template_type && template_name){
+            tempObj = settings.find(function(setting){
+                return setting.name == template_type;
+            }).value;
+            if(tempObj == undefined){
+                return callback(template_type + ' is not a type of email template found in settings');
+            }
+            settingsObj.template = tempObj[template_name];
+        }
+
+        callback(null, settingsObj);
+
+    });
+
+};
+
 var Setting = mongoose.model("Setting", SettingSchema);
 
 Setting.find({}).exec(function(err, settings){

@@ -3,6 +3,7 @@ const dashboardRoutes = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const Listing = require('../models/listing');
+const Message = require('../models/message');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
 
@@ -59,21 +60,19 @@ dashboardRoutes.get('/notifications', mid.loginRequired, function(req, res, next
 	var user = req.session.user;
 
 	User.findById(req.session.user._id)
-		.populate({
-			path: 'message_chains',
-			model: 'MessageChain',
-			populate: {
-				path: 'user_one',
-				model: 'User'
-			},
-			populate: {
-				path: 'user_two',
-				model: 'User'
-			}
-		})
+		// .populate({
+		// 	path: 'message_chains',
+		// 	model: 'MessageChain',
+		// 	populate: {
+		// 		path: 'user_one',
+		// 		model: 'User'
+		// 	},
+		// 	populate: {
+		// 		path: 'user_two',
+		// 		model: 'User'
+		// 	}
+		// })
 		.then((user) => {
-
-			console.log('user ', user);
 
 			return res.render('dashboard/notifications', {
 				id: req.session.user._id,

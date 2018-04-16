@@ -672,6 +672,8 @@ listingRoutes.post('/update', mid.jsonLoginRequired, function(req, res){
 			case 'Subscriber':
 			case 'Editor':
 
+				console.log(listing);
+
 				if(!listing.userId.equals(req.session.user._id)){
 					data.error = 'Cant edit someone elses listing';
 					res.status(403);

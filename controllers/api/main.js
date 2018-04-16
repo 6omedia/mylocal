@@ -12,7 +12,7 @@ const mid = require('../../middleware/session');
 const backup = require('mongodb-backup');
 const searchLocation = require('../../helpers/dbhelpers').searchLocation;
 const nodemailer = require('nodemailer');
-const sendEmail = require('../../helpers/dbhelpers').sendEmail;
+const Notification = require('../../helpers/notification');
 const utils = require('../../helpers/utilities');
 var csv = require('csvtojson');
 
@@ -129,11 +129,13 @@ apiRoutes.get('/postcodes/search', function(req, res, next){
 
 });
 
-apiRoutes.post('/sendmail', mid.jsonLoginRequired, function(req, res, next){
+apiRoutes.post('/sendnotification', mid.jsonLoginRequired, function(req, res, next){
+
+	/** REMOVE THIS ROUTE BEFORE PRODUCTION **/
 
 	let data = {};
 
-	const valid = utils.requiredPostProps(['type', 'template', 'emailto', 'emailfrom'], req.body);
+	const valid = utils.requiredPostProps(['email_to', 'email_from', 'email_respond'], req.body);
 
 	if(valid != true){
 		data.error = valid;
@@ -141,27 +143,32 @@ apiRoutes.post('/sendmail', mid.jsonLoginRequired, function(req, res, next){
 		return res.json(data);
 	}
 
-	console.log(req.body);
+	// TODO: only allow to send from own email (and mylocal?)
 
-	sendEmail(
-		req.body.type,
-		req.body.template,
-		req.body.emailto,
-		req.body.emailfrom,
-		req.body.emailbody || null,
-		null,
-		(err) => {
-
-			if(err){
-				data.error = err;
-				return res.json(data);
-			}
-
-			data.success = 'All good lets go';
-		    return res.json(data);
-
+	let notification = new Notification({
+		htmlBody: req.body.htmlBody || null,
+		template_type: req.body.template_type || null,
+		template_name: req.body.template_name || null,
+		subject: req.body.subject || null,
+		email_to: req.body.email_to || null,
+		email_from: req.body.email_from || null,
+		email_respond: req.body.email_respond || null,
+		loggedinuserid: req.session.userId,
+		replace_func: (msg) => {
+			return msg.replace('%name%', 'Avenger')
+					  .replace('%listing%', 'this listing')
+					  .replace('%rating%', '2400');
 		}
-	);
+	});
+
+	notification.send((err) => {
+		if(err){
+			data.error = err;
+			return res.json(data);
+		}
+		data.success = 'All good lets go';
+	    return res.json(data);
+	});
 
 });
 

@@ -78,8 +78,9 @@ app.use('/api/industries', require('./controllers/api/industries.js'));
 app.use('/api/image_library', require('./controllers/api/image_library.js'));
 app.use('/api/blog', require('./controllers/api/blog.js'));
 app.use('/api/tags', require('./controllers/api/tags.js'));
+app.use('/api/messages', require('./controllers/api/messages.js'));
 app.use('/api/settings', require('./controllers/api/settings.js'));
-app.use('/api/mail', require('./controllers/api/mail.js'));
+// app.use('/api/mail', require('./controllers/api/mail.js'));
 
 app.get('*', function(req, res){
 	return res.render('404');

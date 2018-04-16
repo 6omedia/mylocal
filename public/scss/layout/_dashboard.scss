@@ -54,3 +54,128 @@
         }
     }
 }
+
+.notification_side {
+    height: 630px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 10px;
+    &::-webkit-scrollbar { width: 10px; }
+    &::-webkit-scrollbar-button { background: $color-grey-dark; border-radius: 5px; }
+    &::-webkit-scrollbar-track { background: $color-grey-light; }       /* 3 */
+    &::-webkit-scrollbar-track-piece { 
+        background: $color-grey-light;
+    } /* 4 */
+    &::-webkit-scrollbar-thumb { background: $color-grey-medium; border-radius: 5px; }       /* 5 */
+    &::-webkit-scrollbar-corner {}      /* 6 */
+    &::-webkit-resizer { background: black; }               /* 7 */
+}
+
+.notifications {
+    h5 {
+        font-weight: bold;
+        margin: 5px 0px;
+    }
+    p {
+        font-size: 16px;
+        line-height: 1.2em !important;
+    }
+    li {
+        border-bottom: solid 1px #ccc;
+        padding: 5px 0px;
+        transition: 0.3s;
+        cursor: pointer;
+        &:last-child {
+            border: none;
+        }
+        &:hover {
+            background: #dff5f9;
+            padding: 5px;
+        }
+    }
+    &.spinBtn:before {
+        background: #ffffffd9 url(/static/img/useful/giphy.gif) no-repeat 50% 50px/30px;
+    }
+}
+
+.msgchain {
+    @include scrollbar;
+    min-height: 200px;
+    display: none;
+    overflow-y: auto;
+    height: 630px;
+    padding-right: 25px;
+    & + .form {
+        padding-right: 35px;
+        textarea, input {
+            box-shadow: none;
+            font-size: 14px;
+            padding: 7px 10px;
+        }
+        button {
+            margin-top: 0px;
+            padding: 2px 35px;
+            font-size: 16px;
+        }
+    }
+    .msg {
+        padding: 5px 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        max-width: 80%;
+        clear: both;
+        p {
+            font-size: 16px;
+        }
+        p:last-chid {
+            margin-bottom: 0px;
+        }
+        &.sender {
+            float: left;
+            background: #ececec;
+            p {
+                color: #606060;
+            }
+        }
+        &.you {
+            background: #2ca7be;
+            color: #e9fcff;
+            float: right;
+            p {
+                color: #fff;
+            }
+        }
+    }
+    &.mobile {
+        display: block;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background: #fff;
+        z-index: 1;
+        height: 100%;
+        overflow: scroll;
+        padding: 65px 10px 0px 10px;
+        & + .form {
+            width: 100%;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            z-index: 5;
+            padding: 10px;
+            background: #ececec;
+            box-shadow: 0px 0px 35px #00000059;
+            textarea {
+                color: #000000;
+                border: solid 1px #e2e2e2;
+                box-shadow: 1px 1px 0px #c1c1c1;
+                width: 100%;
+                height: 80px;
+                margin-bottom: 0px;
+            }
+        }
+    }
+    @media (min-width: $medium){
+        display: block;
+    }
+}

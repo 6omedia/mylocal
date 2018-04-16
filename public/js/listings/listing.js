@@ -153,9 +153,11 @@
 			Model = listingModel.getModel(form);
 			form.send(Model, function(data){
 				if(data.error){
+					View.save_btn.removeClass('spinBtn');
 					return msgBox.display(data.error, true, true);
 				}
 				if(data.success){
+					View.save_btn.removeClass('spinBtn');
 					return msgBox.display(data.success, false, true);
 				}
 				msgBox.display('Listing Created', false, true);

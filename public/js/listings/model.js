@@ -167,6 +167,7 @@ var listingModel = (function(){
 
 	function getModel(form){
 		return {
+			userId: $('#datayeah').data('userid'),
 			business_name: $('#' + form.fields[0].id).val(),
 			description: $('#' + form.fields[1].id).val(),
 			industry: $('#' + form.fields[2].id).val(),
@@ -223,6 +224,10 @@ var listingModel = (function(){
 					linkedin: $('#' + form.fields[30].id).val(),
 					pinterest: $('#' + form.fields[31].id).val()
 				}
+			},
+			branding: {
+				logo: $('#' + form.fields[32].id).attr('src'),
+				background: $('#' + form.fields[33].id).attr('src')
 			}
 		};
 	}

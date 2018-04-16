@@ -12,159 +12,178 @@ const Town = require('../models/town');
 const Suburb = require('../models/suburb');
 const Postcode = require('../models/postcode');
 
-function sendEmail(type, template, toEmail, fromEmail, custom, replaceFunc, callback){
+// function emailSettings(type, template){
 
-	// if(type != 'Subscriber Templates' && type != 'Business Owner Templates' && type != null){
-	// 	return callback('Types must be either "Subscriber Templates", "Business Owner Templates" or null');
-	// }
+// 	if(!type || !template){
 
-	Setting.find({group: 'Email'}, (err, settings) => {
+// 	}
 
-		if(err){
-			callback(err.message || 'Finding settings error');
-		}
+// 	callback({
 
-		const email = settings.find(function(setting){
-			return setting.name == 'From Email';
-		});
+// 	});
 
-		const pass = settings.find(function(setting){
-			return setting.name == 'Password';
-		});
+// }
 
-		const templates = settings.find(function(setting){
-			return setting.name == type;
-		});
+// function sendEmail(type, template, toEmail, fromEmail, custom, replaceFunc, callback){
 
-		let msgObj;
+// 	Setting.find({group: 'Email'}, (err, settings) => {
 
-		if(templates != undefined){
-			msgObj = templates.value[template];
-		}else{
-			if(!custom){
-				return callback('No template exists called ' + template + ' and now custom message given');
-			}
-			msgObj = { message: custom };
-		}
+// 		if(err){
+// 			callback(err.message || 'Finding settings error');
+// 		}
 
-		let transporter = nodemailer.createTransport({
-			host: 'mail.mylocal.co',
-			port: 26,
-			secure: false,
-			auth: {
-				user: email.value,
-				pass: pass.value  
-			},
-			tls: {
-				rejectUnauthorized: false
-			}
-		});
+// 		const email = settings.find(function(setting){
+// 			return setting.name == 'From Email';
+// 		});
 
-		Promise.all([
-			User.findOne({email: toEmail}), 
-			User.findOne({email: fromEmail})])
-		.then((users) => {
+// 		const pass = settings.find(function(setting){
+// 			return setting.name == 'Password';
+// 		});
 
-			const userTo = users[0];
-			const userFrom = users[1];
+// 		const templates = settings.find(function(setting){
+// 			return setting.name == type;
+// 		});
 
-			if(!userTo){
-				return callback('User with email ' + toEmail + ' not found');
-			}
+// 		let msgObj;
 
-			if(!userFrom){
-				return callback('User with email ' + fromEmail + ' not found');
-			}
+// 		if(templates != undefined){
+// 			msgObj = templates.value[template];
+// 		}else{
+// 			if(!custom){
+// 				return callback('No template exists called ' + template + ' and now custom message given');
+// 			}
+// 			msgObj = { message: custom };
+// 		}
 
-			let emailBody = msgObj.message.replace('%name%', userTo.name); // populateVars( user.name || '', );
+// 		console.log(3);
 
-			if(replaceFunc){
-				emailBody = replaceFunc(msgObj.message);
-			}
+// 		let transporter = nodemailer.createTransport({
+// 			host: 'mail.mylocal.co',
+// 			port: 26,
+// 			secure: false,
+// 			auth: {
+// 				user: email.value,
+// 				pass: pass.value  
+// 			},
+// 			tls: {
+// 				rejectUnauthorized: false
+// 			}
+// 		});
 
-			let mailOptions = {
-				from: '"MyLocal" <mail@mylocal.co>',
-				to: userTo.email, // 'mike@6omedia.co.uk', // list of receivers
-				subject: msgObj.subject || 'No Subject', // Subject line
-				text: emailBody, // plain text body
-				html: emailBody // html body
-			};
+// 		Promise.all([
+// 			User.findOne({email: toEmail}), 
+// 			User.findOne({email: fromEmail})])
+// 		.then((users) => {
 
-			// send mail with defined transport object
-			transporter.sendMail(mailOptions, (error, info) => {
+// 			const userTo = users[0];
+// 			const userFrom = users[1];
 
-				if(error){
-					return callback(error.message || 'Mail Error');
-				}
+// 			if(!userTo){
+// 				return callback('User with email ' + toEmail + ' not found');
+// 			}
 
-				MessageChain.findOne({$or: [
-						{ user_one: userTo, user_two: userFrom},
-						{ user_one: userFrom, user_two: userTo}
-					]})
-					.then((msgChain) => {
+// 			if(!userFrom){
+// 				return callback('User with email ' + fromEmail + ' not found');
+// 			}
 
-						let msg = new Message({
-							from: userFrom, to: userTo, body: emailBody
-						});
+// 			let emailBody = msgObj.message.replace('%name%', userTo.name); // populateVars( user.name || '', );
 
-						if(msgChain){
+// 			if(replaceFunc){
+// 				emailBody = replaceFunc(msgObj.message);
+// 			}
 
-							msgChain.messages.push(msg);
-							msgChain.save().then(() => {
-								return callback();
-							}).catch((e) => { return callback(e.message || 'Internal Server Error'); });
+// 			let mailOptions = {
+// 				from: '"MyLocal" <mail@mylocal.co>',
+// 				to: userTo.email, // 'mike@6omedia.co.uk', // list of receivers
+// 				subject: msgObj.subject || 'No Subject', // Subject line
+// 				text: emailBody, // plain text body
+// 				html: emailBody // html body
+// 			};
 
-						}else{
+// 			// send mail with defined transport object
+// 			transporter.sendMail(mailOptions, (error, info) => {
 
-							let msgChain = new MessageChain({
-								user_one: userTo._id,
-							    user_two: userFrom._id,
-								messages: [msg._id]
-							});
+// 				if(error){
+// 					return callback(error.message || 'Mail Error');
+// 				}
 
-							if(userTo.message_chains){
-								userTo.message_chains.push(msgChain._id);
-							}else{
-								userTo.message_chains = [];
-								userTo.message_chains.push(msgChain._id);
-							}
+// 				console.log(5);
 
-							if(userFrom.message_chains){
-								userFrom.message_chains.push(msgChain._id);
-							}else{
-								userFrom.message_chains = [];
-								userFrom.message_chains.push(msgChain._id);
-							}
+// 				MessageChain.findOne({$or: [
+// 						{ user_one: userTo, user_two: userFrom},
+// 						{ user_one: userFrom, user_two: userTo}
+// 					]})
+// 					.then((msgChain) => {
 
-							let saves = [];
-							saves.push(msg.save());
-							saves.push(msgChain.save());
-							saves.push(User.update({_id: userTo._id}, {$push: {message_chains: msgChain}}));
-							saves.push(User.update({_id: userFrom._id}, {$push: {message_chains: msgChain}}));
-							// saves.push(userFrom.save());
+// 						let msg = new Message({
+// 							from: userFrom, to: userTo, body: emailBody
+// 						});
 
-							Promise.all(saves).then(() => {
-								return callback();
-							}).catch((e) => { console.log(e); return callback(e.message || 'Internal Server Error'); });
+// 						console.log(6);
 
-						}
+// 						if(msgChain){
 
-					})
-					.catch((err) => {
-						return callback(err.message || 'Internal Server Error');
-					});
+// 							console.log(6.5);
 
-			});
+// 							msgChain.messages.push(msg);
+// 							msgChain.save().then(() => {
+// 								return callback();
+// 							}).catch((e) => { return callback(e.message || 'Internal Server Error'); });
 
-		})
-		.catch((err) => {
-			console.log(4);
-			return callback(err.message || 'Internal Server Error');
-		});
+// 						}else{
 
-	});
+// 							console.log(6.8);
 
-}
+// 							let msgChain = new MessageChain({
+// 								user_one: userTo._id,
+// 							    user_two: userFrom._id,
+// 								messages: [msg._id]
+// 							});
+
+// 							if(userTo.message_chains){
+// 								userTo.message_chains.push(msgChain._id);
+// 							}else{
+// 								userTo.message_chains = [];
+// 								userTo.message_chains.push(msgChain._id);
+// 							}
+
+// 							if(userFrom.message_chains){
+// 								userFrom.message_chains.push(msgChain._id);
+// 							}else{
+// 								userFrom.message_chains = [];
+// 								userFrom.message_chains.push(msgChain._id);
+// 							}
+
+// 							console.log(7);
+
+// 							let saves = [];
+// 							saves.push(msg.save());
+// 							saves.push(msgChain.save());
+// 							saves.push(User.update({_id: userTo._id}, {$push: {message_chains: msgChain}}));
+// 							saves.push(User.update({_id: userFrom._id}, {$push: {message_chains: msgChain}}));
+
+// 							Promise.all(saves).then(() => {
+// 								console.log(8);
+// 								return callback();
+// 							}).catch((e) => { console.log(e); return callback(e.message || 'Internal Server Error'); });
+
+// 						}
+
+// 					})
+// 					.catch((err) => {
+// 						return callback(err.message || 'Internal Server Error');
+// 					});
+
+// 			});
+
+// 		})
+// 		.catch((err) => {
+// 			return callback(err.message || 'Internal Server Error');
+// 		});
+
+// 	});
+
+// }
 
 function searchLocation(term, callback){
 
@@ -261,7 +280,7 @@ function searchServices(term, callback){
 
 }
 
-exports.sendEmail = sendEmail;
+// exports.sendEmail = sendEmail;
 exports.searchLocation = searchLocation;
 exports.searchServices = searchServices;
 module.exports = exports;

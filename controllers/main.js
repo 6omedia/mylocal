@@ -7,7 +7,7 @@ const Review = require('../models/review');
 const Post = require('../models/post');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
-const sendEmail = require('../helpers/dbhelpers').sendEmail;
+const Notification = require('../helpers/notification');
 const nodemailer = require('nodemailer');
 
 function escapeRegex(text){
@@ -151,35 +151,37 @@ mainRoutes.post('/register', function(req, res){
 
         }
 
-        sendEmail(
-			'Subscriber Templates', 
-			'register', 
-			user.email, 
-			'mail@mylocal.co',
-			null,
-			(msg) => {
+        let notification = new Notification({
+			template_type: 'Subscriber Templates',
+			template_name: 'register',
+			email_to: user.email,
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@mylocal.co',
+			loggedinuserid: user._id,
+			replace_func: (msg) => {
 				return msg.replace('%name%', user.name);
-			},
-			(err) => {
-
-				if(err){
-					return res.render('register', {
-						submitted: {
-							name: req.body.name,
-							email: req.body.email,
-							password: pwSubmitted
-						},
-						error: err
-					});
-				}
-
-				// login and start session
-			    req.session.userId = user._id;
-			    req.session.user = user;
-			    return res.redirect('/dashboard');
-
 			}
-		);
+		});
+
+		notification.send((err) => {
+
+			if(err){
+				return res.render('register', {
+					submitted: {
+						name: req.body.name,
+						email: req.body.email,
+						password: pwSubmitted
+					},
+					error: err
+				});
+			}
+
+			// login and start session
+		    req.session.userId = user._id;
+		    req.session.user = user;
+		    return res.redirect('/dashboard');
+
+		});
 
     });
 

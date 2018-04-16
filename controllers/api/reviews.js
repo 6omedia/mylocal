@@ -2,6 +2,7 @@ const express = require('express');
 const reviewRoutes = express.Router();
 const mongoose = require('mongoose');
 const utils = require('../../helpers/utilities.js');
+const sendEmail = require('../../helpers/dbhelpers.js').sendEmail;
 const User = require('../../models/user');
 const Listing = require('../../models/listing');
 const Review = require('../../models/review');
@@ -157,11 +158,57 @@ reviewRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 					Listing.findOneAndUpdate({_id: req.body.listingid}, {$push: {reviews: review}}, {new: true})
 				])
 				.then((yeah) => {
+
+					Listing.findById(req.body.listingid)
+						.populate('userId')
+						.exec((err, listing) => {
+
+						if(err){ console.log(err); }
+
+						sendEmail(
+							'Subscriber Templates',
+							'reviewed',
+							req.session.user.email,
+							'mail@mylocal.co', //listing.userId.email,
+							null,
+							(msg) => {
+								return msg.replace('%name%', req.session.user.name)
+										  .replace('%listing%', listing.business_name);
+							}, 
+							(err) => {
+								if(err){ console.log(err); }
+							}
+						);
+
+						let template;
+
+						if(req.body.rating >= 6){
+							template = 'goodreview';
+						}else{
+							template = 'badreview';
+						}
+
+						sendEmail(
+							'Business Owner Templates',
+							template,
+							listing.userId.email,
+							'mail@mylocal.co', // req.session.user.email,
+							null,
+							(msg) => {
+								return msg.replace('%name%', '')
+										  .replace('%rating%', req.body.rating);
+							}, 
+							(err) => {
+								if(err){ console.log(err); }
+							}
+						);
+
+					});
+
 					data.review = review;
 					data.success = 'Review Saved';
 					res.status(200);
 					return res.json(data);
-
 				})	
 				.catch((e) => {
 					console.log(e);

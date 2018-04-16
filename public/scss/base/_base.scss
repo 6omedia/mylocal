@@ -7,6 +7,7 @@
 html, body {
   height: 100%;
   margin: 0;
+  background: #fff;
 }
 
 .main_wrapper {
@@ -55,6 +56,10 @@ h4 {
 	}
 }
 
+h5 {
+	font-size: 18px;
+}
+
 p, a, input, div, button, label {
 	font-family: $font-stack-secondary;
 	color: $color-text;
@@ -81,7 +86,8 @@ button, .btn {
     	background: lighten($color-primary, 10%);
 	    color: #fff;
 	}
-	&:disabled {
+	&:disabled,
+	&.disabled {
 	    background: #cfcfcf;
 	    cursor: not-allowed;
 	    border: none;
@@ -131,15 +137,15 @@ form, .form {
 		width: 100%;
 	}
 	input, textarea {
-		font-size: 20px;
+		font-size: 14px;
 	    margin-bottom: 10px;
 	    color: #000000;
 	    border: solid 1px #e2e2e2;
 	    box-shadow: 1px 1px 0px #c1c1c1;
 	    width: 100%;
-	   /* @media(min-width: $small){
-	    	width: auto;
-	    }*/
+	    @media(min-width: $medium){
+	    	font-size: 20px;
+	    }
 	}
 	textarea {
 		height: 200px;

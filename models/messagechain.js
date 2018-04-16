@@ -10,25 +10,20 @@ let MessageChainSchema = new Schema({
         type: Schema.Types.ObjectId,
 	    ref: 'User'
 	},
-    messages: [{
+    messages: [{        
         type: Schema.Types.ObjectId,
         ref: 'Message'
     }]
-	// messages: [{
-	// 	from: {
- //            type: Schema.Types.ObjectId,
- //            ref: 'User'
- //        },
- //        to: {
- //            type: Schema.Types.ObjectId,
- //            ref: 'User'
- //        },
- //        body: String,
- //        created_at: {
- //            type: Date,
- //            default: Date.now
- //        }
-	// }]
+    // messages: [{
+    //     seen: {
+    //         type: Boolean,
+    //         default: false
+    //     },
+    //     msg: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Message'
+    //     }
+    // }]
 });
 
 var MessageChain = mongoose.model("MessageChain", MessageChainSchema);

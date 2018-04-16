@@ -4,7 +4,7 @@
 
 	function send(data){
 		$.ajax({
-			url: '/api/sendmail',
+			url: '/api/sendnotification',
 			method: 'POST',
 			data: data,
 			success: function(data){
@@ -27,48 +27,53 @@
 
 	$('#email1').on('click', function(){
 		send({
-			type: 'Subscriber Templates',
-			template: 'register',
-			emailto: 'bruce@6omedia.co.uk',
-			emailfrom: 'mail@mylocal.co'
+			template_type: 'Subscriber Templates',
+			template_name: 'register',
+			email_to: 'hulk@6omedia.co.uk',
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@6omedia.co.uk'
 		});
 	});
 
 	$('#email2').on('click', function(){
 		send({
-			type: 'Subscriber Templates',
-			template: 'reviewed',
-			emailto: 'hulk@6omedia.co.uk',
-			emailfrom: 'mail@mylocal.co'
+			template_type: 'Subscriber Templates',
+			template_name: 'reviewed',
+			email_to: 'hulk@6omedia.co.uk',
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@6omedia.co.uk'
 		});
 	});
 
 	$('#email3').on('click', function(){
 		send({
-			type: 'Business Owner Templates',
-			template: 'goodreview',
-			emailto: 'bruce@6omedia.co.uk',
-			emailfrom: 'mail@mylocal.co'
+			template_type: 'Business Owner Templates',
+			template_name: 'goodreview',
+			email_to: 'hulk@6omedia.co.uk',
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@6omedia.co.uk'
 		});
 	});
 
 	$('#email4').on('click', function(){
 		send({
-			type: 'Business Owner Templates',
-			template: 'badreview',
-			emailto: 'bruce@6omedia.co.uk',
-			emailfrom: 'mail@mylocal.co'
+			template_type: 'Business Owner Templates',
+			template_name: 'badreview',
+			email_to: 'hulk@6omedia.co.uk',
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@6omedia.co.uk'
 		});
 	});
 
 	$('#email5').on('click', function(){
 		send({
-			type: null,
-			template: null,
-			emailto: 'thor@6omedia.co.uk',
-			emailfrom: 'hulk@6omedia.co.uk', // 'mail@mylocal.co',
-			emailbody: $('#yeah').val(),
-			fbdf: 'vbfdbvd'
+			htmlBody: $('#yeah').val(),
+			template_type: '',
+			template_name: '',
+			subject: 'THISSSONEEEE',
+			email_to: 'thor@6omedia.co.uk',
+			email_from: 'hulk@6omedia.co.uk',
+			email_respond: 'hulk@6omedia.co.uk'
 		});
 	});
 

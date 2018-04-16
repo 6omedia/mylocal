@@ -21,11 +21,24 @@
     background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%/20px !important;
 }
 
+.loading {
+    background: #ffffffd9 url('../img/useful/giphy.gif') no-repeat 50%/20px !important;
+    color: transparent;   
+}
+
 .spaced {
     margin: 60px 0px 20px 0px;
     @media(min-width: $medium){
         margin: 60px 0px 35px 0px;
     }
+}
+
+.loadmore {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .more {
@@ -41,6 +54,12 @@
     position: fixed;
     bottom: 10px;
     left: 10px;
+}
+
+.date {
+    font-size: 14px;
+    font-style: italic;
+    color: #a2a2a2;
 }
 
 input.inline_btn {
