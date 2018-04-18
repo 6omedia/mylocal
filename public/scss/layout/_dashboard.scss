@@ -179,3 +179,11 @@
         display: block;
     }
 }
+
+.msgLoading {
+    display: block;
+    text-align: center;
+    background: #ffffffd9 url(/static/img/useful/giphy.gif) no-repeat 50% 50px/30px;
+    height: 30px;
+    margin-bottom: 15px;
+}

@@ -171,11 +171,11 @@ Notification.prototype.updateMessageChains = function(emailData, callback){
 		const userFrom = users[1];
 		const userRespond = users[2];
 
-		let seen = false;
+		// let seen = false;
 
-		if(userFrom._id.equals(thisNotification.loggedinuserid)){
-			seen = true;
-		}
+		// if(userFrom._id.equals(thisNotification.loggedinuserid)){
+		// 	seen = true;
+		// }
 
 		if(!userTo){
 			return callback('User with email ' + this.email_to + ' not found');
@@ -195,7 +195,7 @@ Notification.prototype.updateMessageChains = function(emailData, callback){
 				from: userFrom, 
 				to: userTo, 
 				body: emailData.emailBody, 
-				seen: seen,
+				// seen: seen,
 			    subject: emailData.subject,
 			    respondto: userRespond
 			});

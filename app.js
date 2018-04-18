@@ -83,7 +83,9 @@ app.use('/api/settings', require('./controllers/api/settings.js'));
 // app.use('/api/mail', require('./controllers/api/mail.js'));
 
 app.get('*', function(req, res){
-	return res.render('404');
+	return res.render('404', {
+		user: req.session.user || null
+	});
 });
 
 app.use(function(err, req, res, next) {

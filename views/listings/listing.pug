@@ -55,7 +55,7 @@ block content
 						a(href=`tel:${listing.contact.phone}`).phone.theListing-phone #{listing.contact.phone}
 					.col-sm-5
 						.logoBox(data-field="logo").theListing-logo.editable
-							if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+							if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != '/static/img/raster.png' && listing.branding.logo != undefined
 								img(src=`${listing.branding.logo}`).logo
 		.bigWhite
 			.container

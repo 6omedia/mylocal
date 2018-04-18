@@ -9,6 +9,9 @@ const Postcode = require('./postcode');
 const Town = require('./town');
 const Suburb = require('./suburb');
 
+var SN = require('sync-node');
+var pn = SN.createQueue();
+
 //book schema definition
 let ListingSchema = new Schema(
     {
@@ -60,6 +63,7 @@ let ListingSchema = new Schema(
         },
         industry: {
             type: String,
+            required: true,
             text: true
         },
         opening_hours: {
@@ -259,27 +263,38 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
     listingArray.forEach(function(listing){
 
-        var listing = new Listing(listing);
-        listing.save()
-            .then((listing) => {
+        pn.pushJob(function(){
 
-                saved++;
+           // console.log(listing);
 
-                if(--tasksToGo === 0) {
-                    callback(saved + ' out of ' + listingArray.length + ' listings saved');
-                }
+            return new Promise(function(resolve, reject){
 
-            })
-            .catch((err) => {
-                // console.log('err: ', err);
-                failed++;
+                var newListing = new Listing(listing);
+                newListing.save()
+                    .then((listing) => {
 
-                if(--tasksToGo === 0) {
-                    callback(saved + ' out of ' + listingArray.length + ' listings saved');
-                }
+                        console.log('Saved ' + saved);
+                        saved++;
+                        resolve();
+
+                    })
+                    .catch((err) => {
+
+                        console.log('Failed ' + err);
+                        failed++;
+                        resolve();
+
+                    });
 
             });
+        });
     
+    });
+
+    pn.pushJob(function(){
+        return new Promise(function(resolve, reject){
+            callback(saved + ' out of ' + listingArray.length + ' listings saved');
+        });
     });
 
 };

@@ -18,6 +18,7 @@ var pn = SN.createQueue();
 // const geocodePostcode = require('./functions.js').geocodePostcode;
 const updateAllLocs = require('./functions.js').updateAllLocs;
 const countUnknownLocs = require('./functions.js').countUnknownLocs;
+const importListings = require('./functions.js').importListings;
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
@@ -55,6 +56,18 @@ switch(process.argv[2]){
 	case 'upload-json':
 		
 
+
+		break;
+	case 'upload-listings':
+
+		importListings((err, failed, passed) => {
+			if(err){
+				console.log(err);
+				return process.exit();
+			}
+			console.log('Failed: ', failed);
+			console.log('Passed', passed);
+		});
 
 		break;
 	case 'unknown-locs':

@@ -910,7 +910,7 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 
 	if(!req.files){
 		body.error = 'No files were uploaded.';
-    	return res.status(400).json(body);
+		return res.status(400).json(body);
 	}
 
 	if(!req.files.listings){
@@ -985,15 +985,17 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 			        industry: csvRow[17]
 			    });
 			})
-			.on('done',()=>{
+			.on('done', ()=>{
 
 				Listing.uploadFromJSON(listingArray, function(message){
 
+					console.log(7, message);
+
 					body.success = message;
 					res.status(200);
-					return res.json(body);
+					return res.json(body); 
 
-				});
+				}); 
 
 			});
 
@@ -1008,6 +1010,10 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 				return res.json(body);
 
 			});
+
+			// body.success = 'there are ' + listingArray.length;
+			// res.status(200);
+			// return res.json(body); 
 
 		}
 

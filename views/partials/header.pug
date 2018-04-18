@@ -28,8 +28,8 @@
 				a(href="/logout") Logout
 			li
 				a(href="/dashboard/notifications").icon.icon-bell
-					if user.notifications
-						.num user.notifications.length
+					if notifications
+						.num #{notifications}
 		else
 			li
 				a(href="/login") Login

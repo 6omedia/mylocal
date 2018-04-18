@@ -176,3 +176,4 @@ function countUnknownLocs(done){
 module.exports.geocodePostcode = geocodePostcode;
 module.exports.updateAllLocs = updateAllLocs;
 module.exports.countUnknownLocs = countUnknownLocs;
+module.exports.importListings = importListings;

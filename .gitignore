@@ -1,4 +1,5 @@
 node_modules
 config
 public/uploads
+public/.sass-cache
 backups

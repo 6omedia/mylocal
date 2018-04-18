@@ -2,7 +2,8 @@ const express = require('express');
 const reviewRoutes = express.Router();
 const mongoose = require('mongoose');
 const utils = require('../../helpers/utilities.js');
-const sendEmail = require('../../helpers/dbhelpers.js').sendEmail;
+// const sendEmail = require('../../helpers/dbhelpers.js').sendEmail;
+const Notification = require('../../helpers/notification');
 const User = require('../../models/user');
 const Listing = require('../../models/listing');
 const Review = require('../../models/review');
@@ -165,20 +166,24 @@ reviewRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 
 						if(err){ console.log(err); }
 
-						sendEmail(
-							'Subscriber Templates',
-							'reviewed',
-							req.session.user.email,
-							'mail@mylocal.co', //listing.userId.email,
-							null,
-							(msg) => {
+						let subNotification = new Notification({
+							template_type: 'Subscriber Templates',
+							template_name: 'reviewed',
+							email_to: req.session.user.email,
+							email_from: 'mail@mylocal.co',
+							email_respond: listing.userId.email,
+							loggedinuserid: req.session.user._id,
+							replace_func: (msg) => {
 								return msg.replace('%name%', req.session.user.name)
-										  .replace('%listing%', listing.business_name);
-							}, 
-							(err) => {
-								if(err){ console.log(err); }
+										  .replace('%listing%', listing.business_name)
+										  .replace('%rating%', req.body.rating)
+										  .replace('%review%', req.body.review || '');
 							}
-						);
+						});
+
+						subNotification.send((err) => {
+							if(err){console.log(err);}
+						});
 
 						let template;
 
@@ -188,20 +193,24 @@ reviewRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 							template = 'badreview';
 						}
 
-						sendEmail(
-							'Business Owner Templates',
-							template,
-							listing.userId.email,
-							'mail@mylocal.co', // req.session.user.email,
-							null,
-							(msg) => {
-								return msg.replace('%name%', '')
-										  .replace('%rating%', req.body.rating);
-							}, 
-							(err) => {
-								if(err){ console.log(err); }
+						let ownerNotification = new Notification({
+							template_type: 'Business Owner Templates',
+							template_name: template,
+							email_to: listing.userId.email,
+							email_from: 'mail@mylocal.co',
+							email_respond: req.session.user.email,
+							loggedinuserid: req.session._id,
+							replace_func: (msg) => {
+								return msg.replace('%name%', listing.userId.name)
+										  .replace('%listing%', listing.business_name)
+										  .replace('%rating%', req.body.rating)
+										  .replace('%review%', req.body.review || '');
 							}
-						);
+						});
+
+						ownerNotification.send((err) => {
+							if(err){console.log(err);}
+						});
 
 					});
 

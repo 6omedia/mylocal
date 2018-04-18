@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Setting = require('../models/setting');
+const Message = require('../models/message');
 
 // redered rounte
 
@@ -29,7 +30,13 @@ function loginRequired(req, res, next) {
                 return next(err);
             }
             req.session.user = user;
-            return next();
+            Message.count({to: user._id, seen: false}, (err, count) => {
+                if(err){
+                    return next(err);
+                }
+                res.locals.notifications = count;   
+                return next();
+            });
         });
     }else{
         return res.redirect('/');
@@ -66,7 +73,13 @@ function onlySubscriber(req, res, next) {
             }
             if(user.user_role == 'Subscriber'){
                 req.session.user = user;
-                return next();
+                Message.count({to: user._id, seen: false}, (err, count) => {
+                    if(err){
+                        return next(err);
+                    }
+                    res.locals.notifications = count;   
+                    return next();
+                });
             }else{
                 req.session.user = user;
                 return res.redirect('/admin');

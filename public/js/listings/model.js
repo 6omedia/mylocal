@@ -148,8 +148,8 @@ var listingModel = (function(){
 	function getServices(){
 
 		var arr = [];
-		$('#services li img').each(function(){
-			arr.push($(this).attr('src'));
+		$('#services li span').each(function(){
+			arr.push($(this).text());
 		});
 		return arr;
 

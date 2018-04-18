@@ -17,6 +17,8 @@
 		 console.log(pair[0]+ ', '+ pair[1]); 
 		}
 
+		var last_response_len = false;
+
 	 	$.ajax({
 	        url: '/api/listings/upload',
 	        method: 'POST',
@@ -36,6 +38,8 @@
 	            return xhr;
 	        }
 	    }).done(function(data){
+
+	    	console.log(data);
 
 	    	if(data.error){
 	    		var msg = new Message(data.error, true, $('#msg'));

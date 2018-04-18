@@ -314,6 +314,8 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 						res.locals.title = res.locals.title.replace('%placeholder%', listing.business_name);
 						res.locals.meta = res.locals.meta.replace('%placeholder%', listing.business_name);
 
+						console.log(listing);
+
 						return res.render('listings/listing', {
 							listing: listing,
 							//reviews: reviews,
@@ -328,6 +330,9 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 					});
 
 				}else{
+
+					res.locals.title = res.locals.title.replace('%placeholder%', listing.business_name);
+					res.locals.meta = res.locals.meta.replace('%placeholder%', listing.business_name);
 
 					return res.render('listings/listing', {
 						listing: listing,

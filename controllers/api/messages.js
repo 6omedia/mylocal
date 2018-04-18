@@ -18,7 +18,7 @@ msgsRoutes.get('/', mid.jsonLoginRequired, function(req, res, next){
 	const skip = parseInt(req.query.skip) || 0;
 
 	Message.find({to: req.session.userId})
-		.limit(10).skip(skip).sort({created_at: -1})
+		.limit(15).skip(skip).sort({created_at: -1})
 		.populate('from')
 		.populate('respondto')
 		.then((messages) => {
@@ -86,7 +86,7 @@ msgsRoutes.get('/chain/:chainid', mid.jsonLoginRequired, function(req, res, next
 		.populate({
 			path:'messages',
 		    options: {
-		        limit: 10,
+		        limit: 15,
 		        sort: { created_at: -1},
 		        skip: skip
 		    },
@@ -97,6 +97,28 @@ msgsRoutes.get('/chain/:chainid', mid.jsonLoginRequired, function(req, res, next
 		.then((msgChain) => {
 
 			data.msgchain = msgChain;
+			return res.json(data);
+
+		})
+		.catch((e) => {
+			console.log(e);
+			data.error = e.message || 'Internal Server Error';
+			res.status(e.status || 500);
+			return res.json(data);
+		});
+
+});
+
+msgsRoutes.post('/mark-seen', mid.jsonLoginRequired, function(req, res, next){
+
+	let data = {};
+
+	console.log(req.body);
+
+	Message.update({_id: {$in: req.body.msgids}}, {$set: {seen: true}}, { multi: true })
+		.then(() => {
+
+			data.success = 'messages marked as seen';
 			return res.json(data);
 
 		})

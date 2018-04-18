@@ -28,11 +28,39 @@
 		"type": "Industry"
 	},
 	{
-		"name": "Bands",
+		"name": "Restaurants",
 		"type": "Industry"
 	},
 	{
-		"name": "Wedding Bands",
+		"name": "Bars",
+		"type": "Industry"
+	},
+	{
+		"name": "Bathrooms",
+		"type": "Industry"
+	},
+	{
+		"name": "Weddings",
+		"type": "Industry"
+	},
+	{
+		"name": "Builders",
+		"type": "Industry"
+	},
+	{
+		"name": "Cafes",
+		"type": "Industry"
+	},
+	{
+		"name": "Restaurants",
+		"type": "Industry"
+	},
+	{
+		"name": "Restaurants",
+		"type": "Industry"
+	},
+	{
+		"name": "Restaurants",
 		"type": "Industry"
 	},
 	{
