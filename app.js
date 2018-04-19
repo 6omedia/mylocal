@@ -24,8 +24,8 @@ if(process.env.NODE_ENV == 'test'){
 // var user = require('./controllers/user.js');
 
 let options = { 
-	server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
-	replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } 
+	server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 130000 } }, 
+	replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 130000 } } 
 };
 
 app.set('view engine', 'pug');

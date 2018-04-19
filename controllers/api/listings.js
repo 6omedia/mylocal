@@ -990,7 +990,7 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 				Listing.uploadFromJSON(listingArray, function(message){
 
 					console.log(7, message);
-
+					
 					body.success = message;
 					res.status(200);
 					return res.json(body); 
