@@ -5,10 +5,12 @@ const User = require('../models/user');
 const Listing = require('../models/listing');
 const Review = require('../models/review');
 const Post = require('../models/post');
+const Message = require('../models/message');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
 const Notification = require('../helpers/notification');
 const nodemailer = require('nodemailer');
+const moment = require('moment');
 
 function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -16,29 +18,39 @@ function escapeRegex(text){
 
 mainRoutes.get('/', function(req, res){
 
-	Post.find({})
-		.sort({created_at: -1})
-		.limit(4)
-		.exec(function(err, posts){
+	if(req.session.user){
 
-			if(err){
-				return next(err);
-			}
-
-			return res.render('home', {
+		Message.count({to: req.session.user._id, seen: false}, (err, count) => {
+            if(err){
+                return next(err);
+            }
+            res.locals.notifications = count;   
+            
+            return res.render('home', {
 				home: true,
-				posts: posts,
 				user: req.session.user,
+				redirect_url: req.query.redirect || null,
 				error: ''
 			});
 
+        });
+
+	}else{
+
+		return res.render('home', {
+			home: true,
+			user: req.session.user,
+			redirect_url: req.query.redirect || null,
+			error: ''
 		});
+
+	}
 
 });
 
 mainRoutes.get('/login', mid.loggedIn, function(req, res){
 
-	res.render('login', {
+	return res.render('login', {
 		error: '',
 		redirect_url: req.query.redirect || null
 	});
@@ -314,18 +326,24 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 						res.locals.title = res.locals.title.replace('%placeholder%', listing.business_name);
 						res.locals.meta = res.locals.meta.replace('%placeholder%', listing.business_name);
 
-						console.log(listing);
+						listing.update({$inc: {views: 1}})
+							.then(() => {
 
-						return res.render('listings/listing', {
-							listing: listing,
-							//reviews: reviews,
-					        error: '',
-					        tab: req.query.tab || 'general',
-					        moreListings: moreListings,
-					        more_reviews: more_reviews,
-					    	canWriteReview: canWriteReview,
-					        user: user || false
-					    });
+								return res.render('listings/listing', {
+									listing: listing,
+									error: '',
+									tab: req.query.tab || 'general',
+									moreListings: moreListings,
+									more_reviews: more_reviews,
+									canWriteReview: canWriteReview,
+									user: user || false,
+									moment: moment
+								});
+
+							})
+							.catch((e) => {
+								return next(e);
+							});
 
 					});
 
@@ -375,43 +393,50 @@ mainRoutes.get('/find/:industry/:town', function(req, res, next){
  	let data = {};
 	data.success = 0;
 
-	var url = '/find/' + req.params.industry + '/' + req.params.town;
+	// var url = '/find/' + req.params.industry + '/' + req.params.town;
 
-	var page = req.query.page || 1;
+	// var page = req.query.page || 1;
 
-	Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
-		(err, listings, pagination, message) => {
-
-		if(err){
-			return res.render('home', {
-				home: true,
-				user: req.session.user,
-				listings: [],
-				industry: req.params.industry,
-				town: req.params.town,
-				pagination: pagination,
-				error: 'No Listings Found'
-			});
-		}
-
-		if(message){
-			data.message = message;
-		}
-
-		res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
-		res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
-
-		return res.render('home', {
-			home: true,
-			user: req.session.user,
-			listings: listings,
-			industry: req.params.industry,
-			town: req.params.town,
-			pagination: pagination,
-			error: ''
-		});
-
+	return res.render('results', {
+		user: req.session.user,
+		industry: req.params.industry,
+		town: req.params.town,
+		error: ''
 	});
+
+	// Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
+	// 	(err, listings, pagination, message) => {
+
+	// 	if(err){
+	// 		return res.render('results', {
+	// 			home: true,
+	// 			user: req.session.user,
+	// 			listings: [],
+	// 			industry: req.params.industry,
+	// 			town: req.params.town,
+	// 			pagination: pagination,
+	// 			error: 'No Listings Found'
+	// 		});
+	// 	}
+
+	// 	if(message){
+	// 		data.message = message;
+	// 	}
+
+	// 	res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
+	// 	res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
+
+	// 	return res.render('results', {
+	// 		home: true,
+	// 		user: req.session.user,
+	// 		listings: listings,
+	// 		industry: req.params.industry,
+	// 		town: req.params.town,
+	// 		pagination: pagination,
+	// 		error: ''
+	// 	});
+
+	// });
 
 });
 

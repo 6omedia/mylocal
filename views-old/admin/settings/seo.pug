@@ -1,0 +1,77 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-settings
+		include ../partials/side
+
+		.main
+			h1 Settings - SEO
+			ul.bread-crumb
+				//- li
+				//- 	a(href="/admin/blog") All Posts
+				//- li
+				//- 	span &#x2192;
+				//- li
+				//- 	a(href="/admin/blog/add").current New Post
+			.form.third.stacked
+				h3 Home Page
+				ul
+					li
+						label Title Tag
+						input(type="text", value=`${pages.home.title}`)#q_home_title
+					li
+						label Meta Description
+						textarea#q_home_meta #{pages.home.meta}
+				h3 Listing Page
+				ul
+					li
+						label Title Tag
+						input(type="text", value=`${pages.listing.title}`)#q_listing_title
+					li
+						label Meta Description
+						textarea#q_listing_meta #{pages.listing.meta}
+			.form.third.stacked
+				h3 Blog Page
+				ul
+					li
+						label Title Tag
+						input(type="text", value=`${pages.blog.title}`)#q_blog_title
+					li
+						label Meta Description
+						textarea#q_blog_meta #{pages.blog.meta}
+				h3 Post Page
+				ul
+					li
+						label Title Tag
+						input(type="text", value=`${pages.post.title}`)#q_post_title
+					li
+						label Meta Description
+						textarea#q_post_meta #{pages.post.meta}
+			.form.third.stacked
+				h3 Default Page
+				ul
+					li
+						label Title Tag
+						input(type="text", value=`${pages.default.title}`)#q_default_title
+					li
+						label Meta Description
+						textarea#q_default_meta #{pages.default.meta}
+				.btn#updateBtn Update Settings
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	//- script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/admin/settings/seo.js")

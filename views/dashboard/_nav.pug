@@ -1,35 +1,50 @@
-.tabs-mob
-	span #{tab}
-	.icon.icon-prev
 
-if user.listing
+.profile-edit-page-header
+	h2 #{tab[0].toUpperCase() + tab.slice(1)}
+	.breadcrumbs
+		if user.listing
+			a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
+			a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
+			a(href=`/dashboard/listing` class=tab == 'listing' ? 'currentTab' : '') Listing
+			a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
+		else
+			a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
+			a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
+			a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
+			a(href=`/listing`).no_tab Claim Listing
 
-	nav.tabs-listing
-		ul
-			li
-				a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
-			li
-				a(href=`/dashboard/stats` class=tab == 'stats' ? 'currentTab' : '') Stats
-			li
-				a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
-			li
-				a(href="/dashboard/reviews" class=tab == 'reviews' ? 'currentTab' : '') Reviews
-			li
-				a(href=`/dashboard/listing` class=tab == 'listing' ? 'currentTab' : '') Listing
-			li
-				a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
+//- .tabs-mob
+//- 	span #{tab}
+//- 	.icon.icon-prev
 
-else
+//- if user.listing
 
-	nav.tabs-listing
-		ul
-			li
-				a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
-			li
-				a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
-			li
-				a(href="/dashboard/reviews" class=tab == 'reviews' ? 'currentTab' : '') Reviews
-			li
-				a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
-			li
-				a(href=`/listing`).no_tab Claim Listing
+//- 	nav.tabs-listing
+//- 		ul
+//- 			li
+//- 				a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
+//- 			li
+//- 				a(href=`/dashboard/stats` class=tab == 'stats' ? 'currentTab' : '') Stats
+//- 			li
+//- 				a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
+//- 			li
+//- 				a(href="/dashboard/reviews" class=tab == 'reviews' ? 'currentTab' : '') Reviews
+//- 			li
+//- 				a(href=`/dashboard/listing` class=tab == 'listing' ? 'currentTab' : '') Listing
+//- 			li
+//- 				a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
+
+//- else
+
+//- 	nav.tabs-listing
+//- 		ul
+//- 			li
+//- 				a(href=`/dashboard` class=tab == 'overview' ? 'currentTab' : '') Overview
+//- 			li
+//- 				a(href=`/dashboard/profile` class=tab == 'profile' ? 'currentTab' : '') Profile
+//- 			li
+//- 				a(href="/dashboard/reviews" class=tab == 'reviews' ? 'currentTab' : '') Reviews
+//- 			li
+//- 				a(href="/dashboard/notifications" class=tab == 'notifications' ? 'currentTab' : '') Notifications
+//- 			li
+//- 				a(href=`/listing`).no_tab Claim Listing

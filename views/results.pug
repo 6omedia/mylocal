@@ -1,0 +1,87 @@
+extends layout
+
+block content
+
+	#datablock(data-industry=`${industry}` data-town=`${town}`)
+
+	#wrapper
+		.content
+			// Map
+			.map-container.column-map.right-pos-map
+				#map-main
+				ul.mapnavigation
+					li
+						a.prevmap-nav(href='#') Prev
+					li
+						a.nextmap-nav(href='#') Next
+			.col-list-wrap.left-list
+				#lisfw.listsearch-options.fl-wrap
+					.container
+						.listsearch-header.fl-wrap
+							h3
+								| Results For : 
+								span #{industry} in #{town}
+							.listing-view-layout
+								ul
+									li
+										a.grid.active(href='#')
+											i.fa.fa-th-large
+									li
+										a.list(href='#')
+											i.fa.fa-list-ul
+						//- .listsearch-input-wrap.fl-wrap
+							//- .fl-wrap
+							//- 	.distance-input.fl-wrap
+							//- 		.distance-title
+							//- 			| Radius around selected destination 
+							//- 			span
+							//- 			|  km
+							//- 		.distance-radius-wrap.fl-wrap
+							//- 			input.distance-radius.rangeslider--horizontal(type='range', min='1', max='100', step='1', value='1', data-title='Radius around selected destination')
+							//- button.button.fs-map-btn Update
+							//- .more-filter-option
+							//- 	| More Filters 
+							//- 	span
+				.list-main-wrap.fl-wrap.card-listing
+					a.custom-scroll-link.back-to-filters.btf-l(href='#lisfw')
+						i.fa.fa-angle-double-up
+					.container
+						// listing-item
+						#searchResults.loading
+						// listing-item end
+					//- a.load-more-button(href='#')
+					//- 	| Load more 
+					//- 	i.fa.fa-circle-o-notch
+				// list-main-wrap end
+			// col-list-wrap
+			.limit-box.fl-wrap
+			// section
+			section.gradient-bg
+				.cirle-bg
+					.bg(data-bg='images/bg/circle.png')
+				.container
+					.join-wrap.fl-wrap
+						.row
+							.col-md-8
+								h3 Join our online community
+								p Grow your marketing and be happy with your online business
+							.col-md-4
+								a.join-wrap-btn.modal-open(href='#')
+									| Sign Up 
+									i.fa.fa-sign-in
+			// section end
+
+	include ./partials/_login
+
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/js/main.js")
+
+	//- script(async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBptrgG-mAxef-8h46e-WavTmYWk-ds0yE&callback=initMap")
+	script(type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBptrgG-mAxef-8h46e-WavTmYWk-ds0yE")
+	script(type="text/javascript" src="/static/js/citybook/map_infobox.js")
+	script(type="text/javascript" src="/static/js/citybook/markerclusterer.js")
+	script(type="text/javascript" src="/static/js/results.js")

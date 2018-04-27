@@ -22,7 +22,7 @@
 			this.services_list.append(`
 				<li>
 					<span>${service}</span>
-					<div class="icon icon-cross"></div>
+					<i class="fa fa-times"></i>
 				</li>
 			`);
 		},
@@ -133,7 +133,7 @@
 		View.services_input.val('');
 	});
 
-	View.services_list.on('click', '.icon-cross', function(){
+	View.services_list.on('click', 'i', function(){
 		Model.services.splice($(this).parent().index(), 1);
 		$(this).parent().remove();
 	});
@@ -191,5 +191,11 @@
 			return msgBox.display('Missing or invalid fields', true, true);
 		}
 	});
+
+	// var side = $('.theside');
+
+	// window.scroll(function(){
+	// 	console.log('dfsdv');
+	// });
 
 })(YeahAutocomplete, imageLibrary.ImageLibrary, form.form, listingModel, utils);

@@ -2,33 +2,27 @@ extends ../layout
 
 block content
 
-	header.full.fixed
-		include ../partials/header
+	#wrapper
+		.bigwhite
+			.container
+				h1.ml Dashboard
 
-	.bigWhite
-		.container
-			h1.spaced Dashboard
+				include ./_nav
 
-			include _nav
+				.row
+					.col-md-3
+						include ./_side
+					.col-md-7
+						// profile-edit-container
+						.profile-edit-container
 
-			textarea#yeah
+							p Waistcoat sartorial meggings, kinfolk portland messenger bag quinoa gentrify. Brunch twee deep v affogato mixtape literally semiotics art party four loko normcore typewriter. Fingerstache mlkshk offal ugh.
 
-			ul.list.form
-				li
-					button#email1 send registered email
-				li
-					button#email2 send reviewed email
-				li
-					button#email3 send positve review email
-				li
-					button#email4 send negative email
-				li
-					button#email5 send custom email
+							p Occupy jianbing cold-pressed, hell of fashion axe synth vice truffaut yr. YOLO gentrify leggings lyft forage fingerstache
 
-	script(src="http://code.jquery.com/jquery-latest.js")
-	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
-	script(src="/static/js/helpers/form.js")
-	script(src="/static/js/helpers/utils.js")
-	script(src="/static/js/dashboard/dashboard.js")
-	script(src="/static/js/main.js")
-	script(src="/static/js/test.js")
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/main.js")
+	script(type="text/javascript" src="/static/js/dashboard/dashboard.js")

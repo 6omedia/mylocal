@@ -23,6 +23,10 @@ let UserSchema = new Schema(
             type: String,
             default: 'free'
         },
+        avatar: {
+            type: String,
+            default: '/static/img/avatar.png'
+        },
         meta: {
             age: Number,
             website: String

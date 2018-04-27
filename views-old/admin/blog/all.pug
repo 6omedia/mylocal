@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-blog
+		include ../partials/side
+
+		.main
+			h1 Blog
+			ul.bread-crumb
+				li
+					a(href="/admin/blog").current All Posts
+
+			.floatLeft
+				table
+					tr
+						th Title
+						th Slug
+						th Actions
+					each post in posts
+						tr
+							td #{post.title}
+							td #{post.slug}
+							td
+								a(href=`/articles/${post.slug}`).view
+								a(href=`/admin/blog/edit/${post._id}`).edit
+								span(data-postid=`${post._id}`).delete
+				div.paginationDiv !{paginationLinks}
+			.mini-side
+				a(href="/admin/blog/add").add Add Post
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/blog-all.js")

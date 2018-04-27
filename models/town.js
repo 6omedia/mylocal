@@ -8,6 +8,14 @@ let TownSchema = new Schema({
 		unique: true,
 		required: true
 	},
+    capital: {
+        type: Boolean,
+        default: false
+    },
+    image: {
+        type: String,
+        default: ''
+    },
     county: String,
     latitude: Number,
     longitude: Number

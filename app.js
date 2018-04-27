@@ -28,8 +28,12 @@ let options = {
 	replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 130000 } } 
 };
 
+// app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'html');
+
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
+
 app.use(express.static(__dirname + '/public'));
 
 //db connection      

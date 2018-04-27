@@ -23,6 +23,15 @@ let ListingSchema = new Schema(
             type: Date,
             default: Date.now
         },
+        favourited: {
+            type: Number,
+            default: 0
+        },
+        views: {
+            type: Number,
+            default: 0
+        },
+        overall_rating: Number,
         business_name: {
         	type: String,
         	required: true
@@ -204,7 +213,7 @@ let ListingSchema = new Schema(
 ListingSchema.virtual('rating').get(function(){
 
     if(!this.reviews || this.reviews.length == 0){
-        return null;
+        return 0;
     }
 
     var reviewCount = this.reviews.length;
@@ -233,6 +242,13 @@ ListingSchema.virtual('bgimage').get(function(){
     return '/static/img/backgrounds/default.jpg';
 
 });
+
+ListingSchema.virtual('preview').get(function(){
+    if(this.description){
+        return this.description.replace(/<(?:.|\n)*?>/gm, '').substring(0, 45) + '...'; // strip out any html and limit chars to asomthing
+    }
+    return '';
+}); 
 
 /*
 
@@ -358,7 +374,7 @@ ListingSchema.statics.getBySearchTerms = function(qService, qLocation, miles, pa
 
     let searchForArr = [];
     let query = {};
-    let docsPerPage = 15;
+    let docsPerPage = 12;
 
     searchForArr.push({ industry: new RegExp(qService, "i") });
     searchForArr.push({ services: new RegExp(qService, "i") });

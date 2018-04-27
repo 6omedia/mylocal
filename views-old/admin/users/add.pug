@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Users
+			ul.bread-crumb
+				li
+					a(href="/admin/users") Users
+				li
+					span &#x2192;
+				li
+					a(href="").current New User
+
+			.form
+				ul
+					li
+						label User Name
+						input(type="text")#q_name
+					li
+						label Email
+						input(type="email")#q_email
+					li
+						label Password
+						input(type="password")#q_password
+					li
+						label Password Confirm
+						input(type="password")#q_password_confirm
+					li
+						label User Role
+						select#q_user_role
+							option(value="Subscriber") Subscriber
+							option(value="Editor") Editor
+							option(value="Admin") Admin
+							if user.user_role == 'Super Admin'
+								option(value="Super Admin") Super Admin
+					li
+						.btn#save Save User
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/users-edit.js")

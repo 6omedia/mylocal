@@ -1,0 +1,63 @@
+extends ../layout
+
+block content
+
+	#datablock(data-useremail=`${user.email}` style="display: none;")
+
+	header.full.fixed
+		include ../partials/header
+
+	.bigWhite
+		.container
+			h1.spaced Notifications
+
+			include _nav
+			
+			.row
+				.col-sm-3
+					.notification_side
+						ul.notifications
+							//- li
+							//- 	h5 MyLocal
+							//- 	span.date 12/4/1972
+							//- 	p Edison bulb vexillologist salvia, crucifix migas palo
+							//- li
+							//- 	h5 Bruce Banner
+							//- 	span.date 12/4/1969
+							//- 	p Blue bottle small batch yuccie, flannel quinoa
+							//- li
+							//- 	h5 MyLocal
+							//- 	span.date 12/4/1972
+							//- 	p Edison bulb vexillologist salvia, crucifix migas palo
+							//- li
+							//- 	h5 Bruce Banner
+							//- 	span.date 12/4/1969
+							//- 	p Blue bottle small batch yuccie, flannel quinoa
+						.loadmore Load More
+				.col-sm-9
+					.msgchain#themsgchain
+						//- .msg.sender
+						//- 	p Freegan typewriter iceland, distillery yr williamsburg whatever waistcoat farm-to-table pork belly 3 wolf moon direct trade organic aesthetic. Next level mustache art party try-hard swag.
+						//- 	p Pabst kogi meditation listicle cardigan
+						//- .msg.you
+						//- 	p Tote bag salvia franzen butcher
+						//- 	p Sartorial portland pop-up, lumbersexual pinterest trust fund next level kombucha
+						//- .msg.sender
+						//- 	p Freegan typewriter iceland, distillery yr williamsburg whatever waistcoat farm-to-table pork belly 3 wolf moon direct trade organic aesthetic. Next level mustache art party try-hard swag.
+						//- 	p Pabst kogi meditation listicle cardigan
+						//- .msg.you
+						//- 	p Tote bag salvia franzen butcher
+						//- 	p Sartorial portland pop-up, lumbersexual pinterest trust fund next level kombucha
+					.form
+						textarea(placeholder="Write Email...")#emailbody
+						input(type="text" placeholder="Subject...")#subject
+						button#send Send
+						
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/helpers/form.js")
+	//- script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/main.js")
+	script(src="/static/js/dashboard/dashboard.js")
+	script(src="/static/js/dashboard/notifications.js")

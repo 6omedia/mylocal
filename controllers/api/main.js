@@ -20,6 +20,106 @@ function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
+apiRoutes.post('/login', function(req, res, next){
+
+	let data = {};
+
+	if(req.body.email && req.body.password){
+
+		User.authenticate(req.body.email, req.body.password, function(err, user){
+
+			if(err || !user){
+				res.status(err.status || 500);
+				data.error = 'Incorrect Username / Password'
+				return res.json(data);
+			}
+
+			// user exists
+			req.session.userId = user._id;
+			res.loggedInUser = user._id;
+			req.session.user = user;
+
+			if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
+				data.redirect = '/admin';
+				data.success = 1;
+				return res.json(data);
+			}else{
+				let url = (req.body.url == undefined || req.body.url == 'null' ? '/dashboard' : req.body.url );
+				data.redirect = url;
+				data.success = 1;
+				return res.json(data);
+			}
+
+		});
+
+	}else{
+
+		data.error = 'Both email and password required';
+		res.status(400);
+		return res.json(data);
+
+	}
+
+});
+
+apiRoutes.post('/register', function(req, res, next){
+
+	let data = {};
+
+	const validData = utils.requiredPostProps(['name', 'email', 'password', 'confirm_password'], req.body);
+
+	if(!validData){
+		data.error = validData;
+		return res.json(data);
+	}
+
+	var userObj = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        confirm_password: req.body.confirm_password
+    };
+
+    User.registerUser(userObj, function(err, user){
+
+        if(err){
+        	data.error = err;
+        	return res.json(data);
+        }
+
+        let notification = new Notification({
+			template_type: 'Subscriber Templates',
+			template_name: 'register',
+			email_to: user.email,
+			email_from: 'mail@mylocal.co',
+			email_respond: 'mail@mylocal.co',
+			loggedinuserid: user._id,
+			replace_func: (msg) => {
+				return msg.replace('%name%', user.name);
+			}
+		});
+
+		notification.send((err) => {
+
+			if(err){
+				data.error = err;
+        		return res.json(data);
+			}
+
+			// login and start session
+		    req.session.userId = user._id;
+		    req.session.user = user;
+
+		    data.redirect = '/dashboard';
+			data.success = 1;
+			return res.json(data);
+
+		});
+
+    });
+
+});
+
 apiRoutes.get('/locations/search', function(req, res, next){
 
 	let data = {};

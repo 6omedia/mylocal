@@ -2,87 +2,176 @@ extends layout
 
 block content
 
-	header
-		include ./partials/header
+	#wrapper
+		.content
+			section.scroll-con-sec.hero-section(data-scrollax-parent="true")#sec1
+				.bg(data-bg="/static/img/mylocal.png" data-scrollax="properties: { translateY: '200px' }")
+				.overlay
+				.hero-section-wrap.fl-wrap
+					.container
+						.intro-item.fl-wrap
+							h2 We will help you to find all
+							h3 Find great places , hotels , restourants , shops.
+						.main-search-input-wrap
+							.main-search-input.fl-wrap
+								.main-search-input-item
+									input(type="text" placeholder="Looking for..." value="" id="industry")
+								.main-search-input-item.location
+									input(type="text" placeholder="In..." value="" id="town")
+									a(href="#")
+										i.fa.fa-dot-circle-o
+								button.main-search-button Search
+				.bubble-bg
+				.header-sec-link
+					.container
+						a(href="#sec2").custom-scroll-link Let's Start
+			section#sec2
+				.container
+					.section-title
+						h2 Featured Categories
+						.section-subtitle Catalog of Categories
+						span.section-separator
+						p Explore some of the best tips from around the city from our partners and friends.
+					.gallery-items.fl-wrap.mr-bot.spad
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src="/static/img/citybook/all/1.jpg" alt="")
+									.listing-counter 
+										span 10 
+										span Locations
+									.listing-item-cat
+										h3
+											a(href="listing.html") Conference and Event
+										p Constant care and attention to the patients makes good record
+						.gallery-item.gallery-item-second
+							.grid-item-holder
+								.listing-item-grid
+									img(src="/static/img/citybook/bg/1.jpg" alt="")
+									.listing-counter
+										span 6
+										span Locations
+									.listing-item-cat
+										h3 
+											a(href="listing.html") Cafe - Pub
+										p Constant care and attention to the patients makes good record
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src="/static/img/citybook/all/1.jpg" alt="")
+									.listing-counter
+										span 21
+										span Locations
+									.listing-item-cat
+										h3
+											a(href="listing.html") Gym - Fitness
+										p Constant care and attention to the patients makes good record
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src="/static/img/citybook/all/1.jpg" alt="")
+									.listing-counter 
+										span 7 
+										span Locations
+									.listing-item-cat
+										h3
+											a(href="listing.html") Hotels
+										p Constant care and attention to the patients makes good record
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src="/static/img/citybook/all/1.jpg" alt="")
+									.listing-counter
+										span 15
+										span Locations
+									.listing-item-cat
+										h3
+											a(href="listing.html") Shop - Store
+										p Constant care and attention to the patients makes good record
+					a(href="listing.html").btn.big-btn.circle-btn.dec-btn.color-bg.flat-btn View All
+						i.fa.fa-eye
 
-	section
-		.container
-			div(class=listings != undefined ? 'heroSearch heroSmall' : 'heroSearch')
-				if listings
-					h1 Looking for #{industry} in #{town}
-				else
-					h1 Looking for MyLocal 
-						span#changingIndustry Hairdresser
-				.searchBox
-					input(type="text" placeholder="Barber, Indian Take-a-way, Dentist Surgery...")#industry
-					input(type="text" placeholder="In...")#town
-					button#find Find
-
-	section.bigWhite
-		.container
-			#searchResults
-				if listings
+			section.color-bg
+				.shapes-bg-big
+				.container
 					.row
-						each listing in listings
-							.col-sm-4
-								.listing
-									.heading(style=`background: url(${listing.bgimage}) no-repeat 50%/100%;`)
-										h2 #{listing.business_name}
-									.info
-										.rating
-											span
-											span
-											span
-											span
-											span.nostar
-										a(href=`tel:${listing.contact.phone}`).phone #{listing.contact.phone}
-										a(href=`/listing/${listing.slug}`).btn View
-										if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
-											img(src=`${listing.branding.logo}`).logo
-				div !{pagination}
-
-			if !listings
-				if posts.length >= 4
-					.imgGrid
-						h2 Recent Articles
+						.col-md-6
+							.images-collage.fl-wrap
+								.images-collage-title City
+									span Book
+								.images-collage-main.images-collage-item
+									img(src="/static/img/citybook/avatar/1.jpg" alt="")
+								.images-collage-other.images-collage-item(data-position-left="23" data-position-top="10" data-zindex="2")
+									img(src="/static/img/citybook/avatar/1.jpg" alt="")
+								.images-collage-other.images-collage-item(data-position-left="62" data-position-top="54" data-zindex="5")
+									img(src="/static/img/citybook/avatar/1.jpg" alt="")
+								.images-collage-other.images-collage-item.anim-col(data-position-left="18" data-position-top="70" data-zindex="11")
+									img(src="/static/img/citybook/avatar/1.jpg" alt="")
+								.images-collage-other.images-collage-item(data-position-left="37" data-position-top="90" data-zindex="1")
+									img(src="/static/img/citybook/avatar/1.jpg" alt="")
+						.col-md-6
+							.color-bg-text
+								h3 Join our online community
+								p In ut odio libero, at vulputate urna. Nulla tristique mi a massa convallis cursus. Nulla eu mi magna. Etiam suscipit commodo gravida. Lorem ipsum dolor sit amet, conse ctetuer adipiscing elit, sed diam nonu mmy nibh euismod tincidunt ut laoreet dolore magna aliquam erat.
+								a(href="#").color-bg-link.modal-open Sign In Now
+			section.parallax-section(data-scrollax-parent="true")
+				.bg(data-bg="images/bg/1.jpg" data-scrollax="properties: { translateY: '100px' }")
+				.overlay.co.lor-overlay
+				.container
+					.intro-item.fl-wrap
+						h2 Visit the Best Places In Your City
+						h3 Find great places , hotels , restourants , shops.
+						a.trs-btn(href="#") Add Listing + 
+			//- section.gray-section
+			//- 	.container
+			//- 		.fl-wrap.spons-list
+			//- 			ul.client-carousel
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 				li
+			//- 					a(href="#" target="_blank")
+			//- 						img(src="/static/img/citybook/clients/1.png" alt="")
+			//- 			.sp-cont.sp-cont-prev
+			//- 				i.fa.fa-angle-left
+			//- 			.sp-cont.sp-cont-next
+			//- 				i.fa.fa-angle-right
+			section.gradient-bg
+				.cirle-bg
+					.bg(data-bg="images/bg/circle.png")
+				.container
+					.join-wrap.fl-wrap
 						.row
-							.col-sm-6
-								a(href=`/articles/${posts[0].slug}`)
-									.post
-										img(src=`${posts[0].feat_img}`)
-										h3 #{posts[0].title}
-							.col-sm-6
-								a(href=`/articles/${posts[1].slug}`)
-									.post.evenSmallerPost
-										img.smallerImg(src=`${posts[1].feat_img}`)
-										h3 #{posts[1].title}
-								.row
-									.col-sm-6
-										a(href=`/articles/${posts[2].slug}`)
-											.post
-												img.evenSmallerImg(src=`${posts[2].feat_img}`)
-												h3 #{posts[2].title}
-									.col-sm-6
-										a(href=`/articles/${posts[3].slug}`)
-											.post
-												img.evenSmallerImg(src=`${posts[3].feat_img}`)
-												h3 #{posts[3].title}
+							.col-md-8
+								h3 Do You Have Questions ?
+								p Lorem ipsum dolor sit amet, harum dolor nec in, usu molestiae at no.
+							.col-md-4
+								a(href="contacts.html").join-wrap-btn Get In Touch 
+									i.fa.fa-envelope-o
 
-				hr
-				.center_box
-					a(href="/articles").more More Articles
-	if !listings
-		section.bigBlue
-			.container
-				.row
-					.col-sm-5
-						.callToAction
-							h2 Claim Your Business
-							p Find or add your business and edit your profile to get the most out of your listing on my local
-							p Simply make an account with us today
-							a(href="/").button Sign Up
+	//- wrapper end
 
-	script(src="http://code.jquery.com/jquery-latest.js")
-	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
-	script(src="/static/js/home.js")
-	script(src="/static/js/main.js")
+	include ./partials/_login
+
+	a.to-top
+		i.fa.fa-angle-up
+
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/js/main.js")
+	script(type="text/javascript" src="/static/js/home.js")

@@ -2,43 +2,102 @@ extends ../layout
 
 block content
 
-	header.full.fixed
-		include ../partials/header
+	#wrapper
+		.bigwhite
+			.container
+				h1.ml Dashboard
 
-	.bigWhite
-		.container
-			h1.spaced Profile
+				include _nav
 
-			include _nav
+				.row
+					.col-md-3
+						include ./_side
 
-			.row
-				.col-sm-8
-					form(action="/profile", method="post")
-						input(type="hidden", name="userId", value=`${id}`)
-						h2 Update Profile
-						ul
-							li
-								label Name
-								input(type="text", id="q_name", value=`${name}`)
-							li
-								label Email
-								input(type="text", id="q_email", value=`${user.email}`)
-							li
-								label(for="cbox_new_password") Change Password
-								input(type="checkbox")#cbox_new_password
-							li.passwordli
-								label New Password
-								input(type="password", id="q_password")
-							li.passwordli
-								label Confirm Password
-								input(type="password", id="q_password_confirm")
-				.col-sm-4
-					button(type="submit" data-userid=`${user._id}`).side_submit Update Profile
+					.col-md-7
+						.profile-edit-container
+							.profile-edit-header.fl-wrap
+								h4 My Account
+							.custom-form
+								ul
+									li
+										label
+											| Your Name 
+											i.fa.fa-user-o
+										input(type='text', placeholder='Full Name...', value=`${name}`)#q_name
+									li
+										label
+											| Email Address
+											i.fa.fa-envelope-o
+										input(type='text', placeholder='AlisaNoory@domain.com', value=`${user.email}`)#q_email
+									li
+										label(for="cbox_new_password") Change Password
+										input(type="checkbox")#cbox_new_password
+									li.passwordli
+										label
+											| New Password
+											i.fa.fa-unlock-alt
+										input(type="password", id="q_password")
+									li.passwordli
+										label
+											| Confirm Password
+											i.fa.fa-unlock-alt
+										input(type="password", id="q_password_confirm")
+									li
+										button(type="submit" data-userid=`${user._id}`).side_submit.btn.big-btn.color-bg.flat-btn
+											| Save Changes
+											i.fa.fa-angle-right
 
-	script(src="http://code.jquery.com/jquery-latest.js")
-	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
-	script(src="/static/js/helpers/form.js")
-	script(src="/static/js/helpers/utils.js")
-	script(src="/static/js/dashboard/dashboard.js")
-	script(src="/static/js/dashboard/profile.js")
-	script(src="/static/js/main.js")
+								//- label
+								//- 	| Phone
+								//- 	i.fa.fa-phone
+								//- input(type='text', placeholder='+7(123)987654', value='')
+								//- label
+								//- 	| Adress 
+								//- 	i.fa.fa-map-marker
+								//- input(type='text', placeholder='USA 27TH Brooklyn NY', value='')
+								//- label
+								//- 	| Website 
+								//- 	i.fa.fa-globe
+								//- input(type='text', placeholder='themeforest.net', value='')
+								//- label  Notes
+								//- textarea(cols='40', rows='3', placeholder='About Me')
+						//- .profile-edit-container
+						//- 	.profile-edit-header.fl-wrap(style='margin-top:30px')
+						//- 		h4 My Socials
+						//- 	.custom-form
+						//- 		label
+						//- 			| Facebook 
+						//- 			i.fa.fa-facebook
+						//- 		input(type='text', placeholder='https://www.facebook.com/', value='')
+						//- 		label
+						//- 			| Twitter
+						//- 			i.fa.fa-twitter
+						//- 		input(type='text', placeholder='https://twitter.com/', value='')
+						//- 		label
+						//- 			| Vkontakte
+						//- 			i.fa.fa-vk
+						//- 		input(type='text', placeholder='vk.com', value='')
+						//- 		label
+						//- 			| Whatsapp 
+						//- 			i.fa.fa-whatsapp
+						//- 		input(type='text', placeholder='https://www.whatsapp.com', value='')
+						
+					//- .col-md-2
+					//- 	.edit-profile-photo.fl-wrap
+					//- 		img.respimg(src='images/avatar/1.jpg', alt='')
+					//- 		.change-photo-btn
+					//- 			.photoUpload
+					//- 				span
+					//- 					i.fa.fa-upload
+					//- 					|  Upload Photo
+					//- 				input.upload(type='file')
+
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/js/helpers/utils.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/dashboard/profile.js")
+	script(type="text/javascript" src="/static/js/dashboard/dashboard.js")
+	script(type="text/javascript" src="/static/js/main.js")

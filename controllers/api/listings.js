@@ -253,6 +253,7 @@ listingRoutes.get('/find/:industry/:town', function(req, res, next){
 	let page = req.query.page || 1;
 
 	Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
+		
 		(err, listings, pagination, message) => {
 
 		if(err){
@@ -267,20 +268,6 @@ listingRoutes.get('/find/:industry/:town', function(req, res, next){
 		data.pagination = pagination;
 		data.listings = listings;
 		return res.json(data);
-
-		// if(listings.length > 0){
-		// 	data.listings = listings;
-		// 	return res.json(data);
-		// }
-
-		// Listing.findSimilar(req.params.industry, req.params.town, (err, correction) => {
-		// 	if(err){
-		// 		data.error = err;
-		// 		return res.json(data);
-		// 	}
-		// 	data.correction = correction;
-		// 	return res.json(data);
-		// });
 
 	});
 

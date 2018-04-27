@@ -1,0 +1,240 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Listings
+			ul.bread-crumb
+				li
+					a(href="/admin/listings") Listings
+				li
+					span &#x2192;
+				li
+					a(href="").current New Listing
+
+			.form.third
+				h4 General Details
+				ul
+					li
+						label Business Name
+						input(type="text")#business_name
+					li
+						label Email
+						input(type="email")#email
+					li
+						label Phone Number
+						input(type="text")#phone
+					li
+						label Website
+						input(type="text")#website
+				h4 Address
+				ul
+					li
+						label Line One
+						input(type="text")#line_one
+					li
+						label Line Two
+						input(type="text")#line_two
+					li
+						label Town / City
+						input(type="text")#town
+					li
+						label Post Code
+						input(type="text")#postcode
+				h4 Opening Times
+				ul.openingTimes
+					li
+						label Monday
+						input(type="number" min="00" max="23")#mon_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#mon_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#mon_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#mon_close_mins
+					li
+						label Tuesday
+						input(type="number" min="00" max="23")#tues_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#tues_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#tues_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#tues_close_mins
+					li
+						label Wednesday
+						input(type="number" min="00" max="23")#wed_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#wed_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#wed_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#wed_close_mins
+					li
+						label Thursday
+						input(type="number" min="00" max="23")#thurs_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#thurs_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#thurs_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#thurs_close_mins
+					li
+						label Friday
+						input(type="number" min="00" max="23")#fri_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#fri_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#fri_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#fri_close_mins
+					li
+						label Saturday
+						input(type="number" min="00" max="23")#sat_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#sat_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#sat_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#sat_close_mins
+					li
+						label Sunday
+						input(type="number" min="00" max="23")#sun_open_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#sun_open_mins
+						span.to to 
+						input(type="number" min="00" max="23")#sun_close_hours
+						span.colon : 
+						input(type="number" min="00" max="60")#sun_close_mins
+			.form.third
+				h4 About the Business
+				ul
+					li
+						label Industry
+						input(type="text")#industry
+					li
+						label Services
+						input(type="text")#services.inputPlus
+						.btn +
+						#selected_services.tags_ul
+					li
+						label.full Other Information (displayed on listing)
+						.yeahEditor.small
+							.toolbar
+								button(data-command='undo')
+									i.fa.fa-undo
+								button(data-command='redo')
+									i.fa.fa-repeat
+								button(data-command='bold')
+									i.fa.fa-bold
+								button(data-command='italic')
+									i.fa.fa-italic
+								button(data-command='underline')
+									i.fa.fa-underline
+								button(data-command='insertUnorderedList')
+									i.fa.fa-list-ul
+								button(data-command='insertOrderedList')
+									i.fa.fa-list-ol
+								button(data-command='h2') H2
+								button(data-command='p') P
+							.editor#otherinfo(contenteditable='')
+								h1 Post Content Editor
+								p Try making some changes here. Add your own text or maybe an image.
+				h4 Social Media
+				ul
+					li
+						label Icon Style
+						.fakeInput#social_style(data-style="standard")
+							span Standard
+					li
+						label Facebook
+						input(type="text")#social_fb
+					li
+						label Twitter
+						input(type="text")#social_tw
+					li
+						label Instagram
+						input(type="text")#social_ig
+					li
+						label Google +
+						input(type="text")#social_gp
+					li
+						label YouTube
+						input(type="text")#social_yt
+					li
+						label Linked In
+						input(type="text")#social_li
+					li
+						label Pinterst
+						input(type="text")#social_pi
+			.form.third
+				h4 Gallery
+				ul
+					li 
+						label Edit Gallery
+						.fakeInput#galleryInput
+							//- var imgCount = 0; if(listing.gallery) var imgCount = listing.gallery.length || 0
+							span.imgCount 0  
+							span Images
+				h4 Branding
+				ul
+					li
+						label Logo
+						.file_upload_box#listinglogo_box
+							//- label
+							//- input(type="file")#listinglogo
+							img(src="/static/img/admin/placeholder-logo.png")
+							//- .fakeInput.fileUpload
+							//- 	p Upload Logo
+					li
+						label Background
+						.file_upload_box#listingbg_box
+							//- label
+							//- input(type="file")#listingbg
+							img(src="/static/img/admin/placeholder-bg.png")
+							//- .fakeInput.fileUpload
+							//- 	p Upload Background
+					li
+						label Primary Colour
+						input(type="text" value="17FFAB").jscolor#listing_color1
+					li
+						label Secondary Colour
+						input(type="text" value="CEEDE4").jscolor#listing_color2
+					li
+						label Accent
+						input(type="text" value="FFD766").jscolor#listing_color3
+					li
+						.btn#addBtn Add Listing
+
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn Upload Image
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/jscolor.min.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/helpers/yeahtexteditor.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/admin/listings/listings.js")

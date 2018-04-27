@@ -1,0 +1,59 @@
+header.main-header.dark-header.fs-header.sticky
+    .header-inner
+        .logo-holder
+            a(href="/")
+                img(src="/static/img/logo-temp.png")
+        if !home
+            //- .header-search.vis-header-search
+            //-     .header-search-input-item
+            //-         input(type="text" placeholder="Keywords" value="")#industry
+            //-     .header-search-select-item
+            //-         input(type="text" placeholder="Location" value="")#town
+            //-     button.header-search-button(onclick="window.location.href='listing.html'") Search
+            //- .show-search-button
+            //-     i.fa.fa-search
+            //-     span Search
+            .ml-search
+                .close
+                    i.fa.fa-times-circle
+                input(placeholder="Keywords")#industry
+                input(placeholder="Location")#town
+                button.main-search-button#hFind Search
+            .show-search-button
+                i.fa.fa-search
+                span Search
+        if user
+            .nav-button-wrap.color-bg
+                .nav-button
+                    span
+                    span
+                    span
+            .nav-holder.main-menu
+                nav
+                    ul
+                        if user.listing
+                            li
+                                a(href="/listing") Your Listing
+                            li
+                                a(href="/dashboard") Dashboard
+                        else
+                            li
+                                a(href="/dashboard") Dashboard
+                        li
+                            a(href="/logout") Logout
+                        li
+                            a(href="/dashboard/notifications").icon.icon-bell
+                                if notifications
+                                    .num #{notifications}
+            
+            if !user.listing
+                if user.user_role != 'Admin' && user.user_role != 'Super Admin'
+                    a(href="/listing").add-list Claim Listing 
+
+        else
+            span.add-list.modal-open Claim Listing 
+                //- span
+                //-     i.fa.fa-plus
+            .show-reg-form.modal-open
+                i.fa.fa-sign-in
+                span Sign In/Register

@@ -151,80 +151,100 @@ reviewRoutes.post('/add', mid.jsonLoginRequired, function(req, res){
 		}
 
 		review.save()
-		.then((review) => {
+		.then((theReview) => {
 
-			Promise.all(
-				[
-					req.session.user.update({$push: {reviews: review}}),
-					Listing.findOneAndUpdate({_id: req.body.listingid}, {$push: {reviews: review}}, {new: true})
-				])
-				.then((yeah) => {
+			Review.overallRating(req.body.listingid, (err, overallRating) => {
 
-					Listing.findById(req.body.listingid)
-						.populate('userId')
-						.exec((err, listing) => {
-
-						if(err){ console.log(err); }
-
-						let subNotification = new Notification({
-							template_type: 'Subscriber Templates',
-							template_name: 'reviewed',
-							email_to: req.session.user.email,
-							email_from: 'mail@mylocal.co',
-							email_respond: listing.userId.email,
-							loggedinuserid: req.session.user._id,
-							replace_func: (msg) => {
-								return msg.replace('%name%', req.session.user.name)
-										  .replace('%listing%', listing.business_name)
-										  .replace('%rating%', req.body.rating)
-										  .replace('%review%', req.body.review || '');
-							}
-						});
-
-						subNotification.send((err) => {
-							if(err){console.log(err);}
-						});
-
-						let template;
-
-						if(req.body.rating >= 6){
-							template = 'goodreview';
-						}else{
-							template = 'badreview';
-						}
-
-						let ownerNotification = new Notification({
-							template_type: 'Business Owner Templates',
-							template_name: template,
-							email_to: listing.userId.email,
-							email_from: 'mail@mylocal.co',
-							email_respond: req.session.user.email,
-							loggedinuserid: req.session._id,
-							replace_func: (msg) => {
-								return msg.replace('%name%', listing.userId.name)
-										  .replace('%listing%', listing.business_name)
-										  .replace('%rating%', req.body.rating)
-										  .replace('%review%', req.body.review || '');
-							}
-						});
-
-						ownerNotification.send((err) => {
-							if(err){console.log(err);}
-						});
-
-					});
-
-					data.review = review;
-					data.success = 'Review Saved';
-					res.status(200);
-					return res.json(data);
-				})	
-				.catch((e) => {
-					console.log(e);
+				if(err){
 					data.error = e.message || 'Internal Server Error';
 					res.status = e.status || 500;
 					return res.json(data);
-				});
+				}
+
+				Promise.all(
+					[
+						req.session.user.update({$push: {reviews: theReview}}),
+						Listing.findOneAndUpdate({_id: req.body.listingid}, 
+							{
+								$push: {reviews: theReview},
+								overall_rating: overallRating
+							}, {new: true})
+					])
+					.then((yeah) => {
+
+						Listing.findById(req.body.listingid)
+							.populate('userId')
+							.exec((err, listing) => {
+
+							if(err){ console.log(err); }
+
+							if(listing.userId){
+
+								let subNotification = new Notification({
+									template_type: 'Subscriber Templates',
+									template_name: 'reviewed',
+									email_to: req.session.user.email,
+									email_from: 'mail@mylocal.co',
+									email_respond: listing.userId.email,
+									loggedinuserid: req.session.user._id,
+									replace_func: (msg) => {
+										return msg.replace('%name%', req.session.user.name)
+												  .replace('%listing%', listing.business_name)
+												  .replace('%rating%', req.body.rating)
+												  .replace('%review%', req.body.review || '');
+									}
+								});
+
+								subNotification.send((err) => {
+									if(err){console.log(err);}
+								});
+
+							}
+
+							let template;
+
+							if(req.body.rating >= 6){
+								template = 'goodreview';
+							}else{
+								template = 'badreview';
+							}
+
+							if(listing.userId){
+								let ownerNotification = new Notification({
+									template_type: 'Business Owner Templates',
+									template_name: template,
+									email_to: listing.userId.email,
+									email_from: 'mail@mylocal.co',
+									email_respond: req.session.user.email,
+									loggedinuserid: req.session._id,
+									replace_func: (msg) => {
+										return msg.replace('%name%', listing.userId.name)
+												  .replace('%listing%', listing.business_name)
+												  .replace('%rating%', req.body.rating)
+												  .replace('%review%', req.body.review || '');
+									}
+								});
+
+								ownerNotification.send((err) => {
+									if(err){console.log(err);}
+								});
+							}
+
+						});
+
+						data.review = theReview;
+						data.success = 'Review Saved';
+						res.status(200);
+						return res.json(data);
+					})	
+					.catch((e) => {
+						console.log(e);
+						data.error = e.message || 'Internal Server Error';
+						res.status = e.status || 500;
+						return res.json(data);
+					});
+
+			});
 
 		})
 		.catch((e) => {

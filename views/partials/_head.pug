@@ -1,18 +1,19 @@
 head
-	if title
-		title #{title}
-	else
-		title MyLocal
-	//- link(rel="icon" type="image/png" href="img/")
-	meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(charset="UTF-8")
+    if title
+        title #{title}
+    else
+        title MyLocal
 
-	if meta
-		meta(name="description" content=`${meta}`)
-
-	link(rel='stylesheet', href='/css/bootstrap.css', type='text/css')
-	link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Didact+Gothic|Marcellus', type="text/css")
-	link(rel='stylesheet', href='/lib/yeahcomplete/yeahcomplete.css', type='text/css')
-	link(rel='stylesheet', href='/lib/image_library/image_library.css', type='text/css')
-	//- link(rel='stylesheet', href='/css/main.css', type='text/css')
-	link(rel='stylesheet', href='/css/styles.css', type='text/css')
-	//- link(rel='stylesheet', href='/css/responsive.css', type='text/css')
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    meta(name="robots" content="index, follow")
+    meta(name="keywords" content="")
+    meta(name="description" content="")
+    link(type="text/css" rel="stylesheet" href="/css/citybook/reset.css")
+    link(type="text/css" rel="stylesheet" href="/css/citybook/plugins.css")
+    link(type="text/css" rel="stylesheet" href="/css/citybook/style.css")
+    link(type="text/css" rel="stylesheet" href="/css/citybook/color.css")
+    link(type='text/css' rel='stylesheet' href='/lib/yeahcomplete/yeahcomplete.css')
+    link(type='text/css' rel='stylesheet' href='/lib/image_library/image_library.css')
+    link(type="text/css" rel="stylesheet" href="/css/citybook_overide.css")
+    link(rel="shortcut icon" href="images/favicon.ico")

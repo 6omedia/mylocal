@@ -4,6 +4,13 @@
     var inputListing = $('#inputListing');
     var findBtn = $('#find');
     var foundListing;
+    var bghero = $('.bghero');
+
+    inputListing.on('focus', function(){
+        $('h1').slideUp(400, function(){
+            bghero.addClass('smaller');
+        });
+    });
 
     //findBtn.prop('disabled', true);
     searchResults.hide();
@@ -44,19 +51,18 @@
                 if(listing.address){ address = listing.address; }
 
                 searchResults.append(`
-                    <div class="col-sm-6 col-md-4">
+                    <div class="col-sm-6 col-md-4 clearfix">
                         <div class="panel">
-                            <h2>${listing.business_name}</h2>
+                            <h2 class="ml">${listing.business_name}</h2>
                             <p><b>Industry:</b> ${listing.industry || 'Unknown'}</p>
                             <p><b>Phone:</b> ${contact.phone || 'Unknown'}</p>
                             <p><b>Email:</b> ${contact.email || 'Unknown'}</p>
-                            <p>Address: </p>
-                            <address>
-                                ${address.line_one || ''}
-                                ${address.town || ''}
+                            <p><b>Address: </b>
+                                ${address.line_one || ''},
+                                ${address.town || ''},
                                 ${address.post_code || ''}
-                            </address>
-                            <a href="/terms?listing=${listing.slug}" class="btn">Claim</a>
+                            </p>
+                            <a href="/terms?listing=${listing.slug}" class="btn button">Claim</a>
                         </div>
                     </div>
                 `);

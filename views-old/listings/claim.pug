@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+
+	header.full
+		include ../partials/header
+
+	#page-claim
+		.container
+			.heroSearch
+				h1 Search for your business to see if your allready listed
+				.searchBox
+					input(type="text", placeholder="Start typeing the name of your business...")#inputListing
+					//- button#find Find Your Business
+				p.cfb Cant find your business? 
+					a(href="/listing/add") Add your listing here
+		section.bigWhite
+			.container
+				#searchResults
+				//- .row
+				//- 	.col-sm-4
+				//- 		#theError
+				//- 			p
+				//- 		.panel
+				//- 	.col-sm-8
+				//- 		#searchResults
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/claim.js")
+	script(src="/static/js/main.js")

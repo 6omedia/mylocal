@@ -1,0 +1,39 @@
+.fixed-bar.fl-wrap
+	.user-profile-menu-wrap.fl-wrap
+		.user-profile-menu
+			h3 Main
+			ul
+				//- li 
+				//- 	a(href="/dashboard" class=tab == 'overview' ? 'user-profile-act' : '')
+				//- 		i.fa.fa-user-o
+				//- 		|  Dashboard
+				li
+					a(href='/dashboard/profile' class=tab == 'profile' ? 'user-profile-act' : '')
+						i.fa.fa-user-o
+						|  Edit profile
+				li
+					a(href='/dashboard/notifications' class=tab == 'notifications' ? 'user-profile-act' : '')
+						i.fa.fa-envelope-o
+						|  Notifications
+						if notifications 
+							span #{notifications}
+		.user-profile-menu
+			h3 Listings
+			if user.listing
+				ul
+					li
+						a(href='/dashboard/listing' class=tab == 'listing' ? 'user-profile-act' : '')
+							i.fa.fa-th-list
+							|  My listing
+					li
+						a(href='dashboard-review.html')
+							i.fa.fa-comments-o
+							|  Reviews
+			else
+				p Do you own a business?
+				ul
+					li
+						a(href=`/listing`)
+							i.fa.fa-plus-square-o
+							|  Claim Listing
+		a.log-out-btn(href='/logout') Log Out

@@ -1,0 +1,45 @@
+.side
+	ul.list#side_menu
+		li(class=section === "dashboard" ? "active" : "")
+			a(href="/admin") Dashboard
+		li(class=section === "users" ? "active" : "")
+			span(class=section === "users" ? "open noclickaway" : "") Users
+			ul.list.sub
+				li
+					a(href="/admin/users") All
+				li
+					a(href="/admin/users/add") Add	
+		li(class=section === "blog" ? "active" : "")
+			span(class=section === "blog" ? "open noclickaway" : "") Blog
+			ul.list.sub
+				li
+					a(href="/admin/blog") All Posts
+				li
+					a(href="/admin/blog/add") New Post
+		li(class=section === "listings" ? "active" : "")
+			span(class=section === "listings" ? "open noclickaway" : "") Listings
+			ul.list.sub
+				li
+					a(href="/admin/listings") All Listings
+				li
+					a(href="/admin/listings/add") New Listing
+				li
+					a(href="/admin/listings/upload") Upload Listings
+		li(class=section === "reviews" ? "active" : "")
+			span(class=section === "reviews" ? "open noclickaway" : "") Reviews
+			ul.list.sub
+				li
+					a(href="/admin/reviews/search") Search Reviews
+				li
+					a(href="/admin/reviews/pending") Pending Reviews
+		li(class=section === "settings" ? "active" : "")
+			span(class=section === "settings" ? "open noclickaway" : "") Settings
+			ul.list.sub
+				li
+					a(href="/admin/settings/seo") SEO
+				li
+					a(href="/admin/settings/emails") Emails
+				li
+					a(href="/admin/postcodes/upload") Import Postcodes
+
+	a(href="/").toBottom View Front End

@@ -1,0 +1,27 @@
+extends ./layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ./partials/side
+
+		.main
+			h1 Upload Postcodes
+
+			.form
+				label(for="jsonUpload") Upload a json file
+				input(type="file" id="jsonUpload")
+				.progress
+					.progress-bar
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/postcodesupload.js")

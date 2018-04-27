@@ -1,0 +1,351 @@
+extends ../layout
+
+block content
+
+	header.full.fixed
+		include ../partials/header
+
+	#page-listing(data-postcode=`${listing.address.post_code}` data-listingid=`${listing._id}`)
+		.theListing-bg(style=`background: linear-gradient(#0000, #000000cf), url(${listing.bgimage}) no-repeat 50% 50%/cover` data-field="background").editable.editable-bg
+			.container
+				.row
+					.col-sm-7
+						h1(data-field="business_name").editable #{listing.business_name}
+						ul.social(class=`${listing.social.style}` data-field="social" data-style=`${listing.social.style}`).editable
+							if listing.social.icons
+								if listing.social.icons.facebook
+									li
+										a(href=`${listing.social.icons.facebook.link}` data-platform="Facebook").fb
+								if listing.social.icons.twitter
+									li
+										a(href=`${listing.social.icons.twitter.link}` data-platform="Twitter").tw
+								if listing.social.icons.instagram
+									li
+										a(href=`${listing.social.icons.instagram.link}` data-platform="Instagram").ig
+								if listing.social.icons.youtube
+									li
+										a(href=`${listing.social.icons.youtube.link}` data-platform="YouTube").yt
+								if listing.social.icons.googleplus
+									li
+										a(href=`${listing.social.icons.googleplus.link}` data-platform="Google Plus").gp
+								if listing.social.icons.linkedin
+									li
+										a(href=`${listing.social.icons.linkedin.link}` data-platform="Linked In").li
+								if listing.social.icons.pinterest
+									li
+										a(href=`${listing.social.icons.pinterest.link}` data-platform="Pinterest").pi
+						//- .social-editbox
+						//- 	input(type="")
+						.rating
+							if listing.rating != null && listing.rating != undefined  
+								- var n = 1;
+								while n < 6
+									if n <= listing.rating / 2
+										span
+									else
+										span.nostar
+									- n++;
+							if canWriteReview
+								if user
+									.wrtieReview Write a review
+								else
+									a(href="/login") Write a review 
+						br
+						//- a(href=`tel:${listing.contact.phone}` style=`color: #${listing.branding.accent}; background: #${listing.branding.accent}33`).theListing-phone #{listing.contact.phone}
+						a(href=`tel:${listing.contact.phone}`).phone.theListing-phone #{listing.contact.phone}
+					.col-sm-5
+						.logoBox(data-field="logo").theListing-logo.editable
+							if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != '/static/img/raster.png' && listing.branding.logo != undefined
+								img(src=`${listing.branding.logo}`).logo
+		.bigWhite
+			.container
+				.row
+					.col-sm-8.col-md-6
+						nav.tabs-listing
+							ul
+								li
+									a(href=`/listing/${listing.slug}` class=tab == 'general' ? 'currentTab' : '') General
+								li
+									a(href=`/listing/${listing.slug}?tab=gallary` class=tab == 'gallary' ? 'currentTab' : '') Gallary
+								li
+									a(href=`/listing/${listing.slug}?tab=reviews` class=tab == 'reviews' ? 'currentTab' : '') Reviews
+						if tab == 'general'
+							h2 #{listing.business_name}
+							if listing.description
+								div !{listing.description}
+							.row
+								.col-xs-6
+									h3 Address
+									address
+										ul(data-field="address").editable
+											li(data-field="address").lineone #{listing.address.line_one}
+											if listing.address.line_two
+												li(data-field="address").linetwo #{listing.address.line_two}
+											else
+												li(data-field="address").linetwo
+											li(data-field="address").town #{listing.address.town}
+											li(data-field="address").postcode #{listing.address.post_code}
+								.col-xs-6
+									h3 Contact
+									ul(data-field="contact").editable
+										li
+											a(href=`${listing.contact.phone}`) #{listing.contact.phone}
+										li
+											a(href=`${listing.contact.email}` data-field="contact") #{listing.contact.email}
+										li
+											a(href=`${listing.contact.website}` data-field="contact") #{listing.contact.website}
+							h3 Opening Hours
+							table(data-field="opening_hours").editable
+								tr
+									td
+										p Monday
+									td.times #{listing.opening_hours.monday.open}
+									td - 
+									td.times #{listing.opening_hours.monday.close}
+								tr
+									td
+										p Tuesday
+									td.times #{listing.opening_hours.tuesday.open}
+									td - 
+									td.times #{listing.opening_hours.tuesday.close}
+								tr
+									td
+										p Wednesday
+									td.times #{listing.opening_hours.wednesday.open}
+									td - 
+									td.times #{listing.opening_hours.wednesday.close}
+								tr
+									td
+										p Thursday
+									td.times #{listing.opening_hours.thursday.open}
+									td - 
+									td.times #{listing.opening_hours.thursday.close}
+								tr
+									td
+										p Friday
+									td.times #{listing.opening_hours.friday.open}
+									td - 
+									td.times #{listing.opening_hours.friday.close}
+								tr
+									td
+										p Saturday
+									td.times #{listing.opening_hours.saturday.open}
+									td - 
+									td.times #{listing.opening_hours.saturday.close}
+								tr
+									td
+										p Sunday
+									td.times #{listing.opening_hours.sunday.open}
+									td - 
+									td.times #{listing.opening_hours.sunday.close}
+
+						else if tab == 'gallary'
+							h2 Gallary
+
+							.galleryBox(data-field="gallery").editable
+								ul.gallery.cb_gallery
+									if listing.gallery
+										each img in listing.gallery
+											li
+												img(src=`${img}`)
+
+						else if tab == 'reviews'
+							h2 Reviews
+							.theReviews.shorter
+								if !listing.reviews
+									p No reviews yet, be the first to leave one.
+								if canWriteReview
+									if user
+										.wrtieReview.black Write a review
+									else
+										a(href=`/login?redirect=/listing/${listing.slug}?tab=reviews`) Write a review
+								each review in listing.reviews
+									.row
+										.review
+											.col-sm-3
+												p #{review.user.name}
+											.col-sm-9
+												.rating
+													- var n = 1;
+													while n < 6
+														if n <= review.rating / 2
+															span
+														else
+															span.nostar
+														- n++;
+												.content
+													p #{review.review}
+								
+								if more_reviews
+									a more reviews
+
+					.col-sm-4.col-md-6
+						#map
+
+				.related
+					h2 Other #{listing.industry} in #{listing.address.town}
+					.row
+						each listing in moreListings
+							.col-xs-6.col-sm-4.col-md-3
+								.listing
+									.heading(style=`background: url(${listing.bgimage}) no-repeat 50%/cover`)
+										h3 #{listing.business_name}
+									.info
+										if listing.rating
+											.rating
+												- var n = 1;
+												while n < 6
+													if n <= listing.rating / 2
+														span
+													else
+														span.nostar
+													- n++;
+										a(href=`tel:${listing.contact.phone}`).phone #{listing.contact.phone}
+										a(href=`/listing/${listing.slug}`).btn View
+										if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+											img(src=`${listing.branding.logo}`).logo
+
+	#yeahMsg
+		p fbdb df
+
+	if user
+		if userOwnsListing || user.user_role == 'Admin' || user.user_role == 'Super Admin'
+
+			a(href="/").floating_action.edit-listing_link Edit Listing
+
+			script.
+				function update(jscolor, color) {
+					// 'jscolor' instance can be used as a string
+
+					switch(color){
+						case 1:
+
+							var elem = document.getElementsByTagName('h1');
+							for(i=0;i<elem.length;i++){
+								elem[i].style.color = '#' + jscolor;
+							}
+
+							break;
+						case 2:
+
+							var headerBg = $('.theListing-bg');
+							var bg = headerBg.css('background');
+							bg = bg.substring(bg.indexOf('url("') + 5, bg.lastIndexOf(')') - 1);
+							
+							headerBg.css('background', 'linear-gradient(#0000, #' + jscolor + '), url(' + bg + ')');
+							headerBg.css('background-repeat', 'no-repeat');
+							headerBg.css('background-size', '100%');
+							headerBg.css('background-position', '50%');
+
+							break;
+						case 3:
+
+							console.log(';bfbvd');
+
+							$('.theListing-phone').css('color', '#' + jscolor);
+
+							break;
+						default:
+					}
+
+				}
+
+			//- #editSide
+			//- 	h2 Edit
+
+			#image_library_modal
+				#image_library
+					.header
+						h1 Image Library
+						label(for="uploadImgBtn").uploadBtn Upload Image
+						input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+					.prog_wrap
+						.progress-bar
+					.imgWindow
+						ul.images
+						.message Select Image
+					//- ul
+					//- 	li
+					//- 		label Facebook
+					//- 		if listing.social.icons.facebook
+					//- 			input(type="" value=`${listing.social.icons.facebook.link}`)
+					//- 		else
+					//- 			input(type="text").fb
+					//- 	li
+					//- 		label Twitter
+					//- 		if listing.social.icons.twitter
+					//- 			input(type="" value=`${listing.social.icons.twitter.link}`)
+					//- 		else
+					//- 			input(type="text").tw
+					//- 	li
+					//- 		label Instagram
+					//- 		if listing.social.icons.instagram
+					//- 			input(type="" value=`${listing.social.icons.instagram.link}`)
+					//- 		else
+					//- 			input(type="text").ig
+					//- 	li
+					//- 		label Google +
+					//- 		if listing.social.icons.googleplus
+					//- 			input(type="text" value=`${listing.social.icons.googleplus.link}`)
+					//- 		else
+					//- 			input(type="text").gp
+					//- 	li
+					//- 		label YouTube
+					//- 		if listing.social.icons.youtube
+					//- 			input(type="text" value=`${listing.social.icons.youtube.link}`)
+					//- 		else
+					//- 			input(type="text").yt
+					//- 	li
+					//- 		label Linked In
+					//- 		if listing.social.icons.linkedin
+					//- 			input(type="text" value=`${listing.social.icons.linkedin.link}`)
+					//- 		else
+					//- 			input(type="text").ln
+					//- 	li
+					//- 		label Pinterst
+					//- 		if listing.social.icons.pinterest
+					//- 			input(type="text" value=`${listing.social.icons.pinterest.link}`)
+					//- 		else
+					//- 			input(type="text").pi
+
+			//- #edit-listing Edit Listing
+
+	script.
+    
+		function initMap() {
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 14
+			});
+			var geocoder = new google.maps.Geocoder();
+			geocodeAddress(geocoder, map);
+		}
+
+		function geocodeAddress(geocoder, resultsMap) {
+			var page = document.getElementById('page-listing');
+			geocoder.geocode({'address': page.dataset.postcode}, function(results, status) {
+				if(status === 'OK'){
+					resultsMap.setCenter(results[0].geometry.location);
+					var marker = new google.maps.Marker({
+						map: resultsMap,
+						position: results[0].geometry.location
+					});
+				}else{
+					document.getElementById('map').innerHTML = '<p>Not Found</p>';
+				}
+			});
+		}
+
+	script(async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBptrgG-mAxef-8h46e-WavTmYWk-ds0yE&callback=initMap")
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/lightbox.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/listing.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/main.js")
+
+	if userOwnsListing || user.user_role == 'Admin' || user.user_role == 'Super Admin'
+		script(src="/static/js/helpers/jscolor.min.js")
+		script(src="/static/lib/image_library/image_library.js")
+		script(src="/static/js/listing-edit.js")

@@ -7,7 +7,7 @@ var YeahAutocomplete = (function(){
 	function View(input){
 		this.input = $('#' + input);
 		this.resultsList = $('<ul class="YeahAutocomplete_list"></ul>');
-		this.resultsList.insertBefore(this.input);
+		this.resultsList.insertAfter(this.input);
 		this.resultsList.hide();
 	}
 	View.prototype.startLoading = function(){

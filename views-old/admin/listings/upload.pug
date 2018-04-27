@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section
+		include ../partials/side
+
+		.main
+			h1 Listings
+			ul.bread-crumb
+				li
+					a(href="/admin/listings") Listings
+				li
+					span &#x2192;
+				li
+					a(href="").current Upload
+
+			.form.box#upload_box
+				h2 Upload json file
+				label(for="jsonUpload") Upload a json file
+				input(type="file" id="jsonUpload")
+			//- .form.box
+			//- 	h2 Update all listing location data
+			//- 	.btn Do it
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/listings/listing-upload.js")

@@ -1,0 +1,128 @@
+/* TABS ===============================*/
+
+.tabs-listing {
+    text-align: left;
+	margin-bottom: 20px;
+    border-bottom: solid 2px #c7d3f2;
+    display: none;
+    &.open {
+        display: block;
+        li, a {
+            display: block;
+        }
+    }
+    ul {
+	    margin-bottom: -2px;
+    }
+    li {
+	    display: inline-block;
+	    a {
+    	    display: inline-block;
+		    font-size: 18px;
+		    padding: 10px 15px;
+		    /*background: #ececec;*/
+		    border-bottom: solid 2px #c7d3f2;
+		    color: #5a5a5a;
+            &.no_tab {
+                background: #fff;
+            }
+	    }
+    }
+    .currentTab {
+    	border: solid 2px #c7d3f2;
+	    border-bottom: solid 2px #fff !important;
+	    background: #fff !important;
+        border-radius: 10px 10px 0px 0px;
+    }
+    @media(min-width: $medium){
+        display: block;
+    }
+}
+
+/* BTNS ==========================*/
+
+.side_submit {
+    box-shadow: 0px 0px 0px 7px rgba(255,255,255,0.4);
+    background: #4DB7FE;
+}
+
+button, .btn {
+    color: #fff;
+    transition: 0.3s;
+    background: $color-primary;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    &.circle-btn {
+        border: none;
+        font-family: inherit;
+    }
+    &:disabled,
+    &.disabled {
+        background: #cfcfcf;
+        cursor: not-allowed;
+        border: none;
+    }
+}
+
+/* PANEL =========================*/
+
+.panel {
+    background: #f3f3f3;
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 5px;
+    border: solid 1px #e4e4e4;
+    h2 {
+        font-size: 22px !important;
+        margin: 0px 0px 10px 0px !important;
+        font-weight: bold;
+    }
+    p {
+        padding-bottom: 0px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    .btn {
+        margin-top: 20px;
+    }
+}
+
+/* Text Only Page */
+
+.textPage {
+    h1 {
+        font-size: 36px;
+        margin-bottom: 40px;
+    }
+    input[type="checkbox"] {
+        display: inline-block;
+        margin-right: 10px;
+        width: 15px;
+        height: 15px;
+        vertical-align: sub;
+        margin-top: 20px;
+        & + label {
+            font-size: 16px;
+            vertical-align: middle;
+        }
+    }
+    button {
+        display: block;
+        margin-top: 30px;
+        border: none;
+    }
+}
+
+/* Terms Box */
+
+.termsBox {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    @include indentbox;
+    margin-bottom: 20px;
+    p {
+        font-size: 16px;
+    }
+}

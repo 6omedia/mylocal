@@ -1,5 +1,5 @@
 .invalid {
-    border-bottom: solid 3px #d31c1c !important;
+    border: solid 1px #db5555 !important;
     background: #ffefef !important;
 }
 
@@ -63,13 +63,18 @@
 }
 
 input.inline_btn {
-    width: calc(100% - 41px) !important;
+    width: calc(100% - 68px) !important;
+    border-radius: 5px 0px 0px 5px !important;
+    text-align: left;
     & + .btn {
         font-size: 36px;
         width: 41px;
         height: 41px;
         vertical-align: top;
         line-height: 0.65;
+    }
+    & + .YeahAutocomplete_list {
+        margin-top: 72px;
     }
 }
 
@@ -109,6 +114,7 @@ input.inline_btn {
             color: #fff;
             font-size: 11px;
             text-align: center;
+            line-height: 1.6;
         }
     }
 }

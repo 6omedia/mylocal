@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-blog
+		include ../partials/side
+
+		.main
+			h1 Reviews
+			ul.bread-crumb
+				//- li
+				//- 	a(href="/admin/blog") All Posts
+				//- li
+				//- 	span &#x2192;
+				//- li
+				//- 	a(href="/admin/blog/add").current New Post
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/admin/admin.js")
+	//- script(src="/static/lib/image_library/image_library.js")
+	script(src="/static/js/helpers/yeahtexteditor.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/admin/reviews/search.js")

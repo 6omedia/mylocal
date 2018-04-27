@@ -25,9 +25,9 @@
 
 	checkBox.on('change', function(){
 		if($(this).prop('checked')){
-			passwordLis.show();
+			passwordLis.slideDown(400);
 		}else{
-			passwordLis.hide();
+			passwordLis.slideUp(400);
 		}
 	});
 
@@ -73,6 +73,7 @@
 			$(this).addClass('spinBtn');
 			var data = getData($(this).data('userid'), form.fields);
 			form.send(data, function(data){
+				console.log(data);
 				if(data.error){
 					submitBtn.removeClass('spinBtn');
 					return msgBox.display(data.error, true, true);

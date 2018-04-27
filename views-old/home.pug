@@ -1,0 +1,88 @@
+extends layout
+
+block content
+
+	header
+		include ./partials/header
+
+	section
+		.container
+			div(class=listings != undefined ? 'heroSearch heroSmall' : 'heroSearch')
+				if listings
+					h1 Looking for #{industry} in #{town}
+				else
+					h1 Looking for MyLocal 
+						span#changingIndustry Hairdresser
+				.searchBox
+					input(type="text" placeholder="Barber, Indian Take-a-way, Dentist Surgery...")#industry
+					input(type="text" placeholder="In...")#town
+					button#find Find
+
+	section.bigWhite
+		.container
+			#searchResults
+				if listings
+					.row
+						each listing in listings
+							.col-sm-4
+								.listing
+									.heading(style=`background: url(${listing.bgimage}) no-repeat 50%/100%;`)
+										h2 #{listing.business_name}
+									.info
+										.rating
+											span
+											span
+											span
+											span
+											span.nostar
+										a(href=`tel:${listing.contact.phone}`).phone #{listing.contact.phone}
+										a(href=`/listing/${listing.slug}`).btn View
+										if listing.branding.logo != '/static/img/admin/placeholder-logo.png' && listing.branding.logo != undefined
+											img(src=`${listing.branding.logo}`).logo
+				div !{pagination}
+
+			if !listings
+				if posts.length >= 4
+					.imgGrid
+						h2 Recent Articles
+						.row
+							.col-sm-6
+								a(href=`/articles/${posts[0].slug}`)
+									.post
+										img(src=`${posts[0].feat_img}`)
+										h3 #{posts[0].title}
+							.col-sm-6
+								a(href=`/articles/${posts[1].slug}`)
+									.post.evenSmallerPost
+										img.smallerImg(src=`${posts[1].feat_img}`)
+										h3 #{posts[1].title}
+								.row
+									.col-sm-6
+										a(href=`/articles/${posts[2].slug}`)
+											.post
+												img.evenSmallerImg(src=`${posts[2].feat_img}`)
+												h3 #{posts[2].title}
+									.col-sm-6
+										a(href=`/articles/${posts[3].slug}`)
+											.post
+												img.evenSmallerImg(src=`${posts[3].feat_img}`)
+												h3 #{posts[3].title}
+
+				hr
+				.center_box
+					a(href="/articles").more More Articles
+	if !listings
+		section.bigBlue
+			.container
+				.row
+					.col-sm-5
+						.callToAction
+							h2 Claim Your Business
+							p Find or add your business and edit your profile to get the most out of your listing on my local
+							p Simply make an account with us today
+							a(href="/").button Sign Up
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/home.js")
+	script(src="/static/js/main.js")

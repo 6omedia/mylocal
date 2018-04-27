@@ -68,10 +68,32 @@ let ReviewSchema = new Schema({
     }
 });
 
-ReviewSchema.methods.sendMessage = function(){
+ReviewSchema.statics.overallRating = function(listingid, callback){
 
-    // send email
-        // once sent push message to review
+    console.log('HERE ====================================');
+
+    Review.find({listing: listingid, approved: true})
+        .then((reviews) => {
+
+            if(!reviews){
+                return callback(null, 0);
+            }
+
+            var reviewCount = reviews.length;
+            var totalRating = 0;
+
+            reviews.forEach(function(review){
+                totalRating = totalRating + parseInt(review.rating);
+            });
+
+            console.log('TOTAL RATING ====================================', totalRating);
+
+            return callback(null, Math.ceil(totalRating / reviewCount) / 2);
+
+        })
+        .catch((e) => {
+            return callback(e);
+        });
 
 };
 

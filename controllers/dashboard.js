@@ -6,6 +6,7 @@ const Listing = require('../models/listing');
 const Message = require('../models/message');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
+const moment = require('moment');
 
 dashboardRoutes.get('/', mid.onlySubscriber, function(req, res, next){
 
@@ -60,26 +61,36 @@ dashboardRoutes.get('/notifications', mid.loginRequired, function(req, res, next
 	var user = req.session.user;
 
 	User.findById(req.session.user._id)
-		// .populate({
-		// 	path: 'message_chains',
-		// 	model: 'MessageChain',
-		// 	populate: {
-		// 		path: 'user_one',
-		// 		model: 'User'
-		// 	},
-		// 	populate: {
-		// 		path: 'user_two',
-		// 		model: 'User'
-		// 	}
-		// })
 		.then((user) => {
 
-			return res.render('dashboard/notifications', {
-				id: req.session.user._id,
-			    name: user.name,
-			   	user: user,
-			   	tab: 'notifications'
-			});
+			var docsPerPage = 15;
+			var currentPage = req.query.page || 0;
+			var skip = pagination.getSkip(currentPage, docsPerPage);
+
+			Message.count({to: req.session.userId})
+				.then((totalDocs) => {
+
+					Message.find({to: req.session.userId})
+					.limit(docsPerPage).skip(skip).sort({created_at: -1})
+					.populate('from')
+					.populate('respondto')
+					.then((messages) => {
+						
+						return res.render('dashboard/notifications', {
+							id: req.session.user._id,
+						    name: user.name,
+						   	user: user,
+						   	tab: 'notifications',
+						   	moment: moment,
+						   	messages: messages,
+						   	pagination: pagination.getLinks(totalDocs, docsPerPage, currentPage, '/dashboard/notifications')
+						});
+
+					})
+					.catch((e) => { next(e); });
+
+				})
+				.catch((e) => { next(e); });	
 
 		})
 		.catch((e) => { next(e); });		

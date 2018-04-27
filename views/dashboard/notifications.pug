@@ -4,60 +4,90 @@ block content
 
 	#datablock(data-useremail=`${user.email}` style="display: none;")
 
-	header.full.fixed
-		include ../partials/header
+	#wrapper
+		.bigwhite
+			.container
+				h1.ml Dashboard
 
-	.bigWhite
-		.container
-			h1.spaced Notifications
+				include _nav
 
-			include _nav
+				.row
+					.col-md-3
+						include ./_side
+
+					.col-md-9
+						.dashboard-list-box.fl-wrap
+							.dashboard-header.fl-wrap
+								h3 Inbox
+							//- .spinBox
+							each msg in messages
+								.dashboard-list
+									.dashboard-message(data-msgid=`${msg._id}`)
+										if !msg.seen
+											span.new-dashboard-item New
+										.dashboard-message-avatar
+											img(src=`${msg.from.avatar}`, alt='')
+										.dashboard-message-text
+											h4
+												| #{msg.from.name} - 
+												span #{moment(msg.created_at).format("YYYY-MM-DD HH:mm")}
+											p #{msg.body}
+											span(data-toemail=`${msg.respondto.email}` data-toggle="modal" data-target="#exampleModal").reply-mail.clearfix
+												| Reply 
+												//- a.dashboard-message-user-mail(href=`mailto:${msg.respondto.email}`,target='_top') #{msg.respondto.email}
+
+							.pagination !{pagination}
+							
+							//- .pagination
+							//- 	a.prevposts-link(href='#')
+							//- 		i.fa.fa-caret-left
+							//- 	a(href='#') 1
+							//- 	a.current-page(href='#') 2
+							//- 	a(href='#') 3
+							//- 	a(href='#') 4
+							//- 	a.nextposts-link(href='#')
+							//- 		i.fa.fa-caret-right
+
+			.limit-box.fl-wrap
+
+	include ../partials/_login
+
+	a.to-top
+		i.fa.fa-angle-up
+
+	#replyModal.modal
+		.main-overlay
+		.main-reply-wrap
+			.close-reg
+				i.fa.fa-times
+			h3.reply-heading.ml Reply to
+			.custom-form
+				.form
+					textarea(placeholder="Write Email...")#emailbody
+					input(type="text" placeholder="Subject...")#subject
+					button.btn.big-btn.color-bg.flat-btn#send Send
+
+	//- .bigWhite
+	//- 	.container
+	//- 		h1.spaced Notifications
+
+	//- 		include _nav
 			
-			.row
-				.col-sm-3
-					.notification_side
-						ul.notifications
-							//- li
-							//- 	h5 MyLocal
-							//- 	span.date 12/4/1972
-							//- 	p Edison bulb vexillologist salvia, crucifix migas palo
-							//- li
-							//- 	h5 Bruce Banner
-							//- 	span.date 12/4/1969
-							//- 	p Blue bottle small batch yuccie, flannel quinoa
-							//- li
-							//- 	h5 MyLocal
-							//- 	span.date 12/4/1972
-							//- 	p Edison bulb vexillologist salvia, crucifix migas palo
-							//- li
-							//- 	h5 Bruce Banner
-							//- 	span.date 12/4/1969
-							//- 	p Blue bottle small batch yuccie, flannel quinoa
-						.loadmore Load More
-				.col-sm-9
-					.msgchain#themsgchain
-						//- .msg.sender
-						//- 	p Freegan typewriter iceland, distillery yr williamsburg whatever waistcoat farm-to-table pork belly 3 wolf moon direct trade organic aesthetic. Next level mustache art party try-hard swag.
-						//- 	p Pabst kogi meditation listicle cardigan
-						//- .msg.you
-						//- 	p Tote bag salvia franzen butcher
-						//- 	p Sartorial portland pop-up, lumbersexual pinterest trust fund next level kombucha
-						//- .msg.sender
-						//- 	p Freegan typewriter iceland, distillery yr williamsburg whatever waistcoat farm-to-table pork belly 3 wolf moon direct trade organic aesthetic. Next level mustache art party try-hard swag.
-						//- 	p Pabst kogi meditation listicle cardigan
-						//- .msg.you
-						//- 	p Tote bag salvia franzen butcher
-						//- 	p Sartorial portland pop-up, lumbersexual pinterest trust fund next level kombucha
-					.form
-						textarea(placeholder="Write Email...")#emailbody
-						input(type="text" placeholder="Subject...")#subject
-						button#send Send
-						
-	script(src="http://code.jquery.com/jquery-latest.js")
-	script(src="/static/js/helpers/utils.js")
-	script(src="/static/js/helpers/form.js")
-	//- script(src="/static/lib/image_library/image_library.js")
-	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
-	script(src="/static/js/main.js")
-	script(src="/static/js/dashboard/dashboard.js")
-	script(src="/static/js/dashboard/notifications.js")
+	//- 		.row
+	//- 			.col-sm-3
+	//- 				.notification_side
+	//- 					ul.notifications
+
+	//- 					.loadmore Load More
+	//- 			.col-sm-9
+	//- 				.msgchain#themsgchain
+
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/js/helpers/utils.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/dashboard/dashboard.js")
+	script(type="text/javascript" src="/static/js/dashboard/notifications.js")
+	script(type="text/javascript" src="/static/js/main.js")

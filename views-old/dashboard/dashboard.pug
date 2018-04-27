@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+
+	header.full.fixed
+		include ../partials/header
+
+	.bigWhite
+		.container
+			h1.spaced Dashboard
+
+			include _nav
+
+			textarea#yeah
+
+			ul.list.form
+				li
+					button#email1 send registered email
+				li
+					button#email2 send reviewed email
+				li
+					button#email3 send positve review email
+				li
+					button#email4 send negative email
+				li
+					button#email5 send custom email
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/dashboard/dashboard.js")
+	script(src="/static/js/main.js")
+	script(src="/static/js/test.js")

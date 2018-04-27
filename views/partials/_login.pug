@@ -1,0 +1,46 @@
+.main-register-wrap.modal
+	.main-overlay
+	.main-register-holder
+		.main-register.fl-wrap
+			.close-reg
+				i.fa.fa-times
+			h3
+				| Sign In 
+				span
+					| My
+					strong Local
+			#tabs-container
+				ul.tabs-menu
+					li.current
+						a(href='#tab-1') Login
+					li
+						a(href='#tab-2') Register
+				#error.error
+				.tab
+					#tab-1.tab-content
+						.custom-form
+							form(method='post', name='loginform')
+								label Email Address * 
+								input#q_email(name='email', type='text', onclick='this.select()', value='')
+								label Password * 
+								input#q_password(name='password', type='password', onclick='this.select()', value='')
+								input#q_url(type='hidden', name='url', value='<%= locals.redirect_url %>')
+								button#btn_login.log-submit-btn(type='submit')
+									span Log In
+								.clearfix
+							.lost_password
+								a(href='#') Lost Your Password?
+					.tab
+						#tab-2.tab-content
+							.custom-form
+								form#main-register-form2.main-register-form(method='post', name='registerform')
+									label Full Name * 
+									input#r_name(name='name', type='text', onclick='this.select()', value='')
+									label Email Address *
+									input#r_email(name='email', type='text', onclick='this.select()', value='')
+									label Password *
+									input#r_password(name='password', type='password', onclick='this.select()', value='')
+									label Confirm Password *
+									input#r_passwordconfirm(name='password_confirm', type='password', onclick='this.select()', value='')
+									button#btn_register.log-submit-btn(type='submit')
+										span Register
