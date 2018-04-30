@@ -266,6 +266,41 @@ button, .btn {
   .termsBox p {
     font-size: 16px; }
 
+#image_library {
+  border-radius: 5px;
+  margin: 110px auto;
+  background: #fff; }
+  #image_library .header {
+    text-align: left;
+    border-bottom: solid 2px #cdd0d7; }
+  #image_library h1 {
+    color: #2f3b59; }
+  #image_library .uploadBtn {
+    color: #2f3b59;
+    background: none;
+    padding: 0px; }
+  #image_library ul {
+    min-height: 100%;
+    text-align: left; }
+    #image_library ul li {
+      box-shadow: none;
+      border-radius: 5px;
+      border: solid 2px #e0e0e0; }
+      #image_library ul li:hover {
+        border: solid 2px #4db7fe;
+        box-shadow: 0px 0px 0px 2px #4db7fe; }
+  #image_library .message {
+    color: #2f3b59;
+    border: none; }
+
+.imglib_selected {
+  box-shadow: 0px 0px 0px 2px #4db7fe !important; }
+
+.imglib_actions div {
+  color: #2f3b59; }
+  .imglib_actions div:hover {
+    color: #4db7fe; }
+
 header .icon-bell {
   width: 25px;
   height: 25px;
@@ -297,6 +332,18 @@ header .icon-bell {
       display: none; } }
 
 /* GENERAL ===============*/
+.theError.slim {
+  height: 80px;
+  border-bottom: solid 4px;
+  background: #fff;
+  padding: 25px 35px;
+  display: block;
+  box-shadow: 0px 0px 100px #00000038; }
+  .theError.slim .icon {
+    float: right; }
+    .theError.slim .icon i {
+      font-size: 30px; }
+
 .bigwhite {
   background: #fff;
   padding: 30px 0px 60px 0px;
@@ -367,6 +414,9 @@ li.passwordli {
   position: fixed;
   z-index: 15; }
 
+.add-list {
+  cursor: pointer; }
+
 .reply-mail {
   cursor: pointer; }
 
@@ -435,9 +485,13 @@ li.passwordli {
 
 .YeahAutocomplete_list {
   margin-top: 50px;
-  width: 100%; }
+  width: 100%;
+  border: none; }
   .YeahAutocomplete_list li {
     padding: 10px 20px !important; }
+    .YeahAutocomplete_list li.focused {
+      background: #52679c;
+      color: #fff; }
     .YeahAutocomplete_list li:hover {
       background: #2f3b59; }
 
@@ -701,11 +755,112 @@ i.fa-search {
   #services li {
     width: 48%;
     display: inline-block;
-    border-bottom: solid 1px #eee;
+    border-bottom: solid 1px #bedff5;
     padding-bottom: 5px;
     margin-right: 1%;
     margin-bottom: 15px; }
     #services li i {
-      float: right; }
+      float: right;
+      background: #4db7fe;
+      border-radius: 100%;
+      padding: 4px;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      cursor: pointer;
+      color: #fff; }
+
+.opening_times {
+  text-align: left; }
+  .opening_times .thlabel {
+    padding-right: 15px; }
+  .opening_times input {
+    margin-right: 15px;
+    border-radius: 5px;
+    border: solid 1px #ccc;
+    font-size: 16px;
+    padding: 5px 10px; }
+  .opening_times .open_col,
+  .opening_times .close_col {
+    padding-bottom: 5px;
+    font-weight: bold; }
+
+.img_box {
+  position: relative;
+  display: inline-block;
+  transition: all 300ms linear;
+  cursor: pointer; }
+  .img_box:before {
+    content: '';
+    top: 0px;
+    left: 0px;
+    background: rgba(51, 51, 51, 0);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    transition: all 300ms linear; }
+  .img_box i {
+    transition: all 300ms linear;
+    font-size: 28px !important;
+    left: 0px !important;
+    right: 0px;
+    top: 0% !important;
+    opacity: 0;
+    text-align: center;
+    padding: 6px !important;
+    background: #4db7fe;
+    color: #fff !important;
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute; }
+  .img_box:hover:before {
+    background: rgba(51, 51, 51, 0.41); }
+  .img_box:hover i {
+    top: calc(50% - 28px) !important;
+    opacity: 1; }
+
+.uploaded_img {
+  max-width: 100%;
+  max-height: 330px;
+  border-radius: 5px; }
+
+#addGalleryImgBtn {
+  border-radius: 5px; }
+  #addGalleryImgBtn .inline_btn {
+    background: #4db7fe;
+    display: inline-block;
+    height: 35px; }
+  #addGalleryImgBtn i {
+    display: inline-block;
+    color: #fff;
+    margin-top: 7px; }
+  #addGalleryImgBtn span {
+    vertical-align: top;
+    margin-top: 6px; }
+
+.gallery li {
+  display: inline-block;
+  width: 100%;
+  background: #f3f3f3;
+  border-radius: 5px;
+  border: solid 1px #eaeaea;
+  margin-bottom: 20px;
+  vertical-align: top; }
+  .gallery li img {
+    width: 100%;
+    border-radius: 5px; }
+  @media (min-width: 769px) {
+    .gallery li {
+      width: 30%;
+      margin-right: 2%; } }
+
+.profile-edit-container ul li {
+  clear: both; }
+.profile-edit-container .YeahAutocomplete_list {
+  margin-top: 72px; }
 
 /*# sourceMappingURL=citybook_overide.css.map */

@@ -14,6 +14,7 @@
     "express": "^4.15.3",
     "express-fileupload": "^0.2.0",
     "express-session": "^1.15.4",
+    "moment": "^2.22.1",
     "mongodb-backup": "^1.6.9",
     "mongoose": "^4.11.4",
     "nodemailer": "^4.6.3",

@@ -393,9 +393,8 @@ mainRoutes.get('/find/:industry/:town', function(req, res, next){
  	let data = {};
 	data.success = 0;
 
-	// var url = '/find/' + req.params.industry + '/' + req.params.town;
-
-	// var page = req.query.page || 1;
+	res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
+	res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
 
 	return res.render('results', {
 		user: req.session.user,
@@ -403,40 +402,6 @@ mainRoutes.get('/find/:industry/:town', function(req, res, next){
 		town: req.params.town,
 		error: ''
 	});
-
-	// Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
-	// 	(err, listings, pagination, message) => {
-
-	// 	if(err){
-	// 		return res.render('results', {
-	// 			home: true,
-	// 			user: req.session.user,
-	// 			listings: [],
-	// 			industry: req.params.industry,
-	// 			town: req.params.town,
-	// 			pagination: pagination,
-	// 			error: 'No Listings Found'
-	// 		});
-	// 	}
-
-	// 	if(message){
-	// 		data.message = message;
-	// 	}
-
-	// 	res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
-	// 	res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
-
-	// 	return res.render('results', {
-	// 		home: true,
-	// 		user: req.session.user,
-	// 		listings: listings,
-	// 		industry: req.params.industry,
-	// 		town: req.params.town,
-	// 		pagination: pagination,
-	// 		error: ''
-	// 	});
-
-	// });
 
 });
 

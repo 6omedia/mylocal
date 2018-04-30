@@ -128,7 +128,11 @@
                     return;
                 }
                 if(data.success){
-                    window.location.reload(window.location.href);
+                    if(data.redirect){
+                        window.location.replace(data.redirect);
+                    }else{
+                        window.location.reload(window.location.href);
+                    }
                 }
             });
 

@@ -87,7 +87,7 @@ block content
 										label Website
 										input(type="text", value=`${listing.contact.website}`)#q_website
 								h3.ml Opening Hours
-								table
+								table.opening_times
 									tr
 										th.thlabel
 										th.open_col.pad Open
@@ -137,46 +137,66 @@ block content
 								h3.ml Social
 								ul.list
 									li
-										label Facebook
-										input(type="type", value=`${social.facebook}`)#q_fb.fb
+										label
+											i.fa.fa-facebook-f
+											| Facebook
+										input(type="text", value=`${social.facebook}`)#q_fb.fb
 									li
-										label Twitter
-										input(type="type", value=`${social.twitter}`)#q_tw.tw
+										label
+											i.fa.fa-twitter
+											| Twitter
+										input(type="text", value=`${social.twitter}`)#q_tw.tw
 									li
-										label Instagram
-										input(type="type", value=`${social.instagram}`)#q_ig.ig
+										label
+											i.fa.fa-instagram
+											| Instagram
+										input(type="text", value=`${social.instagram}`)#q_ig.ig
 									li
-										label Google Plus
-										input(type="type", value=`${social.googleplus}`)#q_gp.gp
+										label
+											i.fa.fa-google-plus
+											| Google Plus
+										input(type="text", value=`${social.googleplus}`)#q_gp.gp
 									li
-										label YouTube
-										input(type="type", value=`${social.youtube}`)#q_yt.yt
+										label
+											i.fa.fa-youtube
+											| YouTube
+										input(type="text", value=`${social.youtube}`)#q_yt.yt
 									li
-										label Linked In
-										input(type="type", value=`${social.linkedin}`)#q_li.li
+										label
+											i.fa.fa-linkedin
+											| Linked In
+										input(type="text", value=`${social.linkedin}`)#q_li.li
 									li
-										label Pinterest
-										input(type="type", value=`${social.pinterest}`)#q_pi.pi
+										label
+											i.fa.fa-pinterest-p
+											| Pinterest
+										input(type="text", value=`${social.pinterest}`)#q_pi.pi
 
 								h3.ml Branding
 								ul.list.branding_edit
 									li
 										label#logo_upload
 											p Upload Logo
-											img(src=`${logo}`)#q_logo
+											.img_box
+												img(src=`${logo}`)#q_logo.uploaded_img
+												i.fa.fa-upload
 									li
 										label#bg_upload
 											p Upload Background
-											img(src=`${background}`)#q_bgimage
+											.img_box
+												img(src=`${background}`)#q_bgimage.uploaded_img
+												i.fa.fa-upload
 								h3.ml Gallery
 								.galleryBox
 									.btn-icon#addGalleryImgBtn
-										span.icon.icon-plus
 										span Add Gallery Image
+										.inline_btn
+											i.fa.fa-plus
 									ul#gallery.gallery.gallery-edit
 										each img in listing.gallery
-											li
+											li.img_box
 												img(src=`${img}`)
+												i.fa.fa-times
 
 					.col-sm-2
 						.fixed-bar.fl-wrap
@@ -348,7 +368,9 @@ block content
 		#image_library
 			.header
 				h1 Image Library
-				label(for="uploadImgBtn").uploadBtn Upload Image
+				label(for="uploadImgBtn").uploadBtn
+					| Upload Image 
+					i.fa.fa-upload
 				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
 			.prog_wrap
 				.progress-bar

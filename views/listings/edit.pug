@@ -1,3 +1,232 @@
 extends ../layout
 
 block content
+
+	#wrapper.add-listing-page
+		.bigwhite
+			.container
+				h1.ml Add Listing
+				.row
+					.col-sm-8
+						.profile-edit-container
+							.custom-form
+								h3.ml General
+								ul.list
+									li
+										label
+											| Business Name
+											i.fa.fa-building
+										input(type="text")#q_business_name
+									li
+										label About  
+										textarea#q_description
+									li
+										label
+											| Industry
+											i.fa.fa-industry
+										input(type="text")#q_industry
+								h3.ml Services
+								ul.list
+									li
+										label
+											| Add Service
+											i.fa.fa-wrench
+										input(type="text").inline_btn#q_services
+										.btn.inline_btn
+											span.fa.fa-plus
+								ul#services
+
+								h3.ml Address
+								ul.list
+									li
+										label
+											| Line one
+											i.fa.fa-map-marker
+										input(type="text")#q_address_lineone
+									li
+										label
+											| Line two (optional)
+											i.fa.fa-map-marker
+										input(type="text")#q_address_linetwo
+									li
+										label
+											| City/Town
+											i.fa.fa-map-marker
+										input(type="text")#q_town
+									li
+										label
+											| Postcode
+											i.fa.fa-map-marker
+										input(type="text")#q_postcode
+								h3.ml Contact
+								ul.list
+									li
+										label
+											| Phone
+											i.fa.fa-phone
+										input(type="text")#q_phone
+									li
+										label
+											| Email
+											i.fa.fa-envelope
+										input(type="text")#q_email
+									li
+										label
+											| Website
+											i.fa.fa-globe
+										input(type="text")#q_website
+								h3.ml Opening Hours
+								table.opening_times
+									tr
+										th.thlabel
+										th.open_col.pad Open
+										th.close_col.pad Close
+									tr
+										th.thlabel Monday
+										td.open_col
+											input(type="time")#q_mon_open
+										td.close_col
+											input(type="time")#q_mon_close
+									tr
+										th.thlabel Tuesday
+										td.open_col
+											input(type="time")#q_tues_open
+										td.close_col
+											input(type="time")#q_tues_close
+									tr
+										th.thlabel Wednesday
+										td.open_col
+											input(type="time")#q_wed_open
+										td.close_col
+											input(type="time")#q_wed_close
+									tr
+										th.thlabel Thursday
+										td.open_col
+											input(type="time")#q_thurs_open
+										td.close_col
+											input(type="time")#q_thurs_close
+									tr
+										th.thlabel Friday
+										td.open_col
+											input(type="time")#q_fri_open
+										td.close_col
+											input(type="time")#q_fri_close
+									tr
+										th.thlabel Saturday
+										td.open_col
+											input(type="time")#q_sat_open
+										td
+											input(type="time")#q_sat_close
+									tr
+										th.thlabel Sunday
+										td.open_col
+											input(type="time")#q_sun_open
+										td.close_col
+											input(type="time")#q_sun_close
+								h3.ml Social
+								ul.list
+									li
+										label
+											i.fa.fa-facebook-f
+											| Facebook
+										input(type="text")#q_fb.fb
+									li
+										label
+											i.fa.fa-twitter
+											| Twitter
+										input(type="text")#q_tw.tw
+									li
+										label
+											i.fa.fa-instagram
+											| Instagram
+										input(type="text")#q_ig.ig
+									li
+										label
+											i.fa.fa-google-plus
+											| Google Plus
+										input(type="text")#q_gp.gp
+									li
+										label
+											i.fa.fa-youtube
+											| YouTube
+										input(type="text")#q_yt.yt
+									li
+										label
+											i.fa.fa-linkedin
+											| Linked In
+										input(type="text")#q_li.li
+									li
+										label
+											i.fa.fa-pinterest-p
+											| Pinterest
+										input(type="text")#q_pi.pi
+
+								h3.ml Branding
+								ul.list.branding_edit
+									li
+										label#logo_upload
+											p Upload Logo
+											.img_box
+												img(src=`/static/img/admin/placeholder-logo.png`)#q_logo.uploaded_img
+												i.fa.fa-upload
+									li
+										label#bg_upload
+											p Upload Background
+											.img_box
+												img(src=`/static/img/admin/placeholder-bg.png`)#q_bgimage.uploaded_img
+												i.fa.fa-upload
+								h3.ml Gallery
+								.galleryBox
+									.btn-icon#addGalleryImgBtn
+										span Add Gallery Image
+										.inline_btn
+											i.fa.fa-plus
+									ul#gallery.gallery.gallery-edit
+
+								h2 Terms &amp; Conditions
+
+								.termsBox
+									p Hella pinterest banh mi readymade fingerstache. Occupy flexitarian health goth hexagon mumblecore banjo schlitz cred cornhole raclette, stumptown trust fund. Taxidermy street art organic, bespoke taiyaki pok pok 90's banjo vinyl distillery succulents meh. Coloring book offal activated charcoal, 8-bit lomo you probably haven't heard of them four loko jean shorts hexagon glossier vinyl small batch trust fund put a bird on it. Migas flexitarian meh selvage glossier farm-to-table bitters. Tote bag godard air plant, trust fund affogato butcher scenester tumeric selvage etsy vexillologist kickstarter. Taxidermy twee edison bulb pok pok af aesthetic.
+
+									p Poke tousled umami bitters, tofu banh mi cold-pressed locavore aesthetic selfies pinterest shabby chic polaroid. VHS sartorial vaporware small batch green juice activated charcoal cred iceland. Vegan cliche jean shorts 3 wolf moon. Unicorn quinoa gluten-free butcher. Fingerstache seitan thundercats vexillologist migas tbh kickstarter iceland. Adaptogen migas disrupt, flexitarian banjo subway tile forage microdosing VHS roof party shabby chic tousled. Put a bird on it butcher gluten-free irony, fanny pack YOLO portland kickstarter prism bushwick.
+
+									p La croix photo booth hella chicharrones banh mi drinking vinegar vexillologist kinfolk. Direct trade bicycle rights gluten-free everyday carry sustainable pok pok letterpress fingerstache. Prism franzen celiac scenester heirloom, twee kickstarter poutine af tumblr unicorn next level. Snackwave quinoa master cleanse small batch. Pabst enamel pin VHS health goth semiotics try-hard affogato bespoke hell of, keytar 3 wolf moon cardigan occupy farm-to-table. Neutra fixie post-ironic enamel pin, hella sartorial la croix portland pour-over.
+
+
+								input(type="checkbox")#terms_check
+								label(for="terms_check") Confirm that you are the owner of this business
+								#datayeah(style="display: none", data-userid=`${user._id}`)
+
+					.col-sm-4
+						.fixed-bar.fl-wrap
+							.theside
+								button(disabled="true")#addBtn.side_submit.btn Add Listing
+
+			.limit-box.fl-wrap
+
+	#image_library_modal
+		#image_library
+			.header
+				h1 Image Library
+				label(for="uploadImgBtn").uploadBtn
+					| Upload Image 
+					i.fa.fa-upload
+				input(type="file", name="imglib_image").btn.nobg#uploadImgBtn 
+			.prog_wrap
+				.progress-bar
+			.imgWindow
+				ul.images
+				.message Select Image
+
+
+	script(type="text/javascript" src="/static/js/citybook/jquery.min.js")
+	script(type="text/javascript" src="/static/js/citybook/plugins.js")
+	script(type="text/javascript" src="/static/js/citybook/scripts.js")
+	script(type="text/javascript" src="/static/js/helpers/utils.js")
+	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/lib/image_library/image_library.js")
+	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(type="text/javascript" src="/static/js/main.js")
+	script(type="text/javascript" src="/static/js/dashboard/dashboard.js")
+	script(type="text/javascript" src="/static/js/listings/model.js")
+	script(type="text/javascript" src="/static/js/listings/listing.js")

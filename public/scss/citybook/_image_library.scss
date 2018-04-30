@@ -1,0 +1,46 @@
+
+#image_library {
+    border-radius: 5px;
+	margin: 110px auto;
+	background: #fff;
+	.header {
+	    text-align: left;
+        border-bottom: solid 2px #cdd0d7;
+	}
+	h1 {
+		color: #2f3b59;
+	}
+	.uploadBtn {
+	    color: #2f3b59;
+	    background: none;
+	    padding: 0px;
+	}    
+	ul {
+	    min-height: 100%;
+	    text-align: left;
+	    li {
+    	    box-shadow: none;
+	   	 	border-radius: 5px;
+	    	border: solid 2px #e0e0e0;
+	    	&:hover {
+	    		border: solid 2px #4db7fe;
+   	 			box-shadow: 0px 0px 0px 2px #4db7fe;
+	    	}
+	    }
+	}
+	.message {
+		color: #2f3b59;
+		border: none;
+	}
+}
+
+.imglib_selected {
+    box-shadow: 0px 0px 0px 2px #4db7fe !important;
+}
+
+.imglib_actions div {
+	color: #2f3b59;
+	&:hover {
+	    color: #4db7fe;
+	}
+}

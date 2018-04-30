@@ -31,8 +31,9 @@
 			this.gallery_list.empty();
 			for(i=0; i<Model.gallery.length; i++){
 				this.gallery_list.append(`
-					<li>
+					<li class="img_box">
 						<img src="${Model.gallery[i]}">
+						<i class="fa fa-times"></i>
 					</li>
 				`);
 			}

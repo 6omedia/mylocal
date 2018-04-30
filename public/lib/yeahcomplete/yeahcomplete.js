@@ -32,29 +32,12 @@ var YeahAutocomplete = (function(){
 				result = results[i][property];
 			}
 
-			// var resParts = results[i].split(query.toUpperCase());
-			// if(resParts.length < 1){
-			// 	resParts = results[i].split(query);
-			// }
+			if(i == 0){
+				var li = $('<li class="yac_li focused">' + result + '</li>');
+			}else{
+				var li = $('<li class="yac_li">' + result + '</li>');
+			}
 
-			// var resComplete = '';
-
-			// console.log(resParts);
-
-			// for(var j=0; j<resParts.length; j++){
-			// 	console.log('PARTS ', resParts[j]);
-			// 	if(resParts[j] == ''){
-			// 		if(j == 0){
-			// 			resComplete += '<b>' + query[0].toUpperCase() + '</b>';
-			// 		}else{
-			// 			resComplete += '<b>' + query + '</b>';
-			// 		}
-			// 	}else{
-			// 		resComplete += resParts[j];
-			// 	}
-			// }
-
-			var li = $('<li class="yac_li">' + result + '</li>');
 			li.data('listing', details);
 			li.on('click', function(){
 				var selectedHtml = $(this).html();
@@ -63,15 +46,20 @@ var YeahAutocomplete = (function(){
 					endIndex = selectedHtml.length;
 				}
 				var selected = selectedHtml.substr(0, endIndex).trim();
-				thisView.input.val(selected);
-				thisView.input.data('listing', $(this).data('listing'));
-				thisView.input.trigger("resultSelected");
-				thisView.resultsList.hide();
+				thisView.selectLi(selected, $(this).data('listing'));
 			});
 			this.resultsList.append(li);
 		}
 		this.resultsList.show();
 
+	};
+	View.prototype.selectLi = function(selected, listing){
+		if(this.resultsList.is(":visible")){
+			this.input.val(selected);
+			this.input.data('listing', listing);
+			this.input.trigger("resultSelected");
+			this.resultsList.hide();
+		}
 	};
 
 	function YeahAutocomplete(options){
@@ -84,13 +72,47 @@ var YeahAutocomplete = (function(){
 		this.dataUrl = options.dataUrl;
 		this.alter_results = options.alter_results || null;
 		this.onResults = null;
+		this.ajaxInProg = false;
+
+		this.liFocusIndex = 0;
+		this.liFocus = null;
 
 		if(options.onResults){
 			this.onResults = options.onResults;
 		}
 
 		this.view.input.on('input', function(){
-			thisYac.getResults($(this).val(), thisYac.dataUrl, options.method, {}, options.arrName, options.property);
+			// check if previous ajax call has finished
+			if(!thisYac.ajaxInProg){
+				thisYac.getResults($(this).val(), thisYac.dataUrl, options.method, {}, options.arrName, options.property);
+			}
+		});
+
+		$(document).keydown(function(e) {
+		    switch(e.which) {
+		        case 38: // up
+		        	
+		        	thisYac.upList();
+
+		        break;
+
+		        case 40: // down
+		        	
+		        	thisYac.downList();
+
+		        break;
+
+		        case 13:
+
+		        	if(thisYac.liFocus){
+		        		thisYac.view.selectLi(thisYac.liFocus.text(), thisYac.liFocus.data('listing'));
+		        	}
+
+		        break;
+
+		        default: return; // exit this handler for other keys
+		    }
+		    e.preventDefault(); // prevent the default action (scroll / move caret)
 		});
 
 		if(!options.allowFreeType){
@@ -107,10 +129,43 @@ var YeahAutocomplete = (function(){
 
 	}
 
+	YeahAutocomplete.prototype.downList = function(){
+		var lis = this.view.resultsList.find('li');
+		var listLength = lis.length;
+		
+		if(this.liFocusIndex < listLength){
+			this.liFocusIndex++;
+		}
+		
+		lis.removeClass('focused');
+		if(listLength > 0){
+			var focused = $(lis[this.liFocusIndex]);
+			focused.addClass('focused');
+			this.liFocus = focused;
+		}
+	};
+
+	YeahAutocomplete.prototype.upList = function(){
+		var lis = this.view.resultsList.find('li');
+		var listLength = lis.length;
+		
+		if(this.liFocusIndex > 0){
+			this.liFocusIndex--;
+		}
+		
+		lis.removeClass('focused');
+		if(listLength > 0){
+			var focused = $(lis[this.liFocusIndex]);
+			focused.addClass('focused');
+			this.liFocus = focused;
+		}
+	};
+
 	YeahAutocomplete.prototype.getResults = function(query, url, method, dataObj, arrName, property){
 		
 		var thisYac = this;
 		this.view.startLoading();
+		this.ajaxInProg = true;
 
 		if(query == ''){
 			query = 'noterm';
@@ -134,6 +189,12 @@ var YeahAutocomplete = (function(){
 
 						thisYac.onResults(data[arrName]);
 
+					}
+
+					thisYac.ajaxInProg = false;
+					thisYac.liFocusIndex = 0;
+					if(data[arrName].length > 0){
+						thisYac.liFocus = $(thisYac.view.resultsList[0]);
 					}
 
 				},

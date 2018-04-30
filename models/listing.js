@@ -321,21 +321,27 @@ ListingSchema.statics.getLatLngsByTerm = function(term, callback){
         if(err){ return callback(err); }
         switch(type.name){
             case 'postcode':
-                Postcode.findOne({postcode: term.toUpperCase()}, (err, postcode) => {
+                Postcode.findOne({postcode: term.toUpperCase()})
+                .select({latitude: 1, longitude: 1})
+                .exec((err, postcode) => {
                     if(err) return callback(err);
                     if(!postcode) return callback({message: 'No Postcode found'});
                     return callback(null, postcode.latitude, postcode.longitude);
                 });
                 break;
             case 'town':
-                Town.findOne({name: term}, (err, town) => {
+                Town.findOne({name: new RegExp(term, "i")})
+                .select({latitude: 1, longitude: 1})
+                .exec((err, town) => {
                     if(err){ return callback(err); }
                     if(!town){ return callback({message: 'No Town found'}); }
                     return callback(null, town.latitude, town.longitude);
                 });
                 break;
             case 'suburb':
-                Suburb.findOne({name: term}, (err, suburb) => {
+                Suburb.findOne({name: new RegExp(term, "i")})
+                .select({latitude: 1, longitude: 1})
+                .exec((err, suburb) => {
                     if(err){ return callback(err); }
                     if(!suburb) return callback({message: 'No Suburb found'});
                     return callback(null, suburb.latitude, suburb.longitude);
@@ -354,7 +360,7 @@ ListingSchema.statics.locationType = function(term, callback){
         return callback(null, {name: 'suburb', prop: 'address.line_two'});
     }
 
-    Listing.count({'address.town': term})
+    Listing.count({'address.town': new RegExp(term, "i")})
     .then((count) => {  
         if(count > 0){
             return callback(null, {name: 'town', prop: 'address.town'});

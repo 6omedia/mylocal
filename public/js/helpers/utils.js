@@ -5,7 +5,7 @@ var utils = (function(){
     function Message(){
     	
     	this.msgBox = $('<div class="theError slim"></div>');
-    	this.closeBtn = $('<span class="icon icon-cross"></span>');
+    	this.closeBtn = $('<span class="icon"><i class="fa fa-times-circle"></i></span>');
     	this.msgElem = $('<span class="inline_text"></span>');
 
         this.closeBtn.on('click', function(){
