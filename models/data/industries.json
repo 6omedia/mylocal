@@ -39,5 +39,38 @@
 		],
 		"featured": 0,
 		"allow_featured": true
+	},
+	{
+		"name": "Hotels",
+		"aliases": [
+			"Hostel", "Bed and Breakfast"
+		],
+		"services": [
+			"Bed and Breakfast"
+		],
+		"featured": 0,
+		"allow_featured": true
+	},
+	{
+		"name": "Bars",
+		"aliases": [
+			"Watering Hole", "Pub"
+		],
+		"services": [
+			"Alomohol"
+		],
+		"featured": 0,
+		"allow_featured": true
+	},
+	{
+		"name": "Vets",
+		"aliases": [
+			"Animal Hospital"
+		],
+		"services": [
+			"Animal Treatment"
+		],
+		"featured": 0,
+		"allow_featured": true
 	}
 ]
