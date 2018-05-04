@@ -24,6 +24,8 @@ var YeahAutocomplete = (function(){
 			var result = results[i];
 			var details = results[i];
 			
+			// console.log(details);
+
 			if(alterResults){
 				result = alterResults(result);
 			}
@@ -57,7 +59,7 @@ var YeahAutocomplete = (function(){
 		if(this.resultsList.is(":visible")){
 			this.input.val(selected);
 			this.input.data('listing', listing);
-			this.input.trigger("resultSelected");
+			this.input.trigger("resultSelected", listing);
 			this.resultsList.hide();
 		}
 	};
@@ -177,6 +179,9 @@ var YeahAutocomplete = (function(){
 				url: url + query,
 				method: 'GET',
 				success: function(data){
+
+					console.log(data);
+					console.log(arrName);
 
 					if(!thisYac.onResults){
 						try {

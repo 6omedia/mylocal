@@ -2,7 +2,7 @@ header.main-header.dark-header.fs-header.sticky
     .header-inner
         .logo-holder
             a(href="/")
-                img(src="/static/img/logo-temp.png")
+                img(src="/static/img/logo-temp2.png")
         if !home
             //- .header-search.vis-header-search
             //-     .header-search-input-item
@@ -42,7 +42,8 @@ header.main-header.dark-header.fs-header.sticky
                         li
                             a(href="/logout") Logout
                         li
-                            a(href="/dashboard/notifications").icon.icon-bell
+                            a(href="/dashboard/notifications").bell-notify
+                                i.fa.fa-bell
                                 if notifications
                                     .num #{notifications}
             

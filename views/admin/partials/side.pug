@@ -25,6 +25,18 @@
 					a(href="/admin/listings/add") New Listing
 				li
 					a(href="/admin/listings/upload") Upload Listings
+		li(class=section === "towns" ? "active" : "")
+			span(class=section === "towns" ? "open noclickaway" : "") Towns
+			ul.list.sub
+				li
+					a(href="/admin/towns/capitals") Capital Towns
+		li(class=section === "categories" ? "active" : "")
+			span(class=section === "categories" ? "open noclickaway" : "") Category
+			ul.list.sub
+				li
+					a(href="/admin/categories") All Categories
+				li
+					a(href="/admin/categories/featured") Featured
 		li(class=section === "reviews" ? "active" : "")
 			span(class=section === "reviews" ? "open noclickaway" : "") Reviews
 			ul.list.sub

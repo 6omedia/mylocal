@@ -9,7 +9,9 @@
 			"Fast Food",
 			"Salad Bar",
 			"All You Can Eat"
-		]
+		],
+		"featured": 0,
+		"allow_featured": true
 	},
 	{
 		"name": "Barbers",
@@ -21,7 +23,9 @@
 			"Mens Hair",
 			"Short Hair",
 			"Long Hair"
-		]
+		],
+		"featured": 0,
+		"allow_featured": true
 	},
 	{
 		"name": "Mechanic",
@@ -32,6 +36,8 @@
 			"MOT",
 			"Servicing",
 			"Repair flat tyre"
-		]
+		],
+		"featured": 0,
+		"allow_featured": true
 	}
 ]

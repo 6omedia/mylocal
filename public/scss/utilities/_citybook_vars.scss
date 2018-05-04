@@ -1,0 +1,36 @@
+$color-primary: #42254f;
+$color-secondary: #5edba1;
+
+$color-text: 		#333; // #727272;
+$color-trans-white:  #ffffffb8;
+$color-trans-black:  rgba(0, 0, 0, 0.39);
+$color-nav-links: $color-primary;
+
+$color-grey-light: #f0f0f0;
+$color-grey-medium: #e1e1e1;
+$color-grey-dark: #cfcfcf;
+
+$color-success-light: #d1f2ce;
+$color-success-dark: darken($color-success-light, 45%);
+$color-error-light: #f2cece;
+$color-error-dark: darken($color-error-light, 45%); 
+
+/* BREAK POINTS */
+
+$xsmall: 430px;
+$small:  576px;
+$medium: 769px;
+$large:  992px;
+$xlarge: 1200px;
+
+/* ZINDEXES */
+
+$zindex-dropdown-backdrop:  990 !default;
+$zindex-navbar:            1000 !default;
+$zindex-dropdown:          1000 !default;
+$zindex-fixed:             1030 !default;
+$zindex-sticky:            1030 !default;
+$zindex-modal-backdrop:    1040 !default;
+$zindex-modal:             1050 !default;
+$zindex-popover:           1060 !default;
+$zindex-tooltip:           1070 !default;

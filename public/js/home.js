@@ -2,18 +2,18 @@
 
     /////////////////////////////////////////////////////////////////
 
-    var searchResults = $('#searchResults');
-    var inputIndustry = $('#industry');
-    var inputTown = $('#town');
+    // var searchResults = $('#searchResults');
+    // var inputIndustry = $('#industry');
+    // var inputTown = $('#town');
 
-    $('.main-search-button').on('click', function(){
-        var industry = $('#industry').val();
-        var town = $('#town').val();
-        if(industry == '' && town == ''){
-            return;
-        }
-        window.location.replace('/find/' + industry + '/' + town);
-    });
+    // $('.main-search-button').on('click', function(){
+    //     var industry = $('#industry').val();
+    //     var town = $('#town').val();
+    //     if(industry == '' && town == ''){
+    //         return;
+    //     }
+    //     window.location.replace('/find/' + industry + '/' + town);
+    // });
 
     // function getListings(industry, town, callback){
     //     $.ajax({

@@ -20,7 +20,7 @@ block content
 									input(type="text" placeholder="In..." value="" id="town")
 									a(href="#")
 										i.fa.fa-dot-circle-o
-								button.main-search-button Search
+								button.main-search-button#hFind Search
 				.bubble-bg
 				.header-sec-link
 					.container
@@ -36,60 +36,60 @@ block content
 						.gallery-item
 							.grid-item-holder
 								.listing-item-grid
-									img(src="/static/img/citybook/all/1.jpg" alt="")
-									.listing-counter 
-										span 10 
-										span Locations
+									img(src=`${featured[0].bgimage}` alt="")
+									//- .listing-counter 
+									//- 	span 10 
+									//- 	span Locations
 									.listing-item-cat
 										h3
-											a(href="listing.html") Conference and Event
-										p Constant care and attention to the patients makes good record
+											a(href=`/category/${featured[0].name}`) #{featured[0].name}
+										//- p Constant care and attention to the patients makes good record
 						.gallery-item.gallery-item-second
 							.grid-item-holder
 								.listing-item-grid
-									img(src="/static/img/citybook/bg/1.jpg" alt="")
-									.listing-counter
-										span 6
-										span Locations
+									img(src=`${featured[2].bgimage}` alt="")
+									//- .listing-counter
+									//- 	span 6
+									//- 	span Locations
 									.listing-item-cat
 										h3 
-											a(href="listing.html") Cafe - Pub
-										p Constant care and attention to the patients makes good record
+											a(href=`/category/${featured[2].name}`) #{featured[2].name}
+										//- p Constant care and attention to the patients makes good record
 						.gallery-item
 							.grid-item-holder
 								.listing-item-grid
-									img(src="/static/img/citybook/all/1.jpg" alt="")
-									.listing-counter
-										span 21
-										span Locations
+									img(src=`${featured[1].bgimage}` alt="")
+									//- .listing-counter
+									//- 	span 21
+									//- 	span Locations
 									.listing-item-cat
 										h3
-											a(href="listing.html") Gym - Fitness
-										p Constant care and attention to the patients makes good record
+											a(href=`/category/${featured[1].name}`) #{featured[1].name}
+										//- p Constant care and attention to the patients makes good record
 						.gallery-item
 							.grid-item-holder
 								.listing-item-grid
-									img(src="/static/img/citybook/all/1.jpg" alt="")
-									.listing-counter 
-										span 7 
-										span Locations
+									img(src=`${featured[3].bgimage}` alt="")
+									//- .listing-counter 
+									//- 	span 7 
+									//- 	span Locations
 									.listing-item-cat
 										h3
-											a(href="listing.html") Hotels
-										p Constant care and attention to the patients makes good record
+											a(href=`/category/${featured[3].name}`) #{featured[3].name}
+										//- p Constant care and attention to the patients makes good record
 						.gallery-item
 							.grid-item-holder
 								.listing-item-grid
-									img(src="/static/img/citybook/all/1.jpg" alt="")
-									.listing-counter
-										span 15
-										span Locations
+									img(src=`${featured[4].bgimage}` alt="")
+									//- .listing-counter
+									//- 	span 15
+									//- 	span Locations
 									.listing-item-cat
 										h3
-											a(href="listing.html") Shop - Store
-										p Constant care and attention to the patients makes good record
-					a(href="listing.html").btn.big-btn.circle-btn.dec-btn.color-bg.flat-btn View All
-						i.fa.fa-eye
+											a(href=`/category/${featured[4].name}`) #{featured[4].name}
+										//- p Constant care and attention to the patients makes good record
+					//- a(href="listing.html").btn.big-btn.circle-btn.dec-btn.color-bg.flat-btn View All
+					//- 	i.fa.fa-eye
 
 			section.color-bg
 				.shapes-bg-big

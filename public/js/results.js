@@ -20,16 +20,30 @@ var maplistings = [];
 
 		var page = getUrlVars()["page"] || 1;
 
-        $.ajax({
-            url: '/api/listings/find/' + industry + '/' + town + '?page=' + page,
-            method: 'GET',
-            success: function(data){
-                callback(data);
-            },
-            error: function(a, b, c){
-                callback(a);
-            }
-        });
+		if(town){
+			$.ajax({
+	            url: '/api/listings/find/' + industry + '/' + town + '?page=' + page,
+	            method: 'GET',
+	            success: function(data){
+	                callback(data);
+	            },
+	            error: function(a, b, c){
+	                callback(a);
+	            }
+	        });
+		}else{
+			$.ajax({
+	            url: '/api/listings/industry/' + industry + '?page=' + page,
+	            method: 'GET',
+	            success: function(data){
+	                callback(data);
+	            },
+	            error: function(a, b, c){
+	                callback(a);
+	            }
+	        });
+		}
+
     }
 
     searchResults.empty();
@@ -55,6 +69,11 @@ var maplistings = [];
 	                searchResults.append("<p class='noresults'>Did you mean " + data.correction);
 	            }
 
+	            if(data.success){
+	            	searchResults.append("<p class''>" + data.success + "</p>");
+	            	searchResults.append(data.pagination);
+	            }
+
 	            var string = '';
 
 	            $.each(data.listings, function(i, listing){
@@ -72,22 +91,24 @@ var maplistings = [];
 	                	stars += aStar;
 	                }
 
-		            locations.push([
-		                locationData(
-		                    '/listing/' + listing.slug, 
-		                    listing.industry, 
-		                    listing.bgimage, 
-		                    listing.business_name, 
-		                    listing.address.line_one + ', ' + listing.address.town + ', ' + listing.address.post_code, 
-		                    listing.contact.phone, 
-		                    listing.overall_rating / 2 || '', 
-		                    listing.reviews.length
-		                ), 
-		                listing.loc[1], 
-		                listing.loc[0], 
-		                1, 
-		                markerIcon
-		            ]);
+	                if(listing.loc){
+	                	locations.push([
+			                locationData(
+			                    '/listing/' + listing.slug, 
+			                    listing.industry, 
+			                    listing.bgimage, 
+			                    listing.business_name, 
+			                    listing.address.line_one + ', ' + listing.address.town + ', ' + listing.address.post_code, 
+			                    listing.contact.phone, 
+			                    listing.overall_rating / 2 || '', 
+			                    listing.reviews.length
+			                ), 
+			                listing.loc[1], 
+			                listing.loc[0], 
+			                1, 
+			                markerIcon
+			            ]);
+	                }
 
 	                string += `
 	                    <div class="listing-item">
@@ -170,7 +191,7 @@ var maplistings = [];
 		        var map = new google.maps.Map(document.getElementById('map-main'), {
 		            zoom: zoomLevel,
 		            scrollwheel: scrollEnabled,
-		            center: new google.maps.LatLng(51.449869, -0.205010),
+		            center: new google.maps.LatLng(54.391224, -3.264711),
 		            mapTypeId: google.maps.MapTypeId.ROADMAP,
 		            zoomControl: false,
 		            mapTypeControl: false,
@@ -281,16 +302,20 @@ var maplistings = [];
 		            map.setCenter(center);
 		        });
 
-		        // Go to first listing
-
-	            map.setZoom(14);
-	            var index = currentInfobox;
-	            if (index + 1 < allMarkers.length) {
-	                google.maps.event.trigger(allMarkers[index + 1], 'click');
-	            }
-	            else {
-	                google.maps.event.trigger(allMarkers[0], 'click');
-	            }
+		        if(town){
+		        	 // Go to first listing
+		        	map.setZoom(14);
+		            var index = currentInfobox;
+		            if (index + 1 < allMarkers.length) {
+		                google.maps.event.trigger(allMarkers[index + 1], 'click');
+		            }
+		            else {
+		                google.maps.event.trigger(allMarkers[0], 'click');
+		            }
+		        }else{
+		        	 // View whole of uk
+		        	map.setZoom(6);
+		        }
 
 	        }else{
 

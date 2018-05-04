@@ -1,0 +1,78 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-featured
+		include ../partials/side
+
+		.main
+			h1 Featured Categories
+			.featured_selection
+				.form
+					ul
+						li
+							label.break Position One
+							input(type="text" placeholder="Leave empty for random" data-industryid=`${featured[0].id}` value=`${featured[0].name}`)#pos_one
+						li
+							label.break Position Two
+							input(type="text" placeholder="Leave empty for random" data-industryid=`${featured[1].id}` value=`${featured[1].name}`)#pos_two
+						li
+							label.break Position Three
+							input(type="text" placeholder="Leave empty for random" data-industryid=`${featured[2].id}` value=`${featured[2].name}`)#pos_three
+						li
+							label.break Position Four
+							input(type="text" placeholder="Leave empty for random" data-industryid=`${featured[3].id}` value=`${featured[3].name}`)#pos_four
+						li
+							label.break Position Five
+							input(type="text" placeholder="Leave empty for random" data-industryid=`${featured[4].id}` value=`${featured[4].name}`)#pos_five
+			.featured_diagram
+				.diagram_container
+					.col_1
+						.f1(class=featured[0].name != '' ? 'fixedcat' : '')
+							span.number 1
+							if featured[0].name != ''
+								span.selected #{featured[0].name}
+							else
+								span.selected Random
+						.f2(class=featured[1].name != '' ? 'fixedcat' : '')
+							span.number 2
+							if featured[1].name != ''
+								span.selected #{featured[1].name}
+							else
+								span.selected Random
+					.col_2
+						.f3(class=featured[2].name != '' ? 'fixedcat' : '')
+							span.number 3
+							if featured[2].name != ''
+								span.selected #{featured[2].name}
+							else
+								span.selected Random
+						.f4(class=featured[3].name != '' ? 'fixedcat' : '')
+							span.number 4
+							if featured[3].name != ''
+								span.selected #{featured[3].name}
+							else
+								span.selected Random
+						.f5(class=featured[4].name != '' ? 'fixedcat' : '')
+							span.number 5
+							if featured[4].name != ''
+								span.selected #{featured[4].name}
+							else
+								span.selected Random
+				.btn#save Save
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/utils.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/lib/yeahcomplete/yeahcomplete.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/categories/featured.js")

@@ -27,8 +27,19 @@
 	$('#hFind').on('click', function(){
 
 		if($('#industry').val() != '' && $('#town').val() != ''){
-			location.href = '/find/' + $('#industry').val() + '/' + $('#town').val() + '?page=1';
-		}
+            var industry = $('#industry').val();
+            var town = $('#town').val();
+			location.href = '/find/' + industry + '/' + town + '?page=1';
+		}else{
+            if($('#industry').val() != ''){
+                var industry = $('#industry').val();
+                location.href = '/category/' + industry;
+            }
+            // if($('#town').val() != ''){
+            //     var town = $('#town').val();
+            //     location.href = '/find/' + industry + '/' + town + '?page=1';
+            // }
+        }
 
 	});
 

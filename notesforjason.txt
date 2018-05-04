@@ -1,0 +1,22 @@
+
+/*== IMAGES ==*/
+
+	CATEGORY (INDUSTRY) IMAGES
+
+	Category (industry) images load from the folder public/img/backgrounds.
+	the name of the image is the name of the industry plus .jpg.
+	If no image is found it uses default.jpg.
+	So if you want an industry to display a background just put an image in the folder...
+
+		/public/img/backgrounds
+
+	and call it by the industry name and save as a jpg.
+
+	These images are displayed on the home page in featured categories, on a listing page that has no background
+	set and on the category page its self.
+
+	LOCATION IMAGES
+
+	Same deal as above only the folder path is public/img/locations
+
+/*== BACKUPS ==*/

@@ -17,6 +17,7 @@
     "moment": "^2.22.1",
     "mongodb-backup": "^1.6.9",
     "mongoose": "^4.11.4",
+    "mongoose-simple-random": "^0.4.1",
     "nodemailer": "^4.6.3",
     "pug": "^2.0.0-rc.2",
     "sync-each": "^1.0.1",

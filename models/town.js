@@ -14,7 +14,7 @@ let TownSchema = new Schema({
     },
     image: {
         type: String,
-        default: ''
+        default: '/static/img/locations/default.jpg'
     },
     county: String,
     latitude: Number,

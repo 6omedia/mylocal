@@ -1,0 +1,62 @@
+extends ../layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#page-categories
+		include ../partials/side
+
+		.main
+			h1 All Categories (industries)
+			ul.bread-crumb
+				li
+					span.current All Industries
+
+			.floatLeft
+				table
+					tr
+						th Industry
+						th Aliases
+						th Services
+						th Allow Featured
+						th Actions
+					each industry in industries
+						tr
+							td #{industry.name}
+							td
+								each alias, index in industry.aliases
+									if index == 1
+										| #{alias} ...
+										- break
+									else
+										| #{alias}, 
+
+							td 
+								each service, index in industry.services
+									if index == 1
+										| #{service} ...
+										- break
+									else
+										| #{service}, 
+							td
+								label.check_switch 
+									input(type="checkbox" data-industryid=`${industry._id}` checked = industry.allow_featured ? true : false)
+							td
+								span(data-industryid=`${industry._id}`).edit
+								span(data-industryid=`${industry._id}`).delete
+				div.paginationDiv !{paginationLinks}
+			.mini-side
+				span.add Add Industry
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/helpers/popup.js")
+	script(src="/static/js/helpers/form.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/categories/all.js")

@@ -68,9 +68,11 @@ app.use('/dashboard', require('./controllers/dashboard.js'));
 
 // admin routes
 app.use('/admin', require('./controllers/admin/admin.js'));
+app.use('/admin/categories', require('./controllers/admin/categories.js'));
 app.use('/admin/listings', require('./controllers/admin/listings.js'));
 app.use('/admin/blog', require('./controllers/admin/blog.js'));
 app.use('/admin/reviews', require('./controllers/admin/reviews.js'));
+app.use('/admin/towns', require('./controllers/admin/towns.js'));
 app.use('/admin/settings', require('./controllers/admin/settings.js'));
 
 // api routes
@@ -81,6 +83,7 @@ app.use('/api/reviews', require('./controllers/api/reviews.js'));
 app.use('/api/industries', require('./controllers/api/industries.js'));
 app.use('/api/image_library', require('./controllers/api/image_library.js'));
 app.use('/api/blog', require('./controllers/api/blog.js'));
+app.use('/api/towns', require('./controllers/api/towns.js'));
 app.use('/api/tags', require('./controllers/api/tags.js'));
 app.use('/api/messages', require('./controllers/api/messages.js'));
 app.use('/api/settings', require('./controllers/api/settings.js'));

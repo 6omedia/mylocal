@@ -109,48 +109,70 @@ listingRoutes.get('/industry/:industry', function(req, res){
 	let data = {};
 	data.success = 0;
 
-	Listing.find({industry: req.params.industry}, function(err, listings){
+	let page = req.query.page || 1;
+	let docsPerPage = 50;
 
-		if(err){
-			data.error = err.message || 'Internal Server Error';
-	    	res.status(err.status || 500);
-	    	return res.json(data);
-		}
+	Listing.count({industry: req.params.industry})
+	.then((count) => {
 
-		if(listings.length > 0){
+		Listing.find({industry: req.params.industry})
+			.skip(pagination.getSkip(page, docsPerPage))
+			.limit(docsPerPage)
+			.exec(function(err, listings){
 
-			data.success = 1;
+			if(err){
+				data.error = err.message || 'Internal Server Error';
+		    	res.status(err.status || 500);
+		    	return res.json(data);
+			}
+
+			data.success = 'Showing ' + listings.length + ' out of ' + count + ' listings';
+			data.pagination = pagination.getLinks(count, docsPerPage, page, '/category/' + req.params.industry);
 			data.listings = listings;
 		    res.status(200);
 	    	return res.json(data);
 
-		}else{
+			// if(listings.length > 0){
 
-			Listing.find({industry: new RegExp(escapeRegex(req.params.industry), 'gi')}, function(err, listings){
+			// 	data.success = 1;
+			// 	data.pagination = pagination;
+			// 	data.listings = listings;
+			//     res.status(200);
+		 //    	return res.json(data);
 
-				if(err){
-					data.error = err.message || 'Internal Server Error';
-			    	res.status(err.status || 500);
-			    	return res.json(data);
-				}
+			// }else{
 
-				if(listings.length == 0){
-					data.message = 'Listing not found';
-					res.status(404);
-					return res.json(data);
-				}
+			// 	Listing.find({industry: new RegExp(escapeRegex(req.params.industry), 'gi')}, function(err, listings){
 
-				data.success = 1;
-				data.listings = listings;
-				data.correction = 'Did you mean ' + listings[0].industry + '?';
-			    res.status(200);
-		    	return res.json(data);
+			// 		if(err){
+			// 			data.error = err.message || 'Internal Server Error';
+			// 	    	res.status(err.status || 500);
+			// 	    	return res.json(data);
+			// 		}
 
+			// 		if(listings.length == 0){
+			// 			data.message = 'Listing not found';
+			// 			res.status(404);
+			// 			return res.json(data);
+			// 		}
 
-			});
+			// 		data.success = 1;
+			// 		data.listings = listings;
+			// 		data.correction = 'Did you mean ' + listings[0].industry + '?';
+			// 	    res.status(200);
+			//     	return res.json(data);
 
-		}
+			// 	});
 
+			// }
+
+		});
+
+	})
+	.catch((err) => {
+		data.error = err.message || 'Internal Server Error';
+    	res.status(err.status || 500);
+    	return res.json(data);
 	});
 
 });

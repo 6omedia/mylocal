@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const Listing = require('../models/listing');
 const Review = require('../models/review');
+const Industry = require('../models/industry');
 const Post = require('../models/post');
 const Message = require('../models/message');
 const mid = require('../middleware/session');
@@ -16,35 +17,46 @@ function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-mainRoutes.get('/', function(req, res){
+mainRoutes.get('/', function(req, res, next){
 
-	if(req.session.user){
+	Industry.getFeatured((err, featured) => {
 
-		Message.count({to: req.session.user._id, seen: false}, (err, count) => {
-            if(err){
-                return next(err);
-            }
-            res.locals.notifications = count;   
-            
-            return res.render('home', {
+		if(err){
+            return next(err);
+        }
+
+		if(req.session.user){
+
+			Message.count({to: req.session.user._id, seen: false}, (err, count) => {
+				
+	            if(err){
+	                return next(err);
+	            }
+	            res.locals.notifications = count;   
+	            
+	            return res.render('home', {
+					home: true,
+					user: req.session.user,
+					redirect_url: req.query.redirect || null,
+					featured: featured,
+					error: ''
+				});
+
+	        });
+
+		}else{
+
+			return res.render('home', {
 				home: true,
 				user: req.session.user,
+				featured: featured,
 				redirect_url: req.query.redirect || null,
 				error: ''
 			});
 
-        });
+		}
 
-	}else{
-
-		return res.render('home', {
-			home: true,
-			user: req.session.user,
-			redirect_url: req.query.redirect || null,
-			error: ''
-		});
-
-	}
+	});
 
 });
 
@@ -388,10 +400,23 @@ mainRoutes.get('/listing/add', mid.onlySubscriber, function(req, res, next){
 
 });
 
+mainRoutes.get('/category/:catname', function(req, res, next){
+
+	res.locals.title = res.locals.title.replace('%placeholder%', '');
+	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
+
+	return res.render('results', {
+		user: req.session.user,
+		industry: req.params.catname,
+		town: null,
+		error: ''
+	});
+});
+
 mainRoutes.get('/find/:industry/:town', function(req, res, next){
 
- 	let data = {};
-	data.success = 0;
+ // 	let data = {};
+	// data.success = 0;
 
 	res.locals.title = res.locals.title.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);
 	res.locals.meta = res.locals.meta.replace('%placeholder%', req.params.industry + ' in ' + req.params.town);

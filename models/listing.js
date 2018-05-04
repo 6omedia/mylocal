@@ -4,6 +4,7 @@ const path = require('path');
 const Schema = mongoose.Schema;
 const each = require('sync-each');
 const pagination = require('../helpers/pagination');
+const readline = require('readline');
 
 const Postcode = require('./postcode');
 const Town = require('./town');
@@ -281,7 +282,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
         pn.pushJob(function(){
 
-           // console.log(listing);
+            // console.log(listing);
 
             return new Promise(function(resolve, reject){
 
@@ -289,15 +290,17 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
                 newListing.save()
                     .then((listing) => {
 
-                        console.log('Saved ' + saved);
                         saved++;
+                        readline.cursorTo(process.stdout, 0);
+                        process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
                         resolve();
 
                     })
                     .catch((err) => {
 
-                        console.log('Failed ' + err);
                         failed++;
+                        readline.cursorTo(process.stdout, 0);
+                        process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
                         resolve();
 
                     });
@@ -310,6 +313,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
     pn.pushJob(function(){
         return new Promise(function(resolve, reject){
             callback(saved + ' out of ' + listingArray.length + ' listings saved');
+            resolve();
         });
     });
 

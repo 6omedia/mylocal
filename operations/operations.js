@@ -50,8 +50,6 @@ function commandrequires(args, num){
 switch(process.argv[2]){
 	case 'upload-csv':
 
-		
-
 		break;
 	case 'upload-json':
 		
@@ -60,13 +58,16 @@ switch(process.argv[2]){
 		break;
 	case 'upload-listings':
 
-		importListings((err, failed, passed) => {
+		commandrequires(process.argv, 4);
+
+		importListings(process.argv[3], (err, failed, passed) => {
 			if(err){
 				console.log(err);
 				return process.exit();
 			}
 			console.log('Failed: ', failed);
 			console.log('Passed', passed);
+			return process.exit();
 		});
 
 		break;

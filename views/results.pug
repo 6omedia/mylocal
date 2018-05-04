@@ -20,7 +20,10 @@ block content
 						.listsearch-header.fl-wrap
 							h3
 								| Results For : 
-								span #{industry} in #{town}
+								if town
+									span #{industry} in #{town}
+								else
+									span #{industry}
 							.listing-view-layout
 								ul
 									li
@@ -29,31 +32,12 @@ block content
 									li
 										a.list(href='#')
 											i.fa.fa-list-ul
-						//- .listsearch-input-wrap.fl-wrap
-							//- .fl-wrap
-							//- 	.distance-input.fl-wrap
-							//- 		.distance-title
-							//- 			| Radius around selected destination 
-							//- 			span
-							//- 			|  km
-							//- 		.distance-radius-wrap.fl-wrap
-							//- 			input.distance-radius.rangeslider--horizontal(type='range', min='1', max='100', step='1', value='1', data-title='Radius around selected destination')
-							//- button.button.fs-map-btn Update
-							//- .more-filter-option
-							//- 	| More Filters 
-							//- 	span
+
 				.list-main-wrap.fl-wrap.card-listing
 					a.custom-scroll-link.back-to-filters.btf-l(href='#lisfw')
 						i.fa.fa-angle-double-up
 					.container
-						// listing-item
 						#searchResults.loading
-						// listing-item end
-					//- a.load-more-button(href='#')
-					//- 	| Load more 
-					//- 	i.fa.fa-circle-o-notch
-				// list-main-wrap end
-			// col-list-wrap
 			.limit-box.fl-wrap
 			// section
 			section.gradient-bg
@@ -69,7 +53,6 @@ block content
 								a.join-wrap-btn.modal-open(href='#')
 									| Sign Up 
 									i.fa.fa-sign-in
-			// section end
 
 	include ./partials/_login
 

@@ -177,32 +177,6 @@ apiRoutes.get('/terms/search', function(req, res, next){
 
 });
 
-apiRoutes.get('/towns/search', function(req, res, next){
-
-	let data = {};
-	data.success = 0;
-	data.terms = [];
-
-	if(!req.query.term || req.query.term == 'noterm'){
-		return res.json(data);
-	}
-
-	const term = new RegExp('^' + req.query.term, 'ig');
-
-	Postcode.find({town: term}).distinct('town').lean().exec((err, terms) => {
-
-		if(err){
-			res.status(err.status || 500); 
-			return res.json(data);
-		}
-
-		data.towns = terms;
- 		return res.json(data);
-
- 	});
-
-});
-
 apiRoutes.get('/postcodes/search', function(req, res, next){
 
 	let data = {};
