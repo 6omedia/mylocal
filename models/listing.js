@@ -287,7 +287,18 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
             return new Promise(function(resolve, reject){
 
                 var newListing = new Listing(listing);
-                newListing.save()
+
+                Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
+
+                    if(err){        
+                        data.error = err.message || 'Internal Server Error';
+                        res.status(err.status || 500);
+                        return res.send(data);
+                    }
+
+                    newListing.loc = [lng, lat];
+
+                    newListing.save()
                     .then((listing) => {
 
                         saved++;
@@ -304,6 +315,8 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
                         resolve();
 
                     });
+
+                });
 
             });
         });
