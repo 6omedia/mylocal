@@ -22,6 +22,19 @@
 	    property: ''
 	});
 
+    var homeTownAutocomplete = new YeahAutocomplete({
+        input: 'r_town',
+        allowFreeType: true,
+        dataUrl: '/api/towns/search?term=',
+        method: 'GET',
+        arrName: 'towns',
+        property: 'name'
+    });
+
+    // $('#r_town').on('resultSelected', function(town){
+    //     console.log();
+    // });
+
 	// /find/Restaurants/Bournemouth?page=1
 
 	$('#hFind').on('click', function(){
@@ -35,10 +48,6 @@
                 var industry = $('#industry').val();
                 location.href = '/category/' + industry;
             }
-            // if($('#town').val() != ''){
-            //     var town = $('#town').val();
-            //     location.href = '/find/' + industry + '/' + town + '?page=1';
-            // }
         }
 
 	});
@@ -159,6 +168,8 @@
         e.preventDefault();
         var btn = $(this);
 
+        var townid = $('#r_town').data('listing')._id;
+
         if(registerForm.isValid()){
 
             toggleLoading(btn, true);
@@ -167,7 +178,8 @@
                 name: $('#' + registerForm.fields[0].id).val(),
                 email: $('#' + registerForm.fields[1].id).val(),
                 password: $('#' + registerForm.fields[2].id).val(),
-                confirm_password: $('#' + registerForm.fields[3].id).val()
+                confirm_password: $('#' + registerForm.fields[3].id).val(),
+                townid: townid
             };
 
             registerForm.send(data, function(data){

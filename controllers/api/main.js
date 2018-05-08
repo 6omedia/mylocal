@@ -80,6 +80,10 @@ apiRoutes.post('/register', function(req, res, next){
         confirm_password: req.body.confirm_password
     };
 
+    if(req.body.townid){
+    	userObj.home_town = req.body.townid;
+    }
+
     User.registerUser(userObj, function(err, user){
 
         if(err){

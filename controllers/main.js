@@ -60,6 +60,31 @@ mainRoutes.get('/', function(req, res, next){
 
 });
 
+mainRoutes.get('/town/:town', function(req, res, next){
+
+	res.locals.title = res.locals.title.replace('%placeholder%', '');
+	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
+
+	User.findById(req.session.user)
+	.populate('home_town')
+	.exec((err, user) => {
+
+		if(err){
+			return next(err);
+		}
+
+		console.log(user);
+
+		return res.render('location', {
+			user: req.session.user,
+			town: req.params.town,
+			error: ''
+		});
+
+	});
+	
+});
+
 mainRoutes.get('/login', mid.loggedIn, function(req, res){
 
 	return res.render('login', {

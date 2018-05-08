@@ -15,6 +15,10 @@ let UserSchema = new Schema(
             type: String,
             default: 'Subscriber'
         },
+        home_town: {
+            type: Schema.Types.ObjectId,
+            ref: 'Town'
+        },
         listing: {
             type: Schema.Types.ObjectId,
             ref: 'Listing'

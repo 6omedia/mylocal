@@ -119,7 +119,7 @@ function importListings(folderPath, callback){
 			return new Promise(function(resolve, reject){
 
 				resolve();
-				return callback(null, passed, failed);
+				return callback(null);
 
 			});
 				
@@ -175,11 +175,13 @@ function geocodePostcode(postcode, callback){
 
 }
 
-function updateAllLocs(done){
+function updateAllLocs(limit, done){
 
 	let updated = 0;
 
-	Listing.find({loc: undefined}).exec(function(err, listings){
+	Listing.find({loc: undefined})
+		.limit(limit)
+		.exec(function(err, listings){
 
 		if(err){
 			console.log(err);

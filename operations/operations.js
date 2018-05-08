@@ -60,13 +60,12 @@ switch(process.argv[2]){
 
 		commandrequires(process.argv, 4);
 
-		importListings(process.argv[3], (err, failed, passed) => {
+		importListings(process.argv[3], (err) => {
 			if(err){
 				console.log(err);
 				return process.exit();
 			}
-			console.log('Failed: ', failed);
-			console.log('Passed', passed);
+			console.log('Done');
 			return process.exit();
 		});
 
@@ -81,7 +80,7 @@ switch(process.argv[2]){
 		break;
 	case 'update-listing-locs':
 		
-		updateAllLocs((updated) => {
+		updateAllLocs(parseInt(process.argv[3]), (updated) => {
 			console.log(updated, ' listings were updated');
 			process.exit();
 		});
