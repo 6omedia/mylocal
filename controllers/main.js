@@ -6,6 +6,7 @@ const Listing = require('../models/listing');
 const Review = require('../models/review');
 const Industry = require('../models/industry');
 const Post = require('../models/post');
+const Town = require('../models/town');
 const Message = require('../models/message');
 const mid = require('../middleware/session');
 const pagination = require('../helpers/pagination');
@@ -65,23 +66,66 @@ mainRoutes.get('/town/:town', function(req, res, next){
 	res.locals.title = res.locals.title.replace('%placeholder%', '');
 	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
 
-	User.findById(req.session.user)
-	.populate('home_town')
-	.exec((err, user) => {
+	Town.findOne({name: req.params.town})
+		.then((town) => {
 
-		if(err){
-			return next(err);
-		}
+			if(!town){
+				return next(new Error('Town not found'));
+			}
 
-		console.log(user);
+			if(town.capital){
+				return res.render('location', {
+					user: req.session.user,
+					town: town,
+					home: true,
+					error: ''
+				});
+			}
 
-		return res.render('location', {
-			user: req.session.user,
-			town: req.params.town,
-			error: ''
+			town.nearestCapital((e, town) => {
+				
+				if(e){
+					return next(e);
+				}
+
+				console.log(town);
+
+				return res.render('location', {
+					user: req.session.user,
+					town: town,
+					home: true,
+					error: ''
+				});
+
+			});
+
+		})	
+		.catch((e) => {
+			return next(e);
 		});
 
-	});
+	// User.findById(req.session.user)
+	// .populate('home_town')
+	// .exec((err, user) => {
+
+	// 	if(err){
+	// 		return next(err);
+	// 	}
+
+	// 	let townbg = '/static/img/towns/default.jpg';
+
+	// 	if(user.home_town){
+	// 		user.home_town.image
+	// 	}
+
+	// 	return res.render('location', {
+	// 		user: req.session.user,
+	// 		town: req.params.town,
+	// 		townbg: townbg,
+	// 		error: ''
+	// 	});
+
+	// });
 	
 });
 

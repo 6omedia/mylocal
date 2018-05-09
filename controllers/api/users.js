@@ -176,6 +176,10 @@ userRoutes.post('/edit', mid.jsonLoginRequired, function(req, res){
         email: req.body.email
     };
 
+    if(req.body.townid){
+    	userObj.home_town = req.body.townid; 
+    }
+
     if(userRole == 'Admin' || userRole == 'Super Admin'){
 		userObj.user_role = req.body.user_role || 'Subscriber';
 	}

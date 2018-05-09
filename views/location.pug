@@ -4,6 +4,27 @@ block content
 
 	#wrapper
 		.content
+			section.scroll-con-sec.hero-section(data-scrollax-parent="true")#sec1
+				.bg(data-bg=`${town.bgimage}` data-scrollax="properties: { translateY: '200px' }")
+				.overlay
+				.hero-section-wrap.fl-wrap
+					.container
+						.intro-item.fl-wrap
+							h2 #{town.name}
+							h3 Find great places in #{town.name}.
+						.main-search-input-wrap.location-page-search
+							.main-search-input.fl-wrap
+								.main-search-input-item
+									input(type="text" placeholder="Looking for..." value="" id="industry")
+								.main-search-input-item.location.hidden
+									input(type="hidden" placeholder="In..." value=`${town.name}` id="town")
+									a(href="#")
+										i.fa.fa-dot-circle-o
+								button.main-search-button#hFind Search
+				.bubble-bg
+				.header-sec-link
+					.container
+						a(href="#sec2").custom-scroll-link Let's Start
 
 	include ./partials/_login
 

@@ -3,6 +3,19 @@
 	var checkBox = $('#cbox_new_password');
 	var passwordLis = $('.passwordli');
 
+	var homeTownAutocomplete = new YeahAutocomplete({
+        input: 'q_town',
+        allowFreeType: true,
+        dataUrl: '/api/towns/search?term=',
+        method: 'GET',
+        arrName: 'towns',
+        property: 'name'
+    });
+
+    $('#q_town').on('resultSelected', function(){
+    	$(this).data('townid', $(this).data('listing')._id);
+    });
+
 	/* functions =====================================*/
 
 	function getData(userId, fields){
@@ -10,7 +23,8 @@
 		var data = {
 			userId: userId,
 			name: $('#' + fields[0].id).val(),
-			email: $('#' + fields[1].id).val()
+			email: $('#' + fields[1].id).val(),
+			townid: $('#q_town').data('townid')
 		};
 
 		if(checkBox.prop('checked')){

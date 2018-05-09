@@ -47,6 +47,8 @@
             if($('#industry').val() != ''){
                 var industry = $('#industry').val();
                 location.href = '/category/' + industry;
+            }else{
+                location.href = '/town/' + $('#town').val();
             }
         }
 

@@ -28,7 +28,15 @@ block content
 										label
 											| Email Address
 											i.fa.fa-envelope-o
-										input(type='text', placeholder='AlisaNoory@domain.com', value=`${user.email}`)#q_email
+										input(type='text', placeholder='Email...', value=`${user.email}`)#q_email
+									li
+										label
+											| Home Town
+											i.fa.fa-envelope-o
+										if user.home_town
+											input(type='text', placeholder='Home town...', data-townid=`${user.home_town._id}` value=user.home_town.name == undefined ? '' : user.home_town.name)#q_town
+										else
+											input(type='text', placeholder='Home town...' value='')#q_town
 									li
 										label(for="cbox_new_password") Change Password
 										input(type="checkbox")#cbox_new_password

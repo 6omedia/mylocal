@@ -21,19 +21,27 @@ dashboardRoutes.get('/', mid.onlySubscriber, function(req, res, next){
 
 });
 
-dashboardRoutes.get('/profile', mid.loginRequired, function(req, res){
+dashboardRoutes.get('/profile', mid.loginRequired, function(req, res, next){
 
 	res.locals.title = res.locals.title.replace('%placeholder%', 'Profile');
 	res.locals.meta = res.locals.meta.replace('%placeholder%', 'Profile');
 
-	var user = req.session.user;
+	User.findById(req.session.user._id)
+	.populate('home_town')
+	.exec((err, user) => {
 
-    return res.render('dashboard/profile', {
-    	id: req.session.user._id,
-        name: user.name,
-       	user: user,
-       	tab: 'profile'
-    });
+		if(err){
+			return next(err);
+		}
+
+		return res.render('dashboard/profile', {
+	    	id: req.session.user._id,
+	        name: user.name,
+	       	user: user,
+	       	tab: 'profile'
+	    });
+
+	});
 
 });
 

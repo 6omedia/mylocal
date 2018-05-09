@@ -19,6 +19,8 @@ var pn = SN.createQueue();
 const updateAllLocs = require('./functions.js').updateAllLocs;
 const countUnknownLocs = require('./functions.js').countUnknownLocs;
 const importListings = require('./functions.js').importListings;
+const unknownTownLocs = require('./functions.js').unknownTownLocs;
+const updateTownLocs = require('./functions.js').updateTownLocs;
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
@@ -86,5 +88,29 @@ switch(process.argv[2]){
 		});
 
 		break;
+	case 'unknown-town-locs':
+		
+		unknownTownLocs((count) => {
+			console.log(count + ' unknown town locations');
+			process.exit();
+		});
+
+		break;
+	case 'update-town-locs':
+
+		updateTownLocs(parseInt(process.argv[3]), (updated) => {
+			console.log(updated, ' towns were updated');
+			process.exit();
+		});
+
+		break;
 	default:
+
+		console.log('|--------- commands ---------|');
+		console.log('| upload-listings');
+		console.log('| unknown-locs');
+		console.log('| update-listing-locs');
+		console.log('| unknown-town-locs');
+		console.log('| update-town-locs');
+		process.exit();
 }

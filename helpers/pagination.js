@@ -17,48 +17,20 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 
 	if(pages > 10){
 
-		// const lastpage = pages; 
-		// const middlePage = Math.round((currentPage / 2) - 3);
+		let page = currentPage - 1;
 
-		// console.log('lastpage ', lastpage);
-		// console.log('middlePage ', middlePage);
+		if(currentPage > 1){
+			links += `
+				<li class="page-item">
+					<a class="page-link" href="${url}?page=${page}">Previous</a>
+				</li>
+			`;
+		}
 
-		// let current = '';
-		// if(currentPage == 1){
-		// 	current = 'active';
-		// }
-		// links += `
-		// 	<li class="page-item ${current}">
-		// 		<a class="page-link" href="${url}?page=1">1</a>
-		// 	</li>
-		// 	<li>...</li>
-		// `;
+		// set i to something relating to currentPage
 
-		// for(let i=middlePage; i<6; i++){
-		// 	const page = i+1;
-		// 	current = '';
-		// 	if(page == currentPage)
-		// 		current = 'active';
-		// 	links += `
-		// 		<li class="page-item ${current}">
-		// 			<a class="page-link" href="${url}?page=${page}">${page}</a>
-		// 		</li>
-		// 	`;
-		// }
-
-		// current = '';
-		// if(currentPage == lastpage){
-		// 	current = 'active';
-		// }
-		// links += `
-		// 	<li>...</li>
-		// 	<li class="page-item ${current}">
-		// 		<a class="page-link" href="${url}?page=${lastpage}">${lastpage}</a>
-		// 	</li>
-		// `;
-
-		for(let i=0; i<pages; i++){
-			const page = i+1;
+		for(let i=0; i<9; i++){
+			page = i+1;
 			let current = '';
 			if(page == currentPage)
 				current = 'active';
@@ -68,6 +40,14 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 				</li>
 			`;
 		}
+
+		page = parseInt(currentPage) + 1;
+
+		links += `
+			<li class="page-item">
+				<a class="page-link" href="${url}?page=${page}">Next</a>
+			</li>
+		`;
 
 	}else{
 
@@ -90,6 +70,47 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 	return links;
 
 }
+
+// function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
+
+// 	let links = '<ul class="pagination">';
+// 	const pages = Math.round(totalDocs / docsPerPage);
+
+// 	if(pages > 10){
+
+// 		for(let i=0; i<pages; i++){
+// 			const page = i+1;
+// 			let current = '';
+// 			if(page == currentPage)
+// 				current = 'active';
+// 			links += `
+// 				<li class="page-item ${current}">
+// 					<a class="page-link" href="${url}?page=${page}">${page}</a>
+// 				</li>
+// 			`;
+// 		}
+
+// 	}else{
+
+// 		for(let i=0; i<pages; i++){
+// 			const page = i+1;
+// 			let current = '';
+// 			if(page == currentPage)
+// 				current = 'active';
+// 			links += `
+// 				<li class="page-item ${current}">
+// 					<a class="page-link" href="${url}?page=${page}">${page}</a>
+// 				</li>
+// 			`;
+// 		}
+
+// 	}
+
+// 	links += '</ul>';
+
+// 	return links;
+
+// }
 
 exports.getSkip = getSkip;
 exports.getLinks = getLinks;

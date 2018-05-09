@@ -1,5 +1,6 @@
 var Listing = require('../models/listing');
 var Postcode = require('../models/postcode');
+var Town = require('../models/town');
 
 const https = require('https');
 const fs = require('fs');
@@ -175,6 +176,70 @@ function geocodePostcode(postcode, callback){
 
 }
 
+function unknownTownLocs(done){
+
+	Town.count({loc: undefined}, function(err, count){
+
+		if(err){
+			console.log(err);
+			process.exit();
+		}
+
+		done(count);
+
+	});
+
+}
+
+function updateTownLocs(limit, done){
+
+	let updated = 0;
+
+	Town.find({loc: undefined})
+	.limit(limit)
+	.exec(function(err, towns){
+
+		if(err){
+			console.log(err);
+			return;
+		}
+
+		towns.forEach(function(town){
+			pn.pushJob(function(){
+
+				return new Promise(function(resolve, reject){
+
+					town.loc = [town.longitude, town.latitude];
+					town.save(function(err, item, saved){
+
+						if(saved > 0){
+							updated++;
+						}
+
+						console.log('saved ', saved);
+						resolve();
+
+					});
+
+				});
+
+			});
+		});
+
+		pn.pushJob(function(){
+
+			return new Promise(function(resolve, reject){
+				done(updated);
+				process.exit();
+				resolve();
+			});
+
+		});
+
+	});
+
+}
+
 function updateAllLocs(limit, done){
 
 	let updated = 0;
@@ -287,3 +352,5 @@ module.exports.geocodePostcode = geocodePostcode;
 module.exports.updateAllLocs = updateAllLocs;
 module.exports.countUnknownLocs = countUnknownLocs;
 module.exports.importListings = importListings;
+module.exports.unknownTownLocs = unknownTownLocs;
+module.exports.updateTownLocs = updateTownLocs;
