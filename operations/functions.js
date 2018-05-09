@@ -1,6 +1,7 @@
 var Listing = require('../models/listing');
 var Postcode = require('../models/postcode');
 var Town = require('../models/town');
+var Term = require('../models/term');
 
 const https = require('https');
 const fs = require('fs');
@@ -79,6 +80,108 @@ function importListings(folderPath, callback){
 							process.stdout.write("\n");
 
 							Listing.uploadFromJSON(jsonArr, (doneMsg) => {
+
+								process.stdout.write("\n");
+								process.stdout.write(file + ' CSV to JSON complete \n');
+								resolve();
+
+							});
+
+						})
+						.on('error',(err)=>{
+							process.stdout.write(err);
+						  	reject();
+						});
+
+					}else if(ext == 'json'){
+
+						process.stdout.write('cant upload from json just yet, upload as csv for now');
+						reject();
+
+					}else{
+
+						process.stdout.write('Incorrect file type, must be either json or csv');
+						reject();
+
+					}
+
+				});
+					
+			});
+
+			// convert to json file
+			// create listing
+			// output results
+			// add to saved / failed
+
+		});
+
+		pn.pushJob(function(){
+
+			return new Promise(function(resolve, reject){
+
+				resolve();
+				return callback(null);
+
+			});
+				
+		});
+
+	});
+
+}
+
+function importTerms(folderPath, callback){
+
+	const csvFolder = folderPath;
+	// console.log('csvFolder ', csvFolder);
+
+	let passed = 0;
+	let failed = 0;
+
+	fs.readdir(csvFolder, function(err, files){
+		
+		if(err){
+			return callback(err);
+		}
+
+		process.stdout.write("Starting... " + files.length + " files to process");
+		process.stdout.write("\n");
+
+		files.forEach(function(file){
+			
+			pn.pushJob(function(){
+
+				return new Promise(function(resolve, reject){
+
+					// check file extention
+					const ext = file.split('.').pop();
+
+					if(ext == 'csv'){
+
+						let jsonArr = [];
+
+						csv()
+						.fromFile(csvFolder + "/" + file)
+						.on('json', (jsonObj) => {
+
+							// console.log(jsonObj);
+
+							let term = {
+						        name: jsonObj.name,
+						        type: jsonObj.type
+						    };	
+
+						    // console.log(listing);
+
+						    jsonArr.push(term);
+
+						})
+						.on('done',(error)=>{
+
+							process.stdout.write("\n");
+
+							Term.uploadFromJSON(jsonArr, (doneMsg) => {
 
 								process.stdout.write("\n");
 								process.stdout.write(file + ' CSV to JSON complete \n');
@@ -273,6 +376,7 @@ function updateAllLocs(limit, done){
 
 								console.log('saved ', saved);
 								resolve();
+								
 							});
 
 						}else{
@@ -304,7 +408,8 @@ function updateAllLocs(limit, done){
 									});
 									
 								}else{
-									console.log('Err ', listing.address.post_code);
+									console.log(listing.address.post_code);
+									console.log('Err ', err);
 									reject();
 								}	
 

@@ -21,6 +21,7 @@ const countUnknownLocs = require('./functions.js').countUnknownLocs;
 const importListings = require('./functions.js').importListings;
 const unknownTownLocs = require('./functions.js').unknownTownLocs;
 const updateTownLocs = require('./functions.js').updateTownLocs;
+const importTerms = require('./functions.js').importTerms;
 
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
@@ -104,6 +105,20 @@ switch(process.argv[2]){
 		});
 
 		break;
+	case 'upload-terms':
+
+		commandrequires(process.argv, 4);
+
+		importTerms(process.argv[3], (err) => {
+			if(err){
+				console.log(err);
+				return process.exit();
+			}
+			console.log('Done');
+			return process.exit();
+		});
+
+		break;
 	default:
 
 		console.log('|--------- commands ---------|');
@@ -112,5 +127,6 @@ switch(process.argv[2]){
 		console.log('| update-listing-locs');
 		console.log('| unknown-town-locs');
 		console.log('| update-town-locs');
+		console.log('| upload-terms');
 		process.exit();
 }

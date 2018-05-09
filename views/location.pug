@@ -22,9 +22,78 @@ block content
 										i.fa.fa-dot-circle-o
 								button.main-search-button#hFind Search
 				.bubble-bg
-				.header-sec-link
-					.container
-						a(href="#sec2").custom-scroll-link Let's Start
+				//- .header-sec-link
+				//- 	.container
+				//- 		a(href="#sec2").custom-scroll-link Let's Start
+			section.ml_section
+				nav.categories
+					ul
+						li
+							a(href=`/find/Bars/${town.name}`) Bars
+						li
+							a(href=`/find/Restaurants/${town.name}`) Restaurants
+						li
+							a(href=`/find/Hotels/${town.name}`) Hotels
+						li
+							a(href=`/find/Mechanics/${town.name}`) Mechanics
+						li
+							a(href=`/find/Coffee Shops/${town.name}`) Coffe Shops
+
+			//- section#sec2
+			//- 	.container
+			//- 		.section-title
+			//- 			h2 Featured Reviews
+			//- 			.section-subtitle Featured Reviews
+			//- 			span.section-separator
+			//- 			//- p Explore some of the best tips from around the city from our partners and friends.
+
+			//- 			.row
+			//- 				.col-sm-4
+			//- 					.featured-review
+
+			section
+				.container
+					.section-title
+						h2 Featured Categories
+						.section-subtitle Catalog of Categories
+						span.section-separator
+						//- p Explore some of the best tips from around the city from our partners and friends.
+					.gallery-items.fl-wrap.mr-bot.spad
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src=`${featured[0].bgimage}` alt="")
+									.listing-item-cat
+										h3
+											a(href=`/find/${featured[0].name}/${town.name}`) #{featured[0].name}
+						.gallery-item.gallery-item-second
+							.grid-item-holder
+								.listing-item-grid
+									img(src=`${featured[2].bgimage}` alt="")
+									.listing-item-cat
+										h3 
+											a(href=`/find/${featured[2].name}/${town.name}`) #{featured[2].name}
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src=`${featured[1].bgimage}` alt="")
+									.listing-item-cat
+										h3
+											a(href=`/find/${featured[1].name}/${town.name}`) #{featured[1].name}
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src=`${featured[3].bgimage}` alt="")
+									.listing-item-cat
+										h3
+											a(href=`/find/${featured[3].name}/${town.name}`) #{featured[3].name}
+						.gallery-item
+							.grid-item-holder
+								.listing-item-grid
+									img(src=`${featured[4].bgimage}` alt="")
+									.listing-item-cat
+										h3
+											a(href=`/find/${featured[4].name}/${town.name}`) #{featured[4].name}
 
 	include ./partials/_login
 

@@ -104,7 +104,9 @@ UserSchema.statics.registerUser = function(userObj, callback){
 
 UserSchema.statics.authenticate = function(email, password, callback){
 
-    this.findOne({'email': email}, function(err, user){
+    this.findOne({'email': email})
+    .populate('home_town')
+    .exec((err, user) => {
 
         if(err){
             err.status = 400;

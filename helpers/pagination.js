@@ -27,10 +27,23 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 			`;
 		}
 
-		// set i to something relating to currentPage
+		let loopStart = 0;
 
-		for(let i=0; i<9; i++){
-			page = i+1;
+		// if(currentPage > 5){
+		// 	if(currentPage >= pages - 9){
+		// 		loopStart = currentPage - 8;
+		// 	}else{
+		// 		loopStart = currentPage - 5;
+		// 	}
+		// }
+
+		loopStart = currentPage - 5;
+		
+		let loopAmount = parseInt(loopStart) + 9;
+
+		for(let i=loopStart; i < loopAmount; i++){
+			
+			page = parseInt(i)+1;
 			let current = '';
 			if(page == currentPage)
 				current = 'active';
@@ -39,15 +52,24 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 					<a class="page-link" href="${url}?page=${page}">${page}</a>
 				</li>
 			`;
+
+			if(page >= pages){
+				break;
+			}
+
 		}
 
 		page = parseInt(currentPage) + 1;
 
-		links += `
-			<li class="page-item">
-				<a class="page-link" href="${url}?page=${page}">Next</a>
-			</li>
-		`;
+		if(page <= pages){
+
+			links += `
+				<li class="page-item">
+					<a class="page-link" href="${url}?page=${page}">Next</a>
+				</li>
+			`;
+
+		}
 
 	}else{
 

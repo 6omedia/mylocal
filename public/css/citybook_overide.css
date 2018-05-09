@@ -916,4 +916,17 @@ i.fa-search {
   .location-page-search .main-search-input-item {
     width: 100%; }
 
+.ml_section {
+  padding: 0px; }
+  .ml_section nav li {
+    display: inline-block; }
+    .ml_section nav li a {
+      font-size: 16px;
+      padding: 20px 25px;
+      display: inline-block;
+      font-weight: bold; }
+      .ml_section nav li a:hover {
+        background: #42254f;
+        color: #fff; }
+
 /*# sourceMappingURL=citybook_overide.css.map */

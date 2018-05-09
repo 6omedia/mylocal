@@ -20,6 +20,13 @@ function escapeRegex(text){
 
 mainRoutes.get('/', function(req, res, next){
 
+	if(req.session.user){
+		console.log(req.session.user);
+		if(req.session.user.home_town){
+			return res.redirect('/town/' + req.session.user.home_town.name);
+		}
+	}
+
 	Industry.getFeatured((err, featured) => {
 
 		if(err){
@@ -66,66 +73,51 @@ mainRoutes.get('/town/:town', function(req, res, next){
 	res.locals.title = res.locals.title.replace('%placeholder%', '');
 	res.locals.meta = res.locals.meta.replace('%placeholder%', '');
 
-	Town.findOne({name: req.params.town})
-		.then((town) => {
+	Industry.getFeatured((err, featured) => {
 
-			if(!town){
-				return next(new Error('Town not found'));
-			}
+		if(err){
+            return next(err);
+        }
 
-			if(town.capital){
-				return res.render('location', {
-					user: req.session.user,
-					town: town,
-					home: true,
-					error: ''
-				});
-			}
+		Town.findOne({name: req.params.town})
+			.then((town) => {
 
-			town.nearestCapital((e, town) => {
-				
-				if(e){
-					return next(e);
+				if(!town){
+					return next(new Error('Town not found'));
 				}
 
-				console.log(town);
+				if(town.capital){
+					return res.render('location', {
+						user: req.session.user,
+						town: town,
+						home: true,
+						featured: featured,
+						error: ''
+					});
+				}
 
-				return res.render('location', {
-					user: req.session.user,
-					town: town,
-					home: true,
-					error: ''
+				town.nearestCapital((e, town) => {
+					
+					if(e){
+						return next(e);
+					}
+
+					return res.render('location', {
+						user: req.session.user,
+						featured: featured,
+						town: town,
+						home: true,
+						error: ''
+					});
+
 				});
 
+			})	
+			.catch((e) => {
+				return next(e);
 			});
 
-		})	
-		.catch((e) => {
-			return next(e);
-		});
-
-	// User.findById(req.session.user)
-	// .populate('home_town')
-	// .exec((err, user) => {
-
-	// 	if(err){
-	// 		return next(err);
-	// 	}
-
-	// 	let townbg = '/static/img/towns/default.jpg';
-
-	// 	if(user.home_town){
-	// 		user.home_town.image
-	// 	}
-
-	// 	return res.render('location', {
-	// 		user: req.session.user,
-	// 		town: req.params.town,
-	// 		townbg: townbg,
-	// 		error: ''
-	// 	});
-
-	// });
+	});
 	
 });
 

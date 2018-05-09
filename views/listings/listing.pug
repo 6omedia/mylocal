@@ -4,8 +4,9 @@ block content
 
 	#datablock(data-listingid=`${listing._id}`)
 
-	if user.listing.equals(listing._id)
-		a(href="/dashboard/listing").link-to-listing Edit Listing
+	if user.listing
+		if user.listing.equals(listing._id)
+			a(href="/dashboard/listing").link-to-listing Edit Listing
 
 	section#sec1.parallax-section.single-par.list-single-section(data-scrollax-parent='true')
 		.bg.par-elem(data-bg=`${listing.bgimage}`, data-scrollax="properties: { translateY: '30%' }")

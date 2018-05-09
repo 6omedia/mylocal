@@ -765,3 +765,22 @@ i.fa-search {
         width: 100%;
     }
 }
+
+.ml_section {
+    padding: 0px;
+    nav {
+        li {
+            display: inline-block;
+            a {
+                font-size: 16px;
+                padding: 20px 25px;
+                display: inline-block;
+                font-weight: bold;
+                &:hover {
+                    background: #42254f;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

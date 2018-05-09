@@ -32,6 +32,10 @@ let ListingSchema = new Schema(
             type: Number,
             default: 0
         },
+        membership: {
+            type: String,
+            default: 'free' // gold, platinum
+        },
         overall_rating: Number,
         business_name: {
         	type: String,
@@ -184,7 +188,10 @@ let ListingSchema = new Schema(
             }
 	    },
 	    branding: {
-	    	logo: String,
+	    	logo: {
+                type: String,
+                default: '/static/img/defaultlogo.png'
+            },
 	    	background: String,
 	    	primary_color: {
                 type: String,
@@ -288,15 +295,15 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
                 var newListing = new Listing(listing);
 
-                // Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
+                Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
 
-                //     if(err){        
-                //         data.error = err.message || 'Internal Server Error';
-                //         res.status(err.status || 500);
-                //         return res.send(data);
-                //     }
+                    if(err){        
+                        data.error = err.message || 'Internal Server Error';
+                        res.status(err.status || 500);
+                        return res.send(data);
+                    }
 
-                //     newListing.loc = [lng, lat];
+                    newListing.loc = [lng, lat];
 
                     newListing.save()
                     .then((listing) => {
@@ -316,7 +323,7 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
                     });
 
-               // });
+                });
 
             });
         });
