@@ -29,15 +29,9 @@ function getLinks(totalDocs, docsPerPage, currentPage, url = '') {
 
 		let loopStart = 0;
 
-		// if(currentPage > 5){
-		// 	if(currentPage >= pages - 9){
-		// 		loopStart = currentPage - 8;
-		// 	}else{
-		// 		loopStart = currentPage - 5;
-		// 	}
-		// }
-
-		loopStart = currentPage - 5;
+		if(currentPage > 5){
+			loopStart = currentPage - 5;
+		}
 		
 		let loopAmount = parseInt(loopStart) + 9;
 

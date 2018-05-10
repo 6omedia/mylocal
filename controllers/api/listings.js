@@ -112,10 +112,12 @@ listingRoutes.get('/industry/:industry', function(req, res){
 	let page = req.query.page || 1;
 	let docsPerPage = 50;
 
-	Listing.count({industry: req.params.industry})
+	const searchReg = new RegExp(req.params.industry, 'gi');
+
+	Listing.count({industry: searchReg})
 	.then((count) => {
 
-		Listing.find({industry: req.params.industry})
+		Listing.find({industry: searchReg})
 			.skip(pagination.getSkip(page, docsPerPage))
 			.limit(docsPerPage)
 			.exec(function(err, listings){

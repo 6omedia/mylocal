@@ -34,9 +34,6 @@ apiRoutes.post('/login', function(req, res, next){
 				return res.json(data);
 			}
 
-			console.log('-------------------------------------');
-     	   	console.log(user);
-
 			// user exists
 			req.session.userId = user._id;
 			res.loggedInUser = user._id;

@@ -15,6 +15,10 @@
     background: $color-secondary;
 }
 
+.gradient-bg, .listing-geodir-category, .list-single-header-cat a, .box-widget-item .list-single-tags a:hover, .nav-holder nav li a:before {
+    background: -webkit-linear-gradient(top, #6e3d83, #ab77c1);
+}
+
 /* GENERAL ===============*/
 
 body {
@@ -123,7 +127,7 @@ li.passwordli {
 		display: inline-block;
 		&.active {
 			a {
-				background: #4DB7FE;
+				background: $color-primary;
 				color: #fff;
 			}
 		}

@@ -83,7 +83,7 @@ switch(process.argv[2]){
 		break;
 	case 'update-listing-locs':
 		
-		updateAllLocs(parseInt(process.argv[3]), (updated) => {
+		updateAllLocs(parseInt(process.argv[3]), process.argv[4], (updated) => {
 			console.log(updated, ' listings were updated');
 			process.exit();
 		});

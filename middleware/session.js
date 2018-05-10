@@ -128,6 +128,32 @@ function jsonLoginRequired(req, res, next){
     }
 }
 
+function isHomeTown(req, res, next){
+
+    if(req.query.notown){
+        return next();
+    }
+
+    if(req.session && req.session.userId) {
+        User.findById(req.session.userId)
+        .populate('home_town')
+        .exec(function(err, user){
+            if(err) return next(err);
+            req.session.user = user;
+
+            if(user.home_town.name) {
+                return res.redirect('/town/' + user.home_town.name);
+            }
+
+            return next();
+
+        });
+    }else{
+        next();
+    }
+
+}
+
 module.exports.loggedIn = loggedIn;
 
 module.exports.loginRequired = loginRequired;
@@ -136,3 +162,5 @@ module.exports.onlySubscriber = onlySubscriber;
 
 module.exports.jsonLoginRequired = jsonLoginRequired;
 module.exports.jsonOnlyAdmin = jsonOnlyAdmin;
+
+module.exports.isHomeTown = isHomeTown;

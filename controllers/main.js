@@ -18,14 +18,7 @@ function escapeRegex(text){
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
-mainRoutes.get('/', function(req, res, next){
-
-	if(req.session.user){
-		console.log(req.session.user);
-		if(req.session.user.home_town){
-			return res.redirect('/town/' + req.session.user.home_town.name);
-		}
-	}
+mainRoutes.get('/', mid.isHomeTown, function(req, res, next){
 
 	Industry.getFeatured((err, featured) => {
 
@@ -83,7 +76,7 @@ mainRoutes.get('/town/:town', function(req, res, next){
 			.then((town) => {
 
 				if(!town){
-					return next(new Error('Town not found'));
+					return res.redirect('/');
 				}
 
 				if(town.capital){
@@ -100,6 +93,10 @@ mainRoutes.get('/town/:town', function(req, res, next){
 					
 					if(e){
 						return next(e);
+					}
+
+					if(!town){
+						return res.redirect('/?notown=1');
 					}
 
 					return res.render('location', {

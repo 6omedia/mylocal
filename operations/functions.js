@@ -343,7 +343,7 @@ function updateTownLocs(limit, done){
 
 }
 
-function updateAllLocs(limit, done){
+function updateAllLocs(limit, addressType, done){
 
 	let updated = 0;
 
@@ -382,11 +382,23 @@ function updateAllLocs(limit, done){
 						}else{
 							console.log('NO POSTCODE gonna geocode it...');
 
-							geocodePostcode(listing.address.post_code, (err, lng, lat, town) => {
+							let googleAddress;
+
+							if(addressType == 'postcode'){
+								googleAddress = listing.address.post_code;
+							}else if(addressType == 'full'){
+								googleAddress = listing.address.line_one + ', ' + listing.address.town;
+							}else{
+								console.log('addressType must be postcode or full');
+								process.exit();
+							}
+
+							geocodePostcode(googleAddress, (err, lng, lat, town) => {
 
 								if(!err){
 
 									if(!town){
+										console.log('NO TOWN');
 										return reject();
 									}
 
@@ -401,7 +413,25 @@ function updateAllLocs(limit, done){
 
 									postcode.save()
 									.then((postcode) => {
-										resolve(postcode);
+
+										if(googleAddress == 'full'){
+
+											listing.loc = [lng, lat];
+											listing.save(function(err, item, saved){
+
+												if(saved > 0){
+													updated++;
+												}
+
+												console.log('saved ', saved);
+												resolve();
+												
+											});
+
+										}else{
+											resolve(postcode);
+										}
+
 									})
 									.catch((err) => {
 										reject(err);
@@ -450,6 +480,12 @@ function countUnknownLocs(done){
 		done(count);
 
 	});
+
+}
+
+function updatePostcodes(limit, done){
+
+	
 
 }
 
