@@ -1,0 +1,42 @@
+extends ./layout
+
+block content
+	
+	header
+		nav
+			ul.list.nav
+				li
+					a(href="/logout") Logout
+
+	section#operations
+		include ./partials/side
+
+		.main
+			h1 Operations
+
+			ul.operations.list
+				li
+					h4 Update Terms From Industries
+					select#termtype
+						option(value="industry") Industry
+						option(value="aliases") Aliases
+						option(value="services") Services
+					button.btn#doit1 Do it
+				li
+					p Display Listings with no location data
+					button.btn#doit2 Do it
+
+			.rightside
+				h3 Results
+				#results
+			//- .form
+			//- 	label(for="jsonUpload") Upload a json file
+			//- 	input(type="file" id="jsonUpload")
+			//- 	.progress
+			//- 		.progress-bar
+
+	script(src="http://code.jquery.com/jquery-latest.js")
+	script(src="/static/js/helpers/accordian.js")
+	script(src="/static/js/helpers/message.js")
+	script(src="/static/js/admin/admin.js")
+	script(src="/static/js/admin/operations.js")

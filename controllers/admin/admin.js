@@ -97,4 +97,13 @@ adminRoutes.get('/postcodes/upload', mid.onlyAdmin,function(req, res){
 
 });
 
+adminRoutes.get('/operations', mid.onlyAdmin,function(req, res){
+
+	res.render('admin/operations', {
+		section: 'operations',
+		error: ''
+	});
+
+});
+
 module.exports = adminRoutes;

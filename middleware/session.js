@@ -141,6 +141,10 @@ function isHomeTown(req, res, next){
             if(err) return next(err);
             req.session.user = user;
 
+            if(!user.home_town){
+                return next();
+            }
+
             if(user.home_town.name) {
                 return res.redirect('/town/' + user.home_town.name);
             }

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const termData = require('./data/terms.json');
+const Industry = require('./industry');
+
+var SN = require('sync-node');
+var pn = SN.createQueue();
 
 let TermSchema = new Schema({
 	name: {
@@ -10,6 +14,185 @@ let TermSchema = new Schema({
 	},
     type: String // industry, alias, service, problem
 });
+
+TermSchema.statics.createFromIndustries = function(type, callback){
+
+    console.log('type ', type);
+
+    Industry.find({})
+    .then((industries) => {
+
+        let saved = 0;
+
+        switch(type) {
+            case 'industry':
+
+                industries.forEach((industry) => {
+
+                    pn.pushJob(function(){
+                        return new Promise(function(resolve, reject){
+
+                            Term.find({name: industry.name})
+                            .then((term) => {
+
+                                if(term.length == 0){
+
+                                    const aTerm = new Term({
+                                        name: industry.name,
+                                        type: 'industry'
+                                    });
+
+                                    aTerm.save()
+                                    .then(() => {
+
+                                        saved++;
+                                        resolve();
+
+                                    })
+                                    .catch((e) => {
+                                        return callback(e);
+                                        reject();
+                                    });
+
+                                }else{
+                                    resolve();
+                                }
+
+                            })
+                            .catch((e) => {
+                                return callback(e);
+                                reject();
+                            });
+
+                        });
+                    });
+
+                });
+
+                pn.pushJob(function(){
+                    return new Promise(function(resolve, reject){
+                        return callback(null, saved);
+                        resolve();
+                    });
+                });
+
+                break;
+            case 'aliases':
+
+                industries.forEach((industry) => {
+                    industry.aliases.forEach((alias) => {
+                        pn.pushJob(function(){
+                            return new Promise(function(resolve, reject){
+
+                                Term.find({name: alias})
+                                .then((term) => {
+
+                                    if(term.length == 0){
+
+                                        const aTerm = new Term({
+                                            name: alias,
+                                            type: 'alias'
+                                        });
+
+                                        aTerm.save()
+                                        .then(() => {
+
+                                            saved++;
+                                            resolve();
+
+                                        })
+                                        .catch((e) => {
+                                            return callback(e);
+                                            reject();
+                                        });
+
+                                    }else{
+                                        resolve();
+                                    }
+
+                                })
+                                .catch((e) => {
+                                    return callback(e);
+                                    reject();
+                                });
+
+                            });
+                        });
+                    });
+                });
+
+                pn.pushJob(function(){
+                    return new Promise(function(resolve, reject){
+                        return callback(null, saved);
+                        resolve();
+                    });
+                });
+
+                break;
+            case 'services':
+
+                industries.forEach((industry) => {
+                    industry.services.forEach((service) => {
+                        pn.pushJob(function(){
+                            return new Promise(function(resolve, reject){
+
+                                Term.find({name: service})
+                                .then((term) => {
+
+                                    if(term.length == 0){
+
+                                        const aTerm = new Term({
+                                            name: service,
+                                            type: 'service'
+                                        });
+
+                                        aTerm.save()
+                                        .then(() => {
+
+                                            saved++;
+                                            resolve();
+
+                                        })
+                                        .catch((e) => {
+                                            return callback(e);
+                                            reject();
+                                        });
+
+                                    }else{
+                                        resolve();
+                                    }
+
+                                })
+                                .catch((e) => {
+                                    return callback(e);
+                                    reject();
+                                });
+
+                            });
+
+                        });
+                    });
+                });
+
+                pn.pushJob(function(){
+                    return new Promise(function(resolve, reject){
+                        return callback(null, saved);
+                        resolve();
+                    });
+                });
+
+                break;
+            default:
+                return callback('not a valid type');
+
+        }
+
+    })
+    .catch((e) => {
+        callback(e);
+    });
+
+};
 
 TermSchema.statics.uploadFromJSON = function(termsArray, callback){
 

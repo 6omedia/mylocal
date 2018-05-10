@@ -23,8 +23,6 @@ var YeahAutocomplete = (function(){
 		for(i=0; i<results.length; i++){
 			var result = results[i];
 			var details = results[i];
-			
-			// console.log(details);
 
 			if(alterResults){
 				result = alterResults(result);
@@ -104,7 +102,7 @@ var YeahAutocomplete = (function(){
 
 		        break;
 
-		        case 13:
+		        case 13: // enter
 
 		        	if(thisYac.liFocus){
 		        		thisYac.view.selectLi(thisYac.liFocus.text(), thisYac.liFocus.data('listing'));
@@ -180,8 +178,8 @@ var YeahAutocomplete = (function(){
 				method: 'GET',
 				success: function(data){
 
-					console.log(data);
-					console.log(arrName);
+					// console.log(data);
+					// console.log(arrName);
 
 					if(!thisYac.onResults){
 						try {

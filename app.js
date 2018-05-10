@@ -87,6 +87,7 @@ app.use('/api/towns', require('./controllers/api/towns.js'));
 app.use('/api/tags', require('./controllers/api/tags.js'));
 app.use('/api/messages', require('./controllers/api/messages.js'));
 app.use('/api/settings', require('./controllers/api/settings.js'));
+app.use('/api/operations', require('./controllers/api/operations.js'));
 // app.use('/api/mail', require('./controllers/api/mail.js'));
 
 app.get('*', function(req, res){

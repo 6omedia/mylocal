@@ -28,9 +28,9 @@
 		"allow_featured": true
 	},
 	{
-		"name": "Mechanic",
+		"name": "Mechanics",
 		"aliases": [
-			"Car Garage", "Mechanics"
+			"Car Garage", "Mechanic"
 		],
 		"services": [
 			"MOT",
