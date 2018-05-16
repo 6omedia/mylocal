@@ -21,13 +21,25 @@ block content
 				li
 					a(href="").current Upload
 
-			.form.box#upload_box
-				h2 Upload json file
-				label(for="jsonUpload") Upload a json file
-				input(type="file" id="jsonUpload")
-			//- .form.box
-			//- 	h2 Update all listing location data
-			//- 	.btn Do it
+			ul.list#upload-list
+				li
+					label(for="jsonUpload") Upload a csv file
+					input(type="file" id="jsonUpload")
+				li
+					label Keyword Type
+					select#keywordtype
+						option(value="industry") Industry
+						option(value="service") Service
+				li
+					label Industry
+					input(type="text", placeholder="Industry..." disabled)#industry
+				li
+					.btn#upload-listings Upload
+
+			//- .form.box#upload_box
+			//- 	h2 Upload json file
+			//- 	label(for="jsonUpload") Upload a json file
+			//- 	input(type="file" id="jsonUpload")
 
 	script(src="http://code.jquery.com/jquery-latest.js")
 	script(src="/static/js/helpers/accordian.js")

@@ -279,6 +279,47 @@ ListingSchema.pre('save', function(next){
 
 });
 
+ListingSchema.statics.insertNew = function(listing, modify, callback){
+
+    Listing.find({business_name: listing.business_name, 'address.line_one': listing.address.line_one})
+    .then((theListings) => {
+
+        if(theListings.length > 0){
+
+            let theListing = modify(theListings[0]);
+
+            console.log(theListing);
+
+            theListing.update()
+            .then((updated) => {
+                return callback(null, 0, 1);
+            })
+            .catch((e) => { return callback(e); });
+
+        }else{
+
+            var newListing = new Listing(listing);
+
+            Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
+
+                if(err){ return callback(err); }
+
+                newListing.loc = [lng, lat];
+                newListing.save()
+                .then((listing) => {
+                    return callback(null, 1, 0);
+                })
+                .catch((e) => { return callback(e); });
+
+            });
+
+        }
+
+    })
+    .catch((e) => { return callback(e); });
+
+};
+
 ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
 
     let saved = 0;
@@ -288,41 +329,52 @@ ListingSchema.statics.uploadFromJSON = function(listingArray, callback){
     listingArray.forEach(function(listing){
 
         pn.pushJob(function(){
-
-            // console.log(listing);
-
             return new Promise(function(resolve, reject){
 
-                var newListing = new Listing(listing);
+                Listing.find({business_name: listing.business_name, 'address.line_one': listing.address.line_one})
+                .then((theListings) => {
 
-                Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
+                    if(theListings.length > 0){
+                        resolve();
+                    }else{
 
-                    if(err){        
-                        data.error = err.message || 'Internal Server Error';
-                        res.status(err.status || 500);
-                        return res.send(data);
+                        var newListing = new Listing(listing);
+
+                        Postcode.getLatlngs(newListing.address.post_code, (err, lng, lat) => {
+
+                            if(err){        
+                                return callback(err);
+                            }
+
+                            newListing.loc = [lng, lat];
+
+                            newListing.save()
+                            .then((listing) => {
+
+                                saved++;
+                                readline.cursorTo(process.stdout, 0);
+                                process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
+                                resolve();
+
+                            })
+                            .catch((err) => {
+
+                                failed++;
+                                readline.cursorTo(process.stdout, 0);
+                                process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
+                                resolve();
+
+                            });
+
+                        });
+
                     }
 
-                    newListing.loc = [lng, lat];
-
-                    newListing.save()
-                    .then((listing) => {
-
-                        saved++;
-                        readline.cursorTo(process.stdout, 0);
-                        process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
-                        resolve();
-
-                    })
-                    .catch((err) => {
-
-                        failed++;
-                        readline.cursorTo(process.stdout, 0);
-                        process.stdout.write(`Saved: ${saved} Failed: ${failed} \n out of ${listingArray.length} \r`);
-                        resolve();
-
-                    });
-
+                })
+                .catch((e) => {
+                    reject();
+                    console.log(e);
+                    return callback();
                 });
 
             });

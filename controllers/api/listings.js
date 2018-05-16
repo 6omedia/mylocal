@@ -6,12 +6,16 @@ const Listing = require('../../models/listing');
 const Postcode = require('../../models/postcode');
 const Town = require('../../models/town');
 const Suburb = require('../../models/suburb');
+const Industry = require('../../models/industry');
 const pagination = require('../../helpers/pagination');
 const slugifyListing = require('../../helpers/utilities').slugifyListing;
+const titleCase = require('../../helpers/utilities').titleCase;
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
 const csv = require('csvtojson');
+var SN = require('sync-node');
+var pn = SN.createQueue();
 const mid = require('../../middleware/session');
 const fileUpload = require('express-fileupload');
 
@@ -133,40 +137,6 @@ listingRoutes.get('/industry/:industry', function(req, res){
 			data.listings = listings;
 		    res.status(200);
 	    	return res.json(data);
-
-			// if(listings.length > 0){
-
-			// 	data.success = 1;
-			// 	data.pagination = pagination;
-			// 	data.listings = listings;
-			//     res.status(200);
-		 //    	return res.json(data);
-
-			// }else{
-
-			// 	Listing.find({industry: new RegExp(escapeRegex(req.params.industry), 'gi')}, function(err, listings){
-
-			// 		if(err){
-			// 			data.error = err.message || 'Internal Server Error';
-			// 	    	res.status(err.status || 500);
-			// 	    	return res.json(data);
-			// 		}
-
-			// 		if(listings.length == 0){
-			// 			data.message = 'Listing not found';
-			// 			res.status(404);
-			// 			return res.json(data);
-			// 		}
-
-			// 		data.success = 1;
-			// 		data.listings = listings;
-			// 		data.correction = 'Did you mean ' + listings[0].industry + '?';
-			// 	    res.status(200);
-			//     	return res.json(data);
-
-			// 	});
-
-			// }
 
 		});
 
@@ -920,13 +890,26 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 	let listingsToSave = [];
 
 	if(!req.files){
-		body.error = 'No files were uploaded.';
+		body.error = 'No files were uploaded';
 		return res.status(400).json(body);
 	}
 
 	if(!req.files.listings){
 		body.error = 'No listings property found';
     	return res.status(400).json(body);
+	}
+
+	if(req.body.type != 'industry' && req.body.type != 'service'){
+		body.error = 'type required and must either be industry or service';
+		res.status(200);
+		return res.json(body); 
+	}
+
+	if(req.body.type == 'service') {
+		if(!req.body.industry) {
+			body.error = 'When the type is service, an industry is required';
+			return res.status(400).json(body);
+		}
 	}
 
 	var ext = req.files.listings.name.substr(req.files.listings.name.lastIndexOf('.') + 1);
@@ -952,61 +935,135 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 	    }
 
 		let rawdata = fs.readFileSync(filePath);
+		let totalinserted = 0;
+		let totalupdated = 0;
 
 		if(ext == 'csv'){
 
-			let listingArray = [];
-
 			csv()
 			.fromString(rawdata)
-			.on('csv',(csvRow)=>{ // this func will be called 3 times
-			    listingArray.push({
-			    	business_name: csvRow[0],
-			    	address: {
-			    		line_one: csvRow[1],
-			    		line_two: csvRow[5],
-			    		town: csvRow[4],
-			    		post_code: csvRow[3]
-			    	},
-			    	contact: {
-			        	website: csvRow[9],
-			        	phone: csvRow[7],
-			        	email: csvRow[11]
-			        },
-			        social: {
-			        	icons: {
-			                facebook: {
-			                	platform: 'facebook',
-			                	link: csvRow[12]
-			                },
-			                twitter: {
-			                	platform: 'twitter',
-			                	link: csvRow[13]
-			                },
-			                googleplus: {
-			                	platform: 'googleplus',
-			                	link: csvRow[14]
-			                },
-			                linkedin: {
-			                	platform: 'linkedin',
-			                	link: csvRow[15]
-			                }
-			            }
-				    },
-			        industry: csvRow[17]
-			    });
+			.on('csv', (csvRow)=>{ // this func will be called 3 times
+
+				const keyword = titleCase(csvRow[16]);
+
+				pn.pushJob(function(){
+					return new Promise(function(resolve, reject){
+
+						let obj = {
+					    	business_name: csvRow[0],
+					    	address: {
+					    		line_one: csvRow[1],
+					    		line_two: csvRow[5],
+					    		town: csvRow[4],
+					    		post_code: csvRow[3]
+					    	},
+					    	contact: {
+					        	website: csvRow[9],
+					        	phone: csvRow[7],
+					        	email: csvRow[11]
+					        },
+					        social: {
+					        	icons: {
+									facebook: {
+										platform: 'facebook',
+										link: csvRow[12]
+									},
+									twitter: {
+										platform: 'twitter',
+										link: csvRow[13]
+									},
+									googleplus: {
+										platform: 'googleplus',
+										link: csvRow[14]
+									},
+									linkedin: {
+										platform: 'linkedin',
+										link: csvRow[15]
+									}
+								}
+						    }
+					    };
+
+					    if(req.body.type == 'industry'){
+					    	obj.industry = keyword;
+					    }
+
+					    if(req.body.type == 'service'){
+					    	obj.industry = req.body.industry;
+					    	obj.services = [keyword];
+					    }
+
+						Listing.insertNew(obj, (theListing) => {
+
+							if(req.body.type == 'service'){
+								theListing.services.push(keyword);
+							}
+
+							return theListing;
+
+						}, (err, inserted, updated) => {
+
+							if(err){
+								reject();
+							}
+
+							if(inserted > 0){
+								totalinserted++;
+							}
+
+							if(updated > 0){
+								totalupdated++;
+							}
+
+							if(req.body.type == 'industry'){
+
+								Industry.find({name: keyword}, (err, industries) => {
+									if(err){ return reject(); }
+									if(industries.length == 0){
+										const industry = new Industry({name: keyword});
+										industry.save().then(() => { resolve(); })
+										.catch(() => { reject(); });
+									}else{
+										resolve();
+									}
+								});
+
+							}else if(req.body.type == 'service'){
+
+								Industry.find({name: req.body.industry}, (err, industries) => {
+									if(err){ return reject(); }
+									if(industries.length == 0){
+										const industry = new Industry({name: req.body.industry, services: [keyword]});
+										industry.save().then(() => { resolve(); })
+										.catch(() => { reject(); });
+									}else{
+										industries[0].services.push(keyword);
+										industries[0].save().then(() => { resolve(); })
+										.catch(() => { reject(); });
+									}
+								});
+
+							}else{
+								resolve();
+							}
+
+						});
+
+					});
+				});
+
 			})
-			.on('done', ()=>{
+			.on('done', () => {
 
-				Listing.uploadFromJSON(listingArray, function(message){
+				pn.pushJob(function(){
+					return new Promise(function(resolve, reject){
 
-					console.log(7, message);
-					
-					body.success = message;
-					res.status(200);
-					return res.json(body); 
+						body.success = 'Upload done ' + totalinserted + ' listings were inserted and ' + totalupdated + ' were updated';
+						res.status(200);
+						return res.json(body);
 
-				}); 
+					});
+				});
 
 			});
 
@@ -1021,10 +1078,6 @@ listingRoutes.post('/upload', mid.jsonLoginRequired, function(req, res){
 				return res.json(body);
 
 			});
-
-			// body.success = 'there are ' + listingArray.length;
-			// res.status(200);
-			// return res.json(body); 
 
 		}
 

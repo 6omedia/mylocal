@@ -965,15 +965,35 @@ footer {
 }
 
 label[for="jsonUpload"] {
-    background: url(/static/img/admin/document.png) no-repeat 50% 0%;
+    /*background: url(/static/img/admin/document.png) no-repeat 50% 0%;
     text-align: center;
     padding-top: 64px;
     font-weight: bold;
+    cursor: pointer;*/
+
+    background: #eaeaea url(/static/img/admin/document.png) no-repeat 10px 50%/40px;
+    text-align: center;
+    padding: 15px 20px 15px 60px;
+    font-weight: bold;
     cursor: pointer;
+    border-radius: 3px;
 }
 
 label[for="jsonUpload"]:hover {
     /*filter: brightness(110%);*/
+    background: #efefef url(/static/img/admin/document.png) no-repeat 10px 50%/40px;
+    border: solid 2px #ccc;
+}
+
+#upload-list li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#upload-list .btn {
+    vertical-align: baseline;
+    box-shadow: none;
+    border-radius: 3px;
 }
 
 /* BLOG
@@ -1531,3 +1551,4 @@ ul.tagList li span {
 .operations li button {
     float: right;
 }
+
