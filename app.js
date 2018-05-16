@@ -18,8 +18,8 @@ var attachTitleAndMeta = require('./middleware/seo.js').attachTitleAndMeta;
 if(process.env.NODE_ENV == 'test'){
 	config = require('./config/test.json');
 }else{
-	// config = require('./config/dev.json');
-	config = require('./config/test2.json');
+	config = require('./config/dev.json');
+	// config = require('./config/test2.json');
 }
 
 // var user = require('./controllers/user.js');
