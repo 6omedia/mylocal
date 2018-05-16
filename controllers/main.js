@@ -173,7 +173,7 @@ mainRoutes.post('/login', function(req, res){
 
 });
 
-mainRoutes.get('/logout', function(req, res){
+mainRoutes.get('/logout', function(req, res, next){
 
 	if (req.session) {
 		// delete session object
@@ -184,6 +184,8 @@ mainRoutes.get('/logout', function(req, res){
 				return res.redirect('/');
 			}
 		});
+	}else{
+		return next();
 	}
 
 });

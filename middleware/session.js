@@ -138,6 +138,7 @@ function isHomeTown(req, res, next){
         User.findById(req.session.userId)
         .populate('home_town')
         .exec(function(err, user){
+
             if(err) return next(err);
             req.session.user = user;
 
@@ -153,7 +154,7 @@ function isHomeTown(req, res, next){
 
         });
     }else{
-        next();
+        return next();
     }
 
 }
