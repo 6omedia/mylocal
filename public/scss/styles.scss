@@ -21,6 +21,12 @@
 		'components/pagination',
 		'components/rating';
 
+section:after {
+	display: table;
+	content: "";
+	clear: both;
+}
+
 /* REGISTER / LOGIN
 **********************************/
 

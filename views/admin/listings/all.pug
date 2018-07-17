@@ -37,6 +37,7 @@ block content
 						th Owner
 						th Industry
 						th Address
+						th Membership
 						//- th Location
 						th Actions
 					each listing in listings
@@ -52,8 +53,10 @@ block content
 							//- 	td #{listing.loc}
 							//- else
 							//- 	td no location data
-							td
+							td #{listing.membership}
+							td.actions
 								a(href=`/listing/${listing.slug}` target="_blank").view
+								span(data-listingid=`${listing._id}`).switch_membership
 								a(href=`/admin/listings/edit/${listing._id}` target="_blank").edit
 								span(data-listingid=`${listing._id}`).delete
 				div.paginationDiv !{paginationLinks}

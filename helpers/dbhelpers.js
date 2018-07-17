@@ -185,7 +185,7 @@ const Postcode = require('../models/postcode');
 
 // }
 
-function searchLocation(term, callback){
+function searchLocation(term, callback, limit = 10){
 
 	term = new RegExp('^' + term, 'i');
     locations = [];
@@ -194,7 +194,7 @@ function searchLocation(term, callback){
 
 		return new Promise(function(resolve, reject){
 
-			Town.find({name: term}).limit(10).select({name: 1}).lean()
+			Town.find({name: term}).limit(limit).select({name: 1}).lean()
 				.then((towns) => {
 					// locations = locations.concat(towns);
 					towns.forEach((town) => {
@@ -215,11 +215,11 @@ function searchLocation(term, callback){
 
 		return new Promise(function(resolve, reject){
 
-			if(locations.length >= 10){
+			if(locations.length >= limit){
 				return resolve();
 			}
 
-			Suburb.find({name: term}).limit(10 - locations.length).select({name: 1}).lean()
+			Suburb.find({name: term}).limit(limit - locations.length).select({name: 1}).lean()
 				.then((suburbs) => {
 					// locations = locations.concat(suburbs);
 					suburbs.forEach((suburb) => {
@@ -240,11 +240,11 @@ function searchLocation(term, callback){
 
 		return new Promise(function(resolve, reject){
 
-			if(locations.length >= 10){
+			if(locations.length >= limit){
 				return resolve();
 			}
 
-			Postcode.find({postcode: term}).limit(10 - locations.length).select({postcode: 1}).lean()
+			Postcode.find({postcode: term}).limit(limit - locations.length).select({postcode: 1}).lean()
 				.then((postcodes) => {
 					// locations = locations.concat(postcodes);	
 					postcodes.forEach((postcode) => {

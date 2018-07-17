@@ -39,8 +39,10 @@
 					<td>${name}</td>
 					<td>${listing.industry}</td>
 					<td>${listing.address.town}, ${listing.address.line_one}</td>
-					<td>
+					<td>${listing.membership}</td>
+					<td class="actions">
 						<a class="view" href="/listing/${listing.slug}" target="_blank"></a>
+						<span class="switch_membership" data-listingid="${listing._id}"></span>
 						<a class="edit" href="/admin/listings/edit/${listing._id}" target="_blank"></a>
 						<span class="delete" data-listingid="${listing._id}"></span>
 					</td>
@@ -88,6 +90,34 @@
 		});
 	}
 
+	function updateMembership(listingid, membership, listings, callback){
+
+		// console.log(listings);
+
+		$.ajax({
+			url: '/api/listings/switch-membership',
+			method: 'POST',
+			data: {
+				listingid: listingid,
+				listings: listings,
+				membership: membership
+			},
+			success: function(data){
+				// console.log(data);
+				if(data.error){
+					callback(data.error);
+				}else{
+					callback(null, data.listings);
+				}
+			},
+			error: function(a, b, c){
+				console.log(a,b,c);
+				callback(a);
+			}
+		});
+
+	}
+
 	$('#search').on('click', function(){
 		getListings(function(err, listings){
 			if(err){
@@ -97,6 +127,53 @@
 				refreshListings(listings);
 			}
 		});
+	});
+
+	$('table').on('click', '.switch_membership', function(){
+
+		var listingid = $(this).data('listingid');
+		var membership = $(this).data('membership');
+
+		var mpopup = new PopUp(function(){},function(){});
+
+		var select = $('<select>');
+		select.append('<option value="free">Free</option>');
+		select.append('<option value="silver">Silver</option>');
+		select.append('<option value="gold">Gold</option>');
+		select.append('<option value="platinum">Platinum</option>');
+
+		var htmlbox = $('<div>');
+		var saveBtn = $('<button>', {"class": "yesBtn"}).html('Save').on('click', function(){
+					
+						htmlbox.addClass('spinFull');
+
+						var listingTds = $('.switch_membership');
+
+						let listings = [];
+
+						for(i=0;i<listingTds.length;i++){
+							listings.push($(listingTds[i]).data('listingid'));
+						}
+
+						updateMembership(listingid, $(select).val(), listings, function(err, listings){
+
+							if(err){
+								var msg = new Message(err, true, $('#msg'));
+								msg.display(false);
+							}else{
+								refreshListings(listings);
+							}
+
+							htmlbox.removeClass('spinFull');
+							mpopup.popDown();
+						});
+					});
+
+		htmlbox.append(select);
+		htmlbox.append(saveBtn);
+
+		mpopup.popUp('Switch Membership', htmlbox);
+
 	});
 
 	$('table').on('click', '.delete', function(){

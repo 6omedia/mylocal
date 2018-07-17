@@ -788,3 +788,9 @@ i.fa-search {
         }
     }
 }
+
+section:after {
+    display: table;
+    content: "";
+    clear: both;
+}

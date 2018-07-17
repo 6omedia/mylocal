@@ -10,6 +10,7 @@ const Industry = require('../../models/industry');
 const pagination = require('../../helpers/pagination');
 const slugifyListing = require('../../helpers/utilities').slugifyListing;
 const titleCase = require('../../helpers/utilities').titleCase;
+const requiredPostProps = require('../../helpers/utilities').requiredPostProps;
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
@@ -831,6 +832,44 @@ listingRoutes.post('/assign_owner', mid.jsonLoginRequired, function(req, res){
 		}
 
 	});
+
+});
+
+listingRoutes.post('/switch-membership', mid.jsonOnlyAdmin, function(req, res){
+
+	let data = {};
+	data.success = 0;
+
+	var valid = requiredPostProps(['membership', 'listingid'], req.body);
+
+	if(valid != true){
+		data.error = valid;
+		res.status(400);
+		return res.send(data);
+	}
+
+	Listing.update({_id: req.body.listingid}, {membership: req.body.membership})
+		.then((results) => {
+
+			if(!req.body.listings){
+				data.results = results;
+				return res.send(data);	
+			}
+
+			Listing.find({
+				'_id': { $in: req.body.listings } 
+			}).populate('userId').exec((err, listings) => {	
+				if(err){ data.error = err; return res.send(data); }
+				data.listings = listings;
+				return res.send(data);
+			});
+			
+		})
+		.catch((e) => {
+			data.error = e.message || 'Something went wrong';
+			res.status(e.status || 500);
+			return res.send(data);		
+		});
 
 });
 

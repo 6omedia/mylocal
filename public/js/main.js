@@ -32,7 +32,7 @@
     });
 
     // $('#r_town').on('resultSelected', function(town){
-    //     console.log();
+    //     console.log(town);
     // });
 
 	// /find/Restaurants/Bournemouth?page=1
@@ -170,7 +170,11 @@
         e.preventDefault();
         var btn = $(this);
 
-        var townid = $('#r_town').data('listing')._id;
+        var townid = null;
+
+        if($('#r_town').data('listing')){
+            townid = $('#r_town').data('listing')._id;
+        }
 
         if(registerForm.isValid()){
 

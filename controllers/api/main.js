@@ -146,7 +146,7 @@ apiRoutes.get('/locations/search', function(req, res, next){
 	 		data.locations = locations;
 	 		return res.json(data);
 			
-		});
+		}, 5);
 
 	}
 

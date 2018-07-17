@@ -210,7 +210,12 @@ table tr:first-child {
     color: var(--light-orange);
 }
 
+.actions {
+    min-width: 175px;
+}
+
 .view,
+.switch_membership,
 .edit, 
 .delete {
     display: inline-block;
@@ -221,6 +226,12 @@ table tr:first-child {
 
 .view {
     background: url('../img/admin/view.png') no-repeat 50%;
+    background-size: 22px;
+    margin-right: 10px;
+}
+
+.switch_membership {
+    background: url('../img/admin/id-card.png') no-repeat 50%;
     background-size: 22px;
     margin-right: 10px;
 }
