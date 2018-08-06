@@ -126,3 +126,17 @@ button, .btn {
         font-size: 16px;
     }
 }
+
+/* FORMS =========================*/
+
+.ml_form {
+    label {
+        margin-bottom: 10px;
+        i {
+            top: 42px;
+        }
+    }
+    textarea {
+        margin-bottom: 0px !important;
+    }
+}

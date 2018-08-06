@@ -257,6 +257,14 @@ button, .btn {
   .termsBox p {
     font-size: 16px; }
 
+/* FORMS =========================*/
+.ml_form label {
+  margin-bottom: 10px; }
+  .ml_form label i {
+    top: 42px; }
+.ml_form textarea {
+  margin-bottom: 0px !important; }
+
 #image_library {
   border-radius: 5px;
   margin: 110px auto;
@@ -327,6 +335,9 @@ header .icon-bell {
 
 .navslide-wrap, .slide-progress, nav li a.act-link:before, .hs-nav .navslide-wrap.next-slide-wrap a, .folio-counter, .add-list, .section-separator:before, .listing-carousel-wrap .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active, .card-btn:hover, .footer-widget #subscribe-button, .custom-form .log-submit-btn, .add-list, .parallax-section .section-separator:before, .sw-btn, .color-bg, .mapzoom-in, .mapzoom-out, .infoBox-close, .close-reg, .header-search-button, .listing-view-layout li a, .listsearch-input-item .selectbox, .rangeslider__fill, .fs-map-btn, .more-filter-option span, .back-to-filters, .back-to-filters span, .pin, .load-more-button, .footer-menu li:before, .pagination a.current-page, .pagination a:hover, .section-title .breadcrumbs a:before, .showshare, .scroll-nav-wrapper .scroll-nav li a:before, .list-single-main-wrapper .breadcrumbs, .list-widget-social li a, .btn.transparent-btn:hover, .btn.flat-btn, .accordion a.toggle.act-accordion, .custom-form .quantity input.qty, .widget-posts-link span, .box-item a.gal-link, .custom-form .selectbox, .photoUpload, .user-profile-menu li a span, .tabs-menu li.current a, .tabs-menu li a:hover, .header-social li a:hover, .main-search-button, .selectbox li:hover, .color-overlay, .trs-btn, .testi-counter, .to-top, .header-sec-link a, .card-btn, .profile-edit-page-header .breadcrumbs a:before, .dashboard-listing-table-opt li a.del-btn, .search-widget .search-submit, .box-widget-item .list-single-tags a, .reviews-comments-item-text .new-dashboard-item:hover, .step-item, .video-box-btn, .slick-dots li.slick-active button, .time-line-container:before, .error-wrap form .search-submit, .testimonials-carousel .slick-current .testimonilas-text, .cs-social li a, .cs-countdown-item:before, .listing-counter, .price-head, .price-link, .sp-cont:hover, .cluster div, .lg-actions .lg-next, .lg-actions .lg-prev, .log-out-btn:hover, .map-popup-category, .mapnavigation a:hover {
   background: #5edba1; }
+
+.gradient-bg, .listing-geodir-category, .list-single-header-cat a, .box-widget-item .list-single-tags a:hover, .nav-holder nav li a:before {
+  background: -webkit-linear-gradient(top, #6e3d83, #ab77c1); }
 
 /* GENERAL ===============*/
 body {
@@ -412,7 +423,7 @@ li.passwordli {
   .pagination li {
     display: inline-block; }
     .pagination li.active a {
-      background: #4DB7FE;
+      background: #42254f;
       color: #fff; }
 
 .modal {
@@ -660,6 +671,14 @@ i.fa-search {
 
 .list-widget-social i {
   margin-top: 12px; }
+
+.contact_form_error_msg {
+  clear: both;
+  padding-top: 10px;
+  margin: 0px;
+  background: #df5c5c;
+  color: #fff;
+  display: none; }
 
 /* header search ============*/
 @media (min-width: 992px) {
@@ -928,5 +947,10 @@ i.fa-search {
       .ml_section nav li a:hover {
         background: #42254f;
         color: #fff; }
+
+section:after {
+  display: table;
+  content: "";
+  clear: both; }
 
 /*# sourceMappingURL=citybook_overide.css.map */

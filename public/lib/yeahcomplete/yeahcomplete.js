@@ -197,7 +197,7 @@ var YeahAutocomplete = (function(){
 					thisYac.ajaxInProg = false;
 					thisYac.liFocusIndex = 0;
 					if(data[arrName].length > 0){
-						thisYac.liFocus = $(thisYac.view.resultsList[0]);
+						thisYac.liFocus = $($(thisYac.view.resultsList).children()[0]);
 					}
 
 				},

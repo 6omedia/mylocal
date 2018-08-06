@@ -142,7 +142,7 @@ block content
 							#add-review.add-review-box
 								if user
 									.leave-rating-wrap
-										span.leave-rating-title Your rating  for this listing : 
+										span.leave-rating-title Your rating for this listing : 
 										.leave-rating
 											input#rating-1(type='radio', name='rating', value='5')
 											label.fa.fa-star-o(for='rating-1')
@@ -169,6 +169,24 @@ block content
 				.col-md-4
 					.box-widget-wrap
 						// box-widget-item
+						if listing.membership != 'free'
+							.box-widget-item.fl-wrap
+								.box-widget-item-header
+									h3 Contact #{listing.business_name} : 
+								.box-widget.opening-hours
+									.box-widget-content.custom-form
+										.ml_form
+											label Name
+												i.fa.fa-user
+											input(type="text")#q_listing_name
+											label Email
+												i.fa.fa-envelope
+											input(type="email")#q_listing_email
+											input(type="hidden")#q_listing_postcode
+											label Message
+											textarea#q_listing_message
+											p.contact_form_error_msg
+											.btn#submit_contact_form Submit
 						.box-widget-item.fl-wrap
 							.box-widget-item-header
 								h3 Working Hours : 
@@ -206,7 +224,8 @@ block content
 								h3 Location / Contacts : 
 							.box-widget
 								.map-container
-									#singleMap(data-latitude=`${listing.loc[1]}`, data-longitude=`${listing.loc[0]}`, data-maptitle='Out Location')
+									if listing.loc
+										#singleMap(data-latitude=`${listing.loc[1]}`, data-longitude=`${listing.loc[0]}`, data-maptitle='Out Location')
 								.box-widget-content
 									.list-author-widget-contacts.list-item-widget-contacts
 										ul

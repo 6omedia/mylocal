@@ -11,6 +11,7 @@ const pagination = require('../../helpers/pagination');
 const slugifyListing = require('../../helpers/utilities').slugifyListing;
 const titleCase = require('../../helpers/utilities').titleCase;
 const requiredPostProps = require('../../helpers/utilities').requiredPostProps;
+const sendEmail = require('../../helpers/email.js').sendEmail;
 const bcrypt = require('bcrypt');
 const path = require('path');
 const fs = require('fs');
@@ -246,6 +247,8 @@ listingRoutes.get('/find/:industry/:town', function(req, res, next){
 	data.success = 0;
 
 	let page = req.query.page || 1;
+
+	// console.log(req.params.industry, req.params.town, req.query.dist || 5, page);
 
 	Listing.getBySearchTerms(req.params.industry, req.params.town, req.query.dist || 5, page,
 		
@@ -870,6 +873,63 @@ listingRoutes.post('/switch-membership', mid.jsonOnlyAdmin, function(req, res){
 			res.status(e.status || 500);
 			return res.send(data);		
 		});
+
+});
+
+listingRoutes.post('/contact-form', function(req, res){
+
+	let data = {};
+	data.success = 0;
+
+	var valid = requiredPostProps(['listingid', 'name', 'email', 'message'], req.body);
+
+	if(valid != true){
+		data.error = valid;
+		res.status(400);
+		return res.send(data);
+	}
+
+	if(req.body.postcode){
+		if(req.body.postcode != ''){
+			data.error = 'Sorry no robots';
+			return res.send(data);
+		}
+	}
+
+	Listing.findById(req.body.listingid, function(err, listing){
+
+		if(err){
+			data.error = err.message || 'Internal Server Error';
+			res.status(err.status || 500);
+			return res.send(data);
+		}
+
+		if(listing.membership == 'free'){
+			data.error = err.message || 'Membership level to low';
+			res.status(err.status || 403);
+			return res.send(data);
+		}
+
+		// send email
+
+		const msg = 'Message from: ' + req.body.name + ' </br>' + req.body.message
+					+ '</br> Reply to: ' + req.body.email;
+
+		sendEmail(listing.contact.email, req.body.email, 'MyLocal User Enquirey', msg, (err, info) => {
+
+			if(err){
+				data.error = err;
+				return res.send(data);
+			}
+
+			console.log('INFO: ', info);
+
+			data.success = 'Message Sent';
+			return res.send(data);
+
+		});
+
+	});
 
 });
 
