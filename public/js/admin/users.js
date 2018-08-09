@@ -60,6 +60,30 @@
 
 	};
 
+	Model.prototype.getUsers = function(callback){
+
+		$.ajax({
+			url: '/api/users/find/search',
+			method: 'GET',
+			data: {
+				name: $('#user_name').val(),
+				email: $('#email').val(),
+				user_role: $('#user_role').val()
+			},
+			success: function(data){
+				if(data.users){
+					callback(null, data.users);
+				}else{
+					callback('No users');
+				}
+			},
+			error: function(a, b, c){
+				callback(a);
+			}
+		});
+
+	};
+
 	function View(){
 		
 	}
@@ -74,6 +98,7 @@
 			var row = '';
 			row += '<tr>';
 				row += '<td>' + users[i].name + '</td>';
+				row += '<td>' + users[i].email + '</td>';
 				row += '<td>' + users[i].user_role + '</td>';
 				row += '<td>';
 					row += '<a class="edit" href="/admin/users/edit/' + users[i]._id + '"></a>';
@@ -132,6 +157,17 @@
 		
 	};
 
-	var users = new Users(Model, View);
+	var usersObj = new Users(Model, View);
+
+	$('#search').on('click', function(){
+		usersObj.model.getUsers(function(err, users){
+			if(err){
+				var msg = new Message(response.error, true, $('#msg'));
+				msg.display(false);
+			}else{
+				usersObj.view.refreshUsers(users);
+			}
+		});
+	});
 
 }(PopUp));

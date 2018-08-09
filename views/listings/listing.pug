@@ -24,7 +24,7 @@ block content
 					.listing-rating.card-popup-rainingvis(data-starrating2=`${listing.overall_rating}`)
 						span (#{listing.reviews.length} reviews)
 					.list-post-counter.single-list-post-counter
-						span #{listing.favourited}
+						span #{listing.favourites.length}
 						i.fa.fa-heart
 					.clearfix
 					.row
@@ -66,9 +66,19 @@ block content
 						a(href='#sec3') Gallery
 					li
 						a(href='#sec4') Reviews
-			a.save-btn(href='#')
-				i.fa.fa-heart
-				|  Save
+			if user
+				if listingIsFavourite > -1
+					span.save-btn
+						i.fa.fa-check
+						|  Saved
+				else
+					span.save-btn
+						i.fa.fa-heart
+						|  Save
+			else
+				span.save-btn.modal-open
+					i.fa.fa-heart
+					|  Save
 	// section
 	section.gray-section.no-top-padding
 		.container
@@ -304,6 +314,8 @@ block content
 	script(type="text/javascript" src="/static/js/citybook/scripts.js")
 	script(type="text/javascript" src="/static/lib/yeahcomplete/yeahcomplete.js")
 	script(type="text/javascript" src="/static/js/helpers/form.js")
+	script(type="text/javascript" src="/static/js/helpers/utils.js")
+	//- script(type="text/javascript" src="/static/js/helpers/ajaxfuncs.js")
 	script(type="text/javascript" src="/static/js/main.js")
 	script(type="text/javascript" src="/static/js/listing.js")
 	

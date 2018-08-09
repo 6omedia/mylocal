@@ -55,6 +55,39 @@ userRoutes.get('/', mid.jsonLoginRequired, function(req, res){
 
 });
 
+userRoutes.get('/find/search', mid.jsonOnlyAdmin, function(req, res, next){
+
+	let data = {};
+	data.success = 0;
+
+	let query = {};
+
+	if(req.query.name && req.query.name != ''){
+		query.name = new RegExp('^' + req.query.name, 'i');
+	}
+
+	if(req.query.email && req.query.email != ''){
+		query.email = new RegExp('^' + req.query.email, 'i');
+	}
+
+	if(req.query.user_role && req.query.user_role != ''){
+		query.user_role = new RegExp('^' + req.query.user_role, 'ig');
+	}
+
+	User.find(query).limit(20).sort({created_at: -1})
+		.then((users) => {
+			data.users = users;
+			res.status(200);
+			return res.send(data);
+		})
+		.catch((err) => {
+			data.error = err.message || 'Internal Server Error';
+			res.status(err.status || 500);
+			return res.send(data);
+		});	
+
+});
+
 userRoutes.get('/:userId', mid.jsonLoginRequired, function(req, res){
 
 	let data = {};

@@ -118,60 +118,60 @@ mainRoutes.get('/town/:town', function(req, res, next){
 	
 });
 
-mainRoutes.get('/login', mid.loggedIn, function(req, res){
+// mainRoutes.get('/login', mid.loggedIn, function(req, res){
 
-	return res.render('login', {
-		error: '',
-		redirect_url: req.query.redirect || null
-	});
+// 	return res.render('login', {
+// 		error: '',
+// 		redirect_url: req.query.redirect || null
+// 	});
 
-});
+// });
 
-mainRoutes.post('/login', function(req, res){
+// mainRoutes.post('/login', function(req, res){
 
-	var error = '';
+// 	var error = '';
 
-	if(req.body.email && req.body.password){
+// 	if(req.body.email && req.body.password){
 
-		User.authenticate(req.body.email, req.body.password, function(err, user){
+// 		User.authenticate(req.body.email, req.body.password, function(err, user){
 
-			if(err || !user){
+// 			if(err || !user){
 
-				res.status(err.status);
-				return res.render('login', {
-					error: 'Incorrect Username / Password'
-				});
+// 				res.status(err.status);
+// 				return res.render('login', {
+// 					error: 'Incorrect Username / Password'
+// 				});
 
-			}
+// 			}
 
-			// user exists
-			req.session.userId = user._id;
-			res.loggedInUser = user._id;
-			req.session.user = user;
+// 			// user exists
+// 			req.session.userId = user._id;
+// 			res.loggedInUser = user._id;
+// 			req.session.user = user;
 
-			if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
-				return res.redirect('/admin');
-			}else{
+// 			if(user.user_role == 'Admin' || user.user_role == 'Super Admin'){
+// 				return res.redirect('/admin');
+// 			}else{
 
-				console.log(req.body.url);
-				let url = (req.body.url == undefined || req.body.url == 'null' ? '/dashboard' : req.body.url );
-				return res.redirect(url);
+// 				console.log(req.body.url);
+// 				let url = (req.body.url == undefined || req.body.url == 'null' ? '/dashboard' : req.body.url );
+// 				return res.redirect(url);
 
-			}
+// 			}
 
-		});
+// 		});
 
-	}else{
+// 	}else{
 
-		error = 'Both email and password required';
-		res.status(400);
-		return res.render('login', {
-			error: error
-		});
+// 		error = 'Both email and password required';
+// 		res.status(400);
+// 		return res.render('login', {
+// 			error: error
+// 		});
 
-	}
+// 	}
 
-});
+// });
 
 mainRoutes.get('/logout', function(req, res, next){
 
@@ -190,86 +190,86 @@ mainRoutes.get('/logout', function(req, res, next){
 
 });
 
-mainRoutes.get('/register', mid.loggedIn, function(req, res){
+// mainRoutes.get('/register', mid.loggedIn, function(req, res){
 
-    res.render('register', {
-        error: ''
-    });
+//     res.render('register', {
+//         error: ''
+//     });
 
-});
+// });
 
-mainRoutes.post('/register', function(req, res){
+// mainRoutes.post('/register', function(req, res){
 
-	var userObj = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        confirm_password: req.body.confirm_password
-    };
+// 	var userObj = {
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: req.body.password,
+//         confirm_password: req.body.confirm_password
+//     };
 
-    User.registerUser(userObj, function(err, user){
+//     User.registerUser(userObj, function(err, user){
 
-        var error = '';
+//         var error = '';
 
-        var pwSubmitted = false;
+//         var pwSubmitted = false;
 
-        if(req.body.password){
-        	pwSubmitted = true;
-        }
+//         if(req.body.password){
+//         	pwSubmitted = true;
+//         }
 
-        if(err){
+//         if(err){
 
-        	if(err == 'Passwords do not match'){
-        		pwSubmitted = false;
-        	}
+//         	if(err == 'Passwords do not match'){
+//         		pwSubmitted = false;
+//         	}
 
-            res.status(400);
-            return res.render('register', {
-            	submitted: {
-            		name: req.body.name,
-            		email: req.body.email,
-            		password: pwSubmitted
-            	},
-                error: err
-            });
+//             res.status(400);
+//             return res.render('register', {
+//             	submitted: {
+//             		name: req.body.name,
+//             		email: req.body.email,
+//             		password: pwSubmitted
+//             	},
+//                 error: err
+//             });
 
-        }
+//         }
 
-        let notification = new Notification({
-			template_type: 'Subscriber Templates',
-			template_name: 'register',
-			email_to: user.email,
-			email_from: 'mail@mylocal.co',
-			email_respond: 'mail@mylocal.co',
-			loggedinuserid: user._id,
-			replace_func: (msg) => {
-				return msg.replace('%name%', user.name);
-			}
-		});
+//         let notification = new Notification({
+// 			template_type: 'Subscriber Templates',
+// 			template_name: 'register',
+// 			email_to: user.email,
+// 			email_from: 'mail@mylocal.co',
+// 			email_respond: 'mail@mylocal.co',
+// 			loggedinuserid: user._id,
+// 			replace_func: (msg) => {
+// 				return msg.replace('%name%', user.name);
+// 			}
+// 		});
 
-		notification.send((err) => {
+// 		notification.send((err) => {
 
-			if(err){
-				return res.render('register', {
-					submitted: {
-						name: req.body.name,
-						email: req.body.email,
-						password: pwSubmitted
-					},
-					error: err
-				});
-			}
+// 			if(err){
+// 				return res.render('register', {
+// 					submitted: {
+// 						name: req.body.name,
+// 						email: req.body.email,
+// 						password: pwSubmitted
+// 					},
+// 					error: err
+// 				});
+// 			}
 
-			// login and start session
-		    req.session.userId = user._id;
-		    req.session.user = user;
-		    return res.redirect('/dashboard');
+// 			// login and start session
+// 		    req.session.userId = user._id;
+// 		    req.session.user = user;
+// 		    return res.redirect('/dashboard');
 
-		});
+// 		});
 
-    });
+//     });
 
-});
+// });
 
 mainRoutes.get('/listing', mid.onlySubscriber, function(req, res){
 
@@ -409,7 +409,8 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 									more_reviews: more_reviews,
 									canWriteReview: canWriteReview,
 									user: user || false,
-									moment: moment
+									moment: moment,
+									listingIsFavourite: user.favourites.indexOf(listing._id)
 								});
 
 							})
@@ -432,7 +433,8 @@ mainRoutes.get('/listing/:slug', function(req, res, next){
 				        moreListings: moreListings,
 				        more_reviews: more_reviews,
 				    	canWriteReview: canWriteReview,
-				        user: req.session.user || false
+				        user: req.session.user || false,
+				        listingIsFavourite: -1
 				    });
 
 				}

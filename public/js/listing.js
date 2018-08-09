@@ -88,4 +88,61 @@
 
 	});
 
+	// FAVOURITE
+
+	function favouriteListing(saveBtn, listingid){
+
+		if(saveBtn.hasClass('modal-open')){
+			return;
+		}
+
+		saveBtn.addClass('spinBtn');
+
+		$.ajax({
+			url: '/api/listings/favourite',
+			method: 'POST',
+			data: {
+				listingid: listingid
+			},
+			success: function(data){
+				console.log(data);
+				saveBtn.removeClass('spinBtn');
+				if(data.error){
+					var msg = new utils.Message();
+	    			return msg.display(data.error, true, true);
+				}
+				if(data.success){
+					// change btn to saved
+					if(data.success == 'unsaved'){
+						var msg = new utils.Message();
+	    				return msg.display('Listing unsaved', false, false);
+						var icon = saveBtn.find('i');
+						icon.removeClass('fa-check');
+						saveBtn.text('Save');
+						return icon.addClass('fa-heart');
+					}else{
+						var icon = saveBtn.find('i');
+						icon.removeClass('fa-heart');
+						saveBtn.append('d');
+						return icon.addClass('fa-check');
+					}
+				}
+				// no error or success
+				var msg = new utils.Message();
+	    		msg.display('Something has gone wrong', true, true); 
+			},
+			error: function(a,b,c){
+				console.log(a,b,c);
+				saveBtn.removeClass('spinBtn');
+				var msg = new utils.Message();
+	    		msg.display(c, true, true);
+			}
+		});
+
+	}
+
+	$('.save-btn').on('click', function(){
+		favouriteListing($(this), $('#datablock').data('listingid'));
+	});
+
 })(form.form);

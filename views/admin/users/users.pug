@@ -17,14 +17,34 @@ block content
 				li
 					span Users
 			.floatLeft
+				ul.filter.list
+					li
+						label Name
+						input(type="text")#user_name.filterInput
+					li
+						label Email
+						input(type="text")#email.filterInput
+					li
+						label User Role
+						select#user_role.filterInput
+							option(value="") - 
+							option(value="Subscriber") Subscriber
+							option(value="Editor") Editor
+							option(value="Admin") Admin
+							option(value="Super Admin") Super Admin
+					li
+						button.btn#search Search
+			.floatLeft
 				table
 					tr
 						th Name
+						th Email
 						th User Role
 						th Actions
 					each user in users
 						tr
 							td #{user.name}
+							td #{user.email}
 							td #{user.user_role}
 							td
 								a(href=`/admin/users/edit/${user._id}`).edit

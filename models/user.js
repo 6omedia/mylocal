@@ -27,6 +27,10 @@ let UserSchema = new Schema(
             type: String,
             default: 'free'
         },
+        favourites: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Listing'
+        }],
         avatar: {
             type: String,
             default: '/static/img/avatar.png'

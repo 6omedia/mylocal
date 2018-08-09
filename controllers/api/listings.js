@@ -933,6 +933,95 @@ listingRoutes.post('/contact-form', function(req, res){
 
 });
 
+listingRoutes.post('/favourite', mid.jsonLoginRequired, function(req, res){
+
+	let data = {};
+	data.success = 0;
+
+	const user = req.session.user;
+
+	var valid = requiredPostProps(['listingid'], req.body);
+
+	if(valid != true){
+		data.error = valid;
+		res.status(400);
+		return res.send(data);
+	}
+
+	if(user.favourites.indexOf(req.body.listingid) > -1){
+		// data.error = 'You have already favourited this listing';
+		// res.status(200);
+		// return res.send(data);
+
+		// remove
+
+		Listing.findByIdAndUpdate(req.body.listingid, 
+		    { $pullAll: { favourites: [user._id] } }, 
+		    { new: true }, 
+		    function(err, listing) {
+
+			if(err){
+				data.error = err;
+				res.status(err.status || 500);
+				return res.send(data);
+			}
+
+			User.findByIdAndUpdate(user._id, 
+			    { $pullAll: { favourites: [req.body.listingid] } }, 
+			    { new: true }, 
+			    function(err, user) {
+
+				if(err){
+					data.error = err;
+					res.status(err.status || 500);
+					return res.send(data);
+				}
+
+				data.success = 'unsaved';
+				res.status(200);
+				return res.send(data);
+
+			});
+
+		});
+
+	}else{
+
+		Listing.findById(req.body.listingid, (err, listing) => {
+
+			if(err){
+				data.error = err;
+				res.status(err.status || 500);
+				return res.send(data);
+			}
+
+			if(!listing.hasOwnProperty('favourited')){
+				listing.favourites = [];
+			}
+
+			if(!user.hasOwnProperty('favourites')){
+				user.favourites = [];
+			}
+
+			Promise.all([listing.update({$push: {favourites: user._id}}), user.update({$push: {favourites: listing._id}})])
+				.then((result) => {
+					console.log(result);
+					data.success = listing.business_name + ' has been favourited';
+					return res.send(data);
+				})
+				.catch((err) => {
+					console.log(err);
+					data.error = err.message;
+					res.status(err.status || 500);
+					return res.send(data);
+				});
+
+		});
+
+	}
+
+});
+
 // DELETE /:id
 
 listingRoutes.delete('/:id', mid.jsonLoginRequired, function(req, res){
